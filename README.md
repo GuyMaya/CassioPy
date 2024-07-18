@@ -1,5 +1,8 @@
-## smm - Skew Mixture Model for clustering
+## GenePy - 
 
+Skew Mixture Model for clustering
+
+Skew -t distribution
 
 
 ## Installation
