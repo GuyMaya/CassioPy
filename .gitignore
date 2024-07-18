@@ -1,0 +1,10 @@
+# Ignorer les environnements virtuels
+venv/
+.venv/
+env/
+.env/
+
+# Ignorer les fichiers de cache
+.cache/
+
+tests/
