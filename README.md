@@ -1,4 +1,4 @@
-<h1 align="center">GenePy</h1><br>
+<h1 align="center">CassioPy</h1><br>
 
 ## Skew Mixture Model for Clustering
 
