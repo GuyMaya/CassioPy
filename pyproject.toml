@@ -10,7 +10,7 @@ readme = "README.md"
 repository = "https://github.com/votrenom/SMM"
 documentation = "https://example.com/SMM/docs"
 packages = [{'include' = 'GenePy'}]
-keywords = ["skew", "mixture model", "machine learning"]
+keywords = ["skew", "mixture model", "machine learning", "clustering"]
 
 [tool.poetry.dependencies]
 python = ">=3.8"
