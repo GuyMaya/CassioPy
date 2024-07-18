@@ -8,3 +8,5 @@ env/
 .cache/
 
 tests/
+
+requirements.in

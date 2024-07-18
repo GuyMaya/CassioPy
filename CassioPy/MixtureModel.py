@@ -29,6 +29,8 @@ class SkewMixtureModel:
         
         - 'random': Parameters are initialized randomly.
         - 'params': User-provided parameters are used for initialization.
+        - 'kmeans': Parameters are initialized using K-means.
+        - 'gmm': Parameters are initialized using a Gaussian Mixture Model.
 
     - params : dict, default=None
         The user-provided initial parameters. Used only if `init` is 'params'.
@@ -48,7 +50,7 @@ class SkewMixtureModel:
 
     Examples:
     >>> import numpy as np
-    >>> from your_module import MixtureModel
+    >>> from MixtureModel import SkewMixtureModel
     >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
     >>> model = SkewMixtureModel(n_cluster=2, n_iter=100, tol=1e-4, init='random')
     >>> model.fit(X)
@@ -63,7 +65,7 @@ class SkewMixtureModel:
     >>> model.save('model.h5')
     """
 
-    def __init__(self, n_cluster:int, n_iter=10, tol=1e-5, init='random', params=None, n_init_gmm=8):
+    def __init__(self, n_cluster:int, n_iter=10, tol=1e-8, init='gmm', params=None, n_init_gmm=8):
         self.n_cluster = n_cluster
         self.n_iter = n_iter
         self.tol = tol

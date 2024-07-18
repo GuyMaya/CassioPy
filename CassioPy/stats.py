@@ -2,7 +2,7 @@ import numpy as np
 import sklearn
 import scipy.stats
 
-class SkewSet:
+class Skew:
     """
     Generate synthetic data with skewness.
 
@@ -28,7 +28,8 @@ class SkewSet:
 
     Example:
 
-    >>> skew_set = SkewSet()
+    >>> from GenePy.stats import SkewSet
+    >>> skew_set = Skew()
     >>> data, y_true = skew_set.generate(n_samples=100, n_dim=1, n_cluster=4, random_state=42)
 
 
@@ -37,7 +38,7 @@ class SkewSet:
     def __init__(self):
         return
 
-    def generate(self, n_samples=100, n_dim=1, n_clusters=4, random_state=42):
+    def generate(self, n_samples=100, n_dim=1, n_clusters=4, random_state=42, labels=None):
         """
         Generate synthetic data with specified parameters.
 
@@ -90,12 +91,37 @@ class SkewSet:
                     np.sqrt(scipy.stats.gamma.rvs(a=parametre['nu'][:, i]/2, scale=2/parametre['nu'][:, i], size=(n[i], n_dim), random_state=random_state)))
             n_tot += n[i]
 
-        y_true = np.array([])
-        for index, value in enumerate(n):
-            y_true = np.append(y_true, (np.full(value, index)))
-
         data = sklearn.utils.shuffle(data, random_state=random_state)
-        y_true = sklearn.utils.shuffle(y_true, random_state=random_state)
 
-        return data, y_true
 
+        if labels is not None:
+            y_true = np.array([])
+            for index, value in enumerate(n):
+                y_true = np.append(y_true, (np.full(value, index)))
+
+            y_true = sklearn.utils.shuffle(y_true, random_state=random_state)
+            return data, y_true
+        
+        else:
+            return data
+
+    def pdf(self, x, mu, sigma, nu, lambda_):
+        """densite de la skew t
+        Implementation de l'equation (3) de Lin2007
+
+        Parameters:
+        - x (float): The input data.
+        - mu (float): The mean of the cluster.
+        - sigma (float): The standard deviation of the cluster.
+        - nu (float): The degree of freedom of the cluster.
+        - lambda_ (float): The skewness of the cluster.
+
+        Returns:
+        - proba (float): The probability of the data.
+        """
+        eta = (x - mu) / sigma
+        A = lambda_ * eta * np.sqrt((nu + 1) / (nu + eta ** 2))
+        B = scipy.stats.t.cdf(A, nu + 1)
+        C = scipy.stats.t.pdf(eta, nu)
+
+        return 2 / sigma * C * B
