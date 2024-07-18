@@ -1,7 +1,7 @@
 
 
 [tool.poetry]
-name = "genepy"
+name = "cassiopy"
 version = "0.0.1"
 description = "A skew mixture model for clustering"
 authors = ["Maya GUY <maya.guy@msomg.fr>"]
@@ -9,7 +9,7 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/votrenom/SMM"
 documentation = "https://example.com/SMM/docs"
-packages = [{'include' = 'GenePy'}]
+packages = [{'include' = 'CassioPy'}]
 keywords = ["skew", "mixture model", "machine learning", "clustering"]
 
 [tool.poetry.dependencies]
