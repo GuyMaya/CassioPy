@@ -7,6 +7,7 @@ class Skew:
     Generate synthetic data with skewness.
 
     Parameters:
+
     - n_samples :int
         Number of samples to generate.
 
@@ -20,6 +21,7 @@ class Skew:
         Random seed for reproducibility.
 
     Returns:
+
     - data : ndarray
         Generated data with shape (n_samples, n_dim).
 
@@ -28,7 +30,7 @@ class Skew:
 
     Example:
 
-    >>> from GenePy.stats import SkewSet
+    >>> from cassiopy.stats import Skew
     >>> skew_set = Skew()
     >>> data, y_true = skew_set.generate(n_samples=100, n_dim=1, n_cluster=4, random_state=42)
 
@@ -43,6 +45,7 @@ class Skew:
         Generate synthetic data with specified parameters.
 
         Parameters:
+
         - n_samples : int
             Number of samples to generate.
 
@@ -56,6 +59,7 @@ class Skew:
             Random seed for reproducibility.
 
         Returns:
+
         - data : ndarray
             Generated data with shape (n_samples, n_dim).
 
@@ -110,14 +114,23 @@ class Skew:
         Implementation de l'equation (3) de Lin2007
 
         Parameters:
-        - x (float): The input data.
-        - mu (float): The mean of the cluster.
-        - sigma (float): The standard deviation of the cluster.
-        - nu (float): The degree of freedom of the cluster.
-        - lambda_ (float): The skewness of the cluster.
+
+        - x : float
+            The input data.
+        - mu : float
+            The mean of the cluster.
+        - sigma : float
+            The standard deviation of the cluster.
+        - nu : float
+            The degree of freedom of the cluster.
+        - lambda_ : float
+            The skewness of the cluster.
 
         Returns:
-        - proba (float): The probability of the data.
+
+        - proba : float
+            The probability of the data.
+            
         """
         eta = (x - mu) / sigma
         A = lambda_ * eta * np.sqrt((nu + 1) / (nu + eta ** 2))
