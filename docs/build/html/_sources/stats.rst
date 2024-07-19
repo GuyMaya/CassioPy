@@ -16,7 +16,7 @@ Skew.generate
    :undoc-members:
    :show-inheritance:
 
-Skew.fit
+Skew.pdf
 ~~~~~~~~~~~~~
 .. automodule:: stats.Skew.pdf
    :members:
