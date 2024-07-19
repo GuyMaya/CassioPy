@@ -13,6 +13,7 @@ class SkewMixtureModel:
     using an iterative method.
 
     Parameters:
+
     - n_cluster : int
         The number of mixture components (clusters).
         
@@ -36,6 +37,7 @@ class SkewMixtureModel:
         The user-provided initial parameters. Used only if `init` is 'params'.
 
     Attributes:
+
     - mu : array-like of shape (n_dim, n_cluster)
         Coordinates of cluster centers.
 
@@ -49,6 +51,7 @@ class SkewMixtureModel:
         Number of iterations performed.
 
     Examples:
+    
     >>> import numpy as np
     >>> from MixtureModel import SkewMixtureModel
     >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
