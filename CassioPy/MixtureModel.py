@@ -4,7 +4,7 @@ import scipy
 
 
 
-class SkewMixtureModel:
+class skewmixturemodel:
     """
     Skew-t Mixture Model.
 

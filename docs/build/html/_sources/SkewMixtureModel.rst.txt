@@ -4,7 +4,7 @@
 Skew Mixture Model
 ==================
 
-.. automodule:: MixtureModel.SkewMixtureModel
+.. automodule:: mixturemodel.skewmixturemodel
    :members:
    :undoc-members:
    :show-inheritance:
