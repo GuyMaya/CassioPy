@@ -3,7 +3,9 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-
+import pydata_sphinx_theme
+from sphinx.application import Sphinx
+from sphinx.locale import _
 import os
 import sys
 
