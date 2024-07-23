@@ -7,19 +7,19 @@ class SkewMixture:
     """
     Skew-t Mixture Model for clustering.
 
-    Parameters:
-
-    - n_cluster : int
+    Parameters
+    ----------
+    n_cluster : int
         The number of mixture components (clusters).
 
-    - n_iter : int, default=10
+    n_iter : int, default=10
         The number of iterations to perform during the parameter estimation.
 
-    - tol : float, default=1e-5
+    tol : float, default=1e-5
         The convergence threshold. Iterations will stop when the
         improvement is below this threshold.
 
-    - init : {'random', 'kmeans', 'gmm', 'params'}, default='random'
+    init : {'random', 'kmeans', 'gmm', 'params'}, default='random'
         The method used to initialize the parameters.
         Must be one of:
 
@@ -28,25 +28,11 @@ class SkewMixture:
         - 'kmeans': Parameters are initialized using K-means.
         - 'gmm': Parameters are initialized using a Gaussian Mixture Model.
 
-    - params : dict, default=None
+    params : dict, default=None
         The user-provided initial parameters. Used only if `init` is 'params'.
 
-    Attributes:
-
-    - mu : array-like of shape (n_dim, n_cluster)
-        Coordinates of cluster centers.
-
-    - sig : array-like of shape (n_dim, n_cluster)
-        Covariance of each cluster.
-
-    - alpha : array-like of shape (n_cluster)
-        Weight of each cluster.
-
-    - n_iter : int
-        Number of iterations performed.
-
-    Examples:
-
+    Examples
+    --------
     >>> import numpy as np
     >>> from cassiopy.mixture import SkewMixture
     >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
@@ -212,30 +198,30 @@ class SkewMixture:
         """
         Random initialization method for the SkewMM algorithm.
 
-        Parameters:
+        Args:
 
-        - X: numpy array
-            Input data array.
+            - X: numpy array
+                Input data array.
 
         Returns:
 
-        - dict:
-            A dictionary containing the initialized parameters:
+            - dict:
+                A dictionary containing the initialized parameters:
 
-            - 'mu': numpy array
-                Matrix of means.
+                - 'mu': numpy array
+                    Matrix of means.
 
-            - 'sig': numpy array
-                Matrix of covariances.
+                - 'sig': numpy array
+                    Matrix of covariances.
 
-            - 'nu': numpy array
-                Matrix of degrees of freedom.
+                - 'nu': numpy array
+                    Matrix of degrees of freedom.
 
-            - 'lamb': numpy array
-                Matrix of skewness parameters.
+                - 'lamb': numpy array
+                    Matrix of skewness parameters.
 
-            - 'alpha': numpy array
-                Array of cluster proportions.
+                - 'alpha': numpy array
+                    Array of cluster proportions.
         """
         # Implementation of the random initialization method
         max_x = np.max(X, axis=0)[:, np.newaxis] if X.ndim > 1 else np.max(X)
@@ -264,11 +250,17 @@ class SkewMixture:
         Args:
 
             params (dict): A dictionary containing the initial values for the model parameters.
+
                 - 'mu' (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).
+
                 - 'sig' (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).
+
                 - 'nu' (ndarray): The degrees of freedom for each cluster. Shape: (n_features, n_cluster).
+
                 - 'lamb' (ndarray): The skewness parameters for each cluster. Shape: (n_features, n_cluster).
+
                 - 'alpha' (ndarray): The mixing proportions for each cluster. Shape: (n_cluster,).
+
             X (ndarray): The input data. Shape: (n_samples, n_features).
 
         Returns:
@@ -316,19 +308,23 @@ class SkewMixture:
         """
         Initializes the parameters for the SkewMM algorithm using the K-means initialization method.
 
-        Parameters:
+        Args:
 
-        - X: The input data matrix of shape (n_samples, n_features).
-        - default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
+            - X: The input data matrix of shape (n_samples, n_features).
+
+            - default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
 
         Returns:
 
-        A dictionary containing the initialized parameters:
-        - mu: The cluster centers obtained from K-means.
-        - sig: The initial covariance matrix, initialized as an identity matrix.
-        - nu: The initial degrees of freedom.
-        - lamb: The initial skewness parameters.
-        - alpha: The initial cluster proportions.
+            A dictionary containing the initialized parameters:
+            - mu: The cluster centers obtained from K-means.
+
+            - sig: The initial covariance matrix, initialized as an identity matrix.
+            - nu: The initial degrees of freedom.
+
+            - lamb: The initial skewness parameters.
+
+            - alpha: The initial cluster proportions.
         """
         from sklearn.cluster import KMeans
 

@@ -390,19 +390,19 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Skew-t Mixture Model for clustering.</span>
 
-<span class="sd">    Parameters:</span>
-
-<span class="sd">    - n_cluster : int</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_cluster : int</span>
 <span class="sd">        The number of mixture components (clusters).</span>
 
-<span class="sd">    - n_iter : int, default=10</span>
+<span class="sd">    n_iter : int, default=10</span>
 <span class="sd">        The number of iterations to perform during the parameter estimation.</span>
 
-<span class="sd">    - tol : float, default=1e-5</span>
+<span class="sd">    tol : float, default=1e-5</span>
 <span class="sd">        The convergence threshold. Iterations will stop when the</span>
 <span class="sd">        improvement is below this threshold.</span>
 
-<span class="sd">    - init : {&#39;random&#39;, &#39;kmeans&#39;, &#39;gmm&#39;, &#39;params&#39;}, default=&#39;random&#39;</span>
+<span class="sd">    init : {&#39;random&#39;, &#39;kmeans&#39;, &#39;gmm&#39;, &#39;params&#39;}, default=&#39;random&#39;</span>
 <span class="sd">        The method used to initialize the parameters.</span>
 <span class="sd">        Must be one of:</span>
 
@@ -411,25 +411,11 @@ document.write(`
 <span class="sd">        - &#39;kmeans&#39;: Parameters are initialized using K-means.</span>
 <span class="sd">        - &#39;gmm&#39;: Parameters are initialized using a Gaussian Mixture Model.</span>
 
-<span class="sd">    - params : dict, default=None</span>
+<span class="sd">    params : dict, default=None</span>
 <span class="sd">        The user-provided initial parameters. Used only if `init` is &#39;params&#39;.</span>
 
-<span class="sd">    Attributes:</span>
-
-<span class="sd">    - mu : array-like of shape (n_dim, n_cluster)</span>
-<span class="sd">        Coordinates of cluster centers.</span>
-
-<span class="sd">    - sig : array-like of shape (n_dim, n_cluster)</span>
-<span class="sd">        Covariance of each cluster.</span>
-
-<span class="sd">    - alpha : array-like of shape (n_cluster)</span>
-<span class="sd">        Weight of each cluster.</span>
-
-<span class="sd">    - n_iter : int</span>
-<span class="sd">        Number of iterations performed.</span>
-
-<span class="sd">    Examples:</span>
-
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; from cassiopy.mixture import SkewMixture</span>
 <span class="sd">    &gt;&gt;&gt; X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])</span>
@@ -600,30 +586,30 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Random initialization method for the SkewMM algorithm.</span>
 
-<span class="sd">        Parameters:</span>
+<span class="sd">        Args:</span>
 
-<span class="sd">        - X: numpy array</span>
-<span class="sd">            Input data array.</span>
+<span class="sd">            - X: numpy array</span>
+<span class="sd">                Input data array.</span>
 
 <span class="sd">        Returns:</span>
 
-<span class="sd">        - dict:</span>
-<span class="sd">            A dictionary containing the initialized parameters:</span>
+<span class="sd">            - dict:</span>
+<span class="sd">                A dictionary containing the initialized parameters:</span>
 
-<span class="sd">            - &#39;mu&#39;: numpy array</span>
-<span class="sd">                Matrix of means.</span>
+<span class="sd">                - &#39;mu&#39;: numpy array</span>
+<span class="sd">                    Matrix of means.</span>
 
-<span class="sd">            - &#39;sig&#39;: numpy array</span>
-<span class="sd">                Matrix of covariances.</span>
+<span class="sd">                - &#39;sig&#39;: numpy array</span>
+<span class="sd">                    Matrix of covariances.</span>
 
-<span class="sd">            - &#39;nu&#39;: numpy array</span>
-<span class="sd">                Matrix of degrees of freedom.</span>
+<span class="sd">                - &#39;nu&#39;: numpy array</span>
+<span class="sd">                    Matrix of degrees of freedom.</span>
 
-<span class="sd">            - &#39;lamb&#39;: numpy array</span>
-<span class="sd">                Matrix of skewness parameters.</span>
+<span class="sd">                - &#39;lamb&#39;: numpy array</span>
+<span class="sd">                    Matrix of skewness parameters.</span>
 
-<span class="sd">            - &#39;alpha&#39;: numpy array</span>
-<span class="sd">                Array of cluster proportions.</span>
+<span class="sd">                - &#39;alpha&#39;: numpy array</span>
+<span class="sd">                    Array of cluster proportions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Implementation of the random initialization method</span>
         <span class="n">max_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -655,11 +641,17 @@ document.write(`
 <span class="sd">        Args:</span>
 
 <span class="sd">            params (dict): A dictionary containing the initial values for the model parameters.</span>
+
 <span class="sd">                - &#39;mu&#39; (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).</span>
+
 <span class="sd">                - &#39;sig&#39; (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).</span>
+
 <span class="sd">                - &#39;nu&#39; (ndarray): The degrees of freedom for each cluster. Shape: (n_features, n_cluster).</span>
+
 <span class="sd">                - &#39;lamb&#39; (ndarray): The skewness parameters for each cluster. Shape: (n_features, n_cluster).</span>
+
 <span class="sd">                - &#39;alpha&#39; (ndarray): The mixing proportions for each cluster. Shape: (n_cluster,).</span>
+
 <span class="sd">            X (ndarray): The input data. Shape: (n_samples, n_features).</span>
 
 <span class="sd">        Returns:</span>
@@ -710,19 +702,23 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes the parameters for the SkewMM algorithm using the K-means initialization method.</span>
 
-<span class="sd">        Parameters:</span>
+<span class="sd">        Args:</span>
 
-<span class="sd">        - X: The input data matrix of shape (n_samples, n_features).</span>
-<span class="sd">        - default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is &#39;auto&#39;.</span>
+<span class="sd">            - X: The input data matrix of shape (n_samples, n_features).</span>
+
+<span class="sd">            - default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is &#39;auto&#39;.</span>
 
 <span class="sd">        Returns:</span>
 
-<span class="sd">        A dictionary containing the initialized parameters:</span>
-<span class="sd">        - mu: The cluster centers obtained from K-means.</span>
-<span class="sd">        - sig: The initial covariance matrix, initialized as an identity matrix.</span>
-<span class="sd">        - nu: The initial degrees of freedom.</span>
-<span class="sd">        - lamb: The initial skewness parameters.</span>
-<span class="sd">        - alpha: The initial cluster proportions.</span>
+<span class="sd">            A dictionary containing the initialized parameters:</span>
+<span class="sd">            - mu: The cluster centers obtained from K-means.</span>
+
+<span class="sd">            - sig: The initial covariance matrix, initialized as an identity matrix.</span>
+<span class="sd">            - nu: The initial degrees of freedom.</span>
+
+<span class="sd">            - lamb: The initial skewness parameters.</span>
+
+<span class="sd">            - alpha: The initial cluster proportions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
 

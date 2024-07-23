@@ -7,5 +7,4 @@ The ``SkewMixture`` class models a mixture of skew-t distributions. It provides 
 
 .. autoclass:: cassiopy.mixture.SkewMixture
    :members:
-   :undoc-members:
-   :show-inheritance:
+   :inherited-members:

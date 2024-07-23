@@ -414,68 +414,28 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cassiopy.mixture.</span></span><span class="sig-name descname"><span class="pre">SkewMixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cluster</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gmm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init_gmm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Skew-t Mixture Model for clustering.</p>
-<p>Parameters:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt>n_cluster<span class="classifier">int</span></dt><dd><p>The number of mixture components (clusters).</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>n_iter<span class="classifier">int, default=10</span></dt><dd><p>The number of iterations to perform during the parameter estimation.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>tol<span class="classifier">float, default=1e-5</span></dt><dd><p>The convergence threshold. Iterations will stop when the
-improvement is below this threshold.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>init<span class="classifier">{‘random’, ‘kmeans’, ‘gmm’, ‘params’}, default=’random’</span></dt><dd><p>The method used to initialize the parameters.
+<dd><p>Skew-t Mixture Model for clustering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_cluster</strong> (<em>int</em>) – The number of mixture components (clusters).</p></li>
+<li><p><strong>n_iter</strong> (<em>int</em><em>, </em><em>default=10</em>) – The number of iterations to perform during the parameter estimation.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>default=1e-5</em>) – The convergence threshold. Iterations will stop when the
+improvement is below this threshold.</p></li>
+<li><p><strong>init</strong> (<em>{'random'</em><em>, </em><em>'kmeans'</em><em>, </em><em>'gmm'</em><em>, </em><em>'params'}</em><em>, </em><em>default='random'</em>) – <p>The method used to initialize the parameters.
 Must be one of:</p>
 <ul>
-<li><p>‘random’: Parameters are initialized randomly.</p></li>
-<li><p>‘params’: User-provided parameters are used for initialization.</p></li>
-<li><p>‘kmeans’: Parameters are initialized using K-means.</p></li>
-<li><p>‘gmm’: Parameters are initialized using a Gaussian Mixture Model.</p></li>
+<li><p>’random’: Parameters are initialized randomly.</p></li>
+<li><p>’params’: User-provided parameters are used for initialization.</p></li>
+<li><p>’kmeans’: Parameters are initialized using K-means.</p></li>
+<li><p>’gmm’: Parameters are initialized using a Gaussian Mixture Model.</p></li>
+</ul>
+</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>default=None</em>) – The user-provided initial parameters. Used only if <cite>init</cite> is ‘params’.</p></li>
 </ul>
 </dd>
 </dl>
-</li>
-<li><dl class="simple">
-<dt>params<span class="classifier">dict, default=None</span></dt><dd><p>The user-provided initial parameters. Used only if <cite>init</cite> is ‘params’.</p>
-</dd>
-</dl>
-</li>
-</ul>
-<p>Attributes:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt>mu<span class="classifier">array-like of shape (n_dim, n_cluster)</span></dt><dd><p>Coordinates of cluster centers.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>sig<span class="classifier">array-like of shape (n_dim, n_cluster)</span></dt><dd><p>Covariance of each cluster.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>alpha<span class="classifier">array-like of shape (n_cluster)</span></dt><dd><p>Weight of each cluster.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>n_iter<span class="classifier">int</span></dt><dd><p>Number of iterations performed.</p>
-</dd>
-</dl>
-</li>
-</ul>
-<p>Examples:</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cassiopy.mixture</span> <span class="kn">import</span> <span class="n">SkewMixture</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
@@ -619,18 +579,27 @@ float: The calculated value of g(nu).</p>
 <dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.initialisation_kmeans">
 <span class="sig-name descname"><span class="pre">initialisation_kmeans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_n_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.initialisation_kmeans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.initialisation_kmeans" title="Link to this definition">#</a></dt>
 <dd><p>Initializes the parameters for the SkewMM algorithm using the K-means initialization method.</p>
-<p>Parameters:</p>
-<ul class="simple">
-<li><p>X: The input data matrix of shape (n_samples, n_features).</p></li>
-<li><p>default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is ‘auto’.</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>-</em>) – The input data matrix of shape (n_samples, n_features).</p></li>
+<li><p><strong>default_n_init</strong> (<em>-</em>) – The number of times the K-means algorithm will be run with different centroid seeds. Default is ‘auto’.</p></li>
 </ul>
-<p>Returns:</p>
-<p>A dictionary containing the initialized parameters:
-- mu: The cluster centers obtained from K-means.
-- sig: The initial covariance matrix, initialized as an identity matrix.
-- nu: The initial degrees of freedom.
-- lamb: The initial skewness parameters.
-- alpha: The initial cluster proportions.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>mu: The cluster centers obtained from K-means.</p></li>
+<li><p>sig: The initial covariance matrix, initialized as an identity matrix.</p></li>
+<li><p>nu: The initial degrees of freedom.</p></li>
+<li><p>lamb: The initial skewness parameters.</p></li>
+<li><p>alpha: The initial cluster proportions.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the initialized parameters</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -640,12 +609,15 @@ float: The calculated value of g(nu).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the initial values for the model parameters.
-- ‘mu’ (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).
-- ‘sig’ (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).
-- ‘nu’ (ndarray): The degrees of freedom for each cluster. Shape: (n_features, n_cluster).
-- ‘lamb’ (ndarray): The skewness parameters for each cluster. Shape: (n_features, n_cluster).
-- ‘alpha’ (ndarray): The mixing proportions for each cluster. Shape: (n_cluster,).</p></li>
+<li><p><strong>params</strong> (<em>dict</em>) – <p>A dictionary containing the initial values for the model parameters.</p>
+<ul>
+<li><p>’mu’ (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).</p></li>
+<li><p>’sig’ (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).</p></li>
+<li><p>’nu’ (ndarray): The degrees of freedom for each cluster. Shape: (n_features, n_cluster).</p></li>
+<li><p>’lamb’ (ndarray): The skewness parameters for each cluster. Shape: (n_features, n_cluster).</p></li>
+<li><p>’alpha’ (ndarray): The mixing proportions for each cluster. Shape: (n_cluster,).</p></li>
+</ul>
+</p></li>
 <li><p><strong>X</strong> (<em>ndarray</em>) – The input data. Shape: (n_samples, n_features).</p></li>
 </ul>
 </dd>
@@ -665,49 +637,49 @@ float: The calculated value of g(nu).</p>
 <dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.initialisation_random">
 <span class="sig-name descname"><span class="pre">initialisation_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.initialisation_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.initialisation_random" title="Link to this definition">#</a></dt>
 <dd><p>Random initialization method for the SkewMM algorithm.</p>
-<p>Parameters:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>-</em>) – numpy array
+Input data array.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A dictionary containing the initialized parameters:</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt>X: numpy array</dt><dd><p>Input data array.</p>
+<dt>’mu’: numpy array</dt><dd><p>Matrix of means.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’sig’: numpy array</dt><dd><p>Matrix of covariances.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’nu’: numpy array</dt><dd><p>Matrix of degrees of freedom.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’lamb’: numpy array</dt><dd><p>Matrix of skewness parameters.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’alpha’: numpy array</dt><dd><p>Array of cluster proportions.</p>
 </dd>
 </dl>
 </li>
 </ul>
-<p>Returns:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt>dict:</dt><dd><p>A dictionary containing the initialized parameters:</p>
-<ul>
-<li><dl class="simple">
-<dt>‘mu’: numpy array</dt><dd><p>Matrix of means.</p>
+</p>
 </dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>‘sig’: numpy array</dt><dd><p>Matrix of covariances.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>‘nu’: numpy array</dt><dd><p>Matrix of degrees of freedom.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>‘lamb’: numpy array</dt><dd><p>Matrix of skewness parameters.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>‘alpha’: numpy array</dt><dd><p>Array of cluster proportions.</p>
-</dd>
-</dl>
-</li>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>dict</p></li>
 </ul>
+</p>
 </dd>
 </dl>
-</li>
-</ul>
 </dd></dl>
 
 <dl class="py method">
