@@ -30,6 +30,8 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_copybutton',
     'sphinx.ext.extlinks',
+    "sphinx_design",
+
 ]
 
 templates_path = ['_templates']

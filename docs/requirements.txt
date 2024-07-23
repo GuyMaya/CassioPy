@@ -80,6 +80,7 @@ snowballstemmer==2.2.0
     # via sphinx
 sphinx==7.4.7
     # via -r requirements.in
+sphinx-design==0.6.0
 sphinxcontrib-applehelp==1.0.8
     # via sphinx
 sphinxcontrib-devhelp==1.0.6
@@ -96,6 +97,8 @@ sphinxcontrib-serializinghtml==1.1.10
     # via sphinx
 sphinx-autodoc-typehints==1.12.0
     # via sphinx
+sphinx-hoverxref
+
 threadpoolctl==3.5.0
     # via scikit-learn
 tomli==2.0.1
