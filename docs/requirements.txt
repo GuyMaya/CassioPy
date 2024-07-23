@@ -94,6 +94,8 @@ sphinxcontrib-qthelp==1.0.8
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.10
     # via sphinx
+sphinx-autodoc-typehints==1.12.0
+    # via sphinx
 threadpoolctl==3.5.0
     # via scikit-learn
 tomli==2.0.1
