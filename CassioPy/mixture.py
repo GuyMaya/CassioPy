@@ -43,7 +43,7 @@ class SkewMixture:
     - alpha : array-like of shape (n_cluster)
         Weight of each cluster.
 
-    - n_iter_ : int
+    - n_iter : int
         Number of iterations performed.
 
     Examples:
