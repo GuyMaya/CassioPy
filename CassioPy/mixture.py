@@ -4,13 +4,9 @@ import scipy
 
 
 
-class skewmixturemodel:
+class SkewMixture:
     """
-    Skew-t Mixture Model.
-
-    Representation of a skew-t mixture model probability distribution.
-    This class allows to estimate the parameters of a mixture distribution
-    using an iterative method.
+    Skew-t Mixture Model for clustering.
 
     Parameters:
 
@@ -24,7 +20,7 @@ class skewmixturemodel:
         The convergence threshold. Iterations will stop when the
         improvement is below this threshold.
 
-    - init : {'random', 'params'}, default='random'
+    - init : {'random', 'kmeans', 'gmm', 'params'}, default='random'
         The method used to initialize the parameters.
         Must be one of:
         
@@ -53,9 +49,9 @@ class skewmixturemodel:
     Examples:
     
     >>> import numpy as np
-    >>> from MixtureModel import SkewMixtureModel
+    >>> from cassiopy.mixture import SkewMixture
     >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
-    >>> model = SkewMixtureModel(n_cluster=2, n_iter=100, tol=1e-4, init='random')
+    >>> model = SkewMixture(n_cluster=2, n_iter=100, tol=1e-4, init='random')
     >>> model.fit(X)
     >>> model.mu
     array([[10.,  2.],

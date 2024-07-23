@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>cassiopy.mixture.SkewMixture &#8212; cassiopy 0.0.1 documentation</title>
+    <title>cassiopy.stats.Skew.pdf &#8212; cassiopy 0.0.1 documentation</title>
   
   
   
@@ -41,11 +41,11 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'SkewMixtureModel';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stats.skew.pdf';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Module contents" href="ModuleContents.html" />
-    <link rel="prev" title="Mixture Model" href="MixtureModel.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="cassiopy.stats.Skew.generate" href="stats.skew.generate.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -337,14 +337,14 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="MixtureModel.html">cassiopy.mixturemodel</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">cassiopy.mixture.SkewMixture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="MixtureModel.html">cassiopy.mixturemodel</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="SkewMixtureModel.html">cassiopy.mixture.SkewMixture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ModuleContents.html">Module Contents</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="stats.html">cassiopy.stats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="stats.html">cassiopy.stats</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="stats.skew.generate.html">cassiopy.stats.skew.generate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stats.skew.pdf.html">cassiopy.stats.skew.pdf</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">cassiopy.stats.skew.pdf</a></li>
 </ul>
 </details></li>
 </ul>
@@ -388,9 +388,9 @@ document.write(`
     <li class="breadcrumb-item"><a href="API.html" class="nav-link">API</a></li>
     
     
-    <li class="breadcrumb-item"><a href="MixtureModel.html" class="nav-link">Mixture Model</a></li>
+    <li class="breadcrumb-item"><a href="stats.html" class="nav-link">stats</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">cassiopy.mix...</li>
+    <li class="breadcrumb-item active" aria-current="page">cassiopy.sta...</li>
   </ul>
 </nav>
 </div>
@@ -407,85 +407,53 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="cassiopy-mixture-skewmixture">
-<h1>cassiopy.mixture.SkewMixture<a class="headerlink" href="#cassiopy-mixture-skewmixture" title="Link to this heading">#</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code> class models a mixture of skew-t distributions. It provides various methods for working with skew-t distributed data, including generating samples and calculating densities.</p>
-<p><strong>cassiopy.mixture.</strong> <code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code> <strong>(n_cluster, n_iter=10, tol=1e-5, init=’random’ )</strong></p>
-<p id="module-cassiopy.mixture.SkewMixture">Skew-t Mixture Model for clustering.</p>
+  <section id="cassiopy-stats-skew-pdf">
+<h1>cassiopy.stats.Skew.pdf<a class="headerlink" href="#cassiopy-stats-skew-pdf" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">pdf</span></code> method calculates the probability density function of the skew-t distribution.</p>
+<p><strong>cassiopy.stats.Skew.</strong> <code class="docutils literal notranslate"><span class="pre">pdf</span></code></p>
+<p id="module-cassiopy.stats.Skew.pdf">Probability density fonction</p>
 <p>Parameters:</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt>n_cluster<span class="classifier">int</span></dt><dd><p>The number of mixture components (clusters).</p>
+<dt>x<span class="classifier">float</span></dt><dd><p>The input data.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>n_iter<span class="classifier">int, default=10</span></dt><dd><p>The number of iterations to perform during the parameter estimation.</p>
+<dt>mu<span class="classifier">float</span></dt><dd><p>The mean.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>tol<span class="classifier">float, default=1e-5</span></dt><dd><p>The convergence threshold. Iterations will stop when the
-improvement is below this threshold.</p>
+<dt>sigma<span class="classifier">float</span></dt><dd><p>The standard deviation.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>init<span class="classifier">{‘random’, ‘kmeans’, ‘gmm’, ‘params’}, default=’random’</span></dt><dd><p>The method used to initialize the parameters.
-Must be one of:</p>
-<ul>
-<li><p>‘random’: Parameters are initialized randomly.</p></li>
-<li><p>‘params’: User-provided parameters are used for initialization.</p></li>
-<li><p>‘kmeans’: Parameters are initialized using K-means.</p></li>
-<li><p>‘gmm’: Parameters are initialized using a Gaussian Mixture Model.</p></li>
-</ul>
+<dt>nu<span class="classifier">float</span></dt><dd><p>The degree of freedom.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>params<span class="classifier">dict, default=None</span></dt><dd><p>The user-provided initial parameters. Used only if <cite>init</cite> is ‘params’.</p>
+<dt>lamb<span class="classifier">float</span></dt><dd><p>The skewness.</p>
 </dd>
 </dl>
 </li>
 </ul>
-<p>Attributes:</p>
+<p>Returns:</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt>mu<span class="classifier">array-like of shape (n_dim, n_cluster)</span></dt><dd><p>Coordinates of cluster centers.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>sig<span class="classifier">array-like of shape (n_dim, n_cluster)</span></dt><dd><p>Covariance of each cluster.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>alpha<span class="classifier">array-like of shape (n_cluster)</span></dt><dd><p>Weight of each cluster.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><a href="#id1"><span class="problematic" id="id2">n_iter_</span></a><span class="classifier">int</span></dt><dd><p>Number of iterations performed.</p>
+<dt>proba<span class="classifier">float</span></dt><dd><p>The probability of the data.</p>
 </dd>
 </dl>
 </li>
 </ul>
-<p>Examples:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cassiopy.mixture</span> <span class="kn">import</span> <span class="n">SkewMixture</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">SkewMixture</span><span class="p">(</span><span class="n">n_cluster</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">mu</span>
-<span class="go">array([[10.,  2.],</span>
-<span class="go">       [ 1.,  2.]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
-<span class="go">array([1, 0])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
-<span class="go">array([[0.99999999, 0.        ],</span>
-<span class="go">       [0.        , 0.90        ]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;model.h5&#39;</span><span class="p">)</span>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cassiopy</span> <span class="kn">import</span> <span class="n">Skew</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">lamb</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
+<span class="go">0.3520653267642995</span>
 </pre></div>
 </div>
 </section>
@@ -501,20 +469,20 @@ Must be one of:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="MixtureModel.html"
+       href="stats.skew.generate.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Mixture Model</p>
+        <p class="prev-next-title">cassiopy.stats.Skew.generate</p>
       </div>
     </a>
     <a class="right-next"
-       href="ModuleContents.html"
+       href="glossary.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Module contents</p>
+        <p class="prev-next-title">Glossary</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -531,7 +499,7 @@ Must be one of:</p>
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/SkewMixtureModel.rst.txt">
+    <a href="_sources/stats.skew.pdf.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

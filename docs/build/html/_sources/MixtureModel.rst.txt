@@ -4,5 +4,5 @@ Mixture Model
 .. toctree::
    :maxdepth: 2
 
-   cassiopy.mixturemodel.skewmixturemodel <SkewMixtureModel>
+   cassiopy.mixture.SkewMixture <SkewMixtureModel>
    Module Contents <ModuleContents>

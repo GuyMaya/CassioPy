@@ -1,10 +1,11 @@
-.. _SkewMixtureModel:
+cassiopy.mixture.SkewMixture
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The ``SkewMixture`` class models a mixture of skew-t distributions. It provides various methods for working with skew-t distributed data, including generating samples and calculating densities.
 
-Skew Mixture Model
-==================
+**cassiopy.mixture.** ``SkewMixture`` **(n_cluster, n_iter=10, tol=1e-5, init='random' )**
 
-.. automodule:: mixturemodel.skewmixturemodel
+.. automodule:: cassiopy.mixture.SkewMixture
    :members:
    :undoc-members:
    :show-inheritance:
