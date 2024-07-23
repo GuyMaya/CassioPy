@@ -411,6 +411,51 @@ document.write(`
 <h1>cassiopy.stats.Skew.pdf<a class="headerlink" href="#cassiopy-stats-skew-pdf" title="Link to this heading">#</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">pdf</span></code> method calculates the probability density function of the skew-t distribution.</p>
 <p><strong>cassiopy.stats.Skew.</strong> <code class="docutils literal notranslate"><span class="pre">pdf</span></code></p>
+<p id="module-cassiopy.stats.Skew.pdf">Probability density fonction</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>x<span class="classifier">float</span></dt><dd><p>The input data.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mu<span class="classifier">float</span></dt><dd><p>The mean.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>sigma<span class="classifier">float</span></dt><dd><p>The standard deviation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>nu<span class="classifier">float</span></dt><dd><p>The degree of freedom.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>lamb<span class="classifier">float</span></dt><dd><p>The skewness.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>proba<span class="classifier">float</span></dt><dd><p>The probability of the data.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cassiopy</span> <span class="kn">import</span> <span class="n">Skew</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">lamb</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
+<span class="go">0.3520653267642995</span>
+</pre></div>
+</div>
 </section>
 
 

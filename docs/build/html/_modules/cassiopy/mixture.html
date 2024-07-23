@@ -451,14 +451,10 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fits the SkewMM model to the input data.</span>
 
-<span class="sd">        Parameters:</span>
-
-<span class="sd">        - X : array-like of shape (n_samples, n_features)</span>
-<span class="sd">            Input data. Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].</span>
-
-<span class="sd">        Raises:</span>
-
-<span class="sd">        - ValueError: If the initialization method is not recognized.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X : array-like </span>
+<span class="sd">            Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Implementation of the fit method</span>
@@ -586,30 +582,30 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Random initialization method for the SkewMM algorithm.</span>
 
-<span class="sd">        Args:</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like</span>
+<span class="sd">            Input data array.</span>
 
-<span class="sd">            - X: numpy array</span>
-<span class="sd">                Input data array.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict : dict</span>
+<span class="sd">            A dictionary containing the initialized parameters:</span>
 
-<span class="sd">        Returns:</span>
+<span class="sd">            - &#39;mu&#39;: numpy array</span>
+<span class="sd">                Matrix of means.</span>
 
-<span class="sd">            - dict:</span>
-<span class="sd">                A dictionary containing the initialized parameters:</span>
+<span class="sd">            - &#39;sig&#39;: numpy array</span>
+<span class="sd">                Matrix of covariances.</span>
 
-<span class="sd">                - &#39;mu&#39;: numpy array</span>
-<span class="sd">                    Matrix of means.</span>
+<span class="sd">            - &#39;nu&#39;: numpy array</span>
+<span class="sd">                Matrix of degrees of freedom.</span>
 
-<span class="sd">                - &#39;sig&#39;: numpy array</span>
-<span class="sd">                    Matrix of covariances.</span>
+<span class="sd">            - &#39;lamb&#39;: numpy array</span>
+<span class="sd">                Matrix of skewness parameters.</span>
 
-<span class="sd">                - &#39;nu&#39;: numpy array</span>
-<span class="sd">                    Matrix of degrees of freedom.</span>
-
-<span class="sd">                - &#39;lamb&#39;: numpy array</span>
-<span class="sd">                    Matrix of skewness parameters.</span>
-
-<span class="sd">                - &#39;alpha&#39;: numpy array</span>
-<span class="sd">                    Array of cluster proportions.</span>
+<span class="sd">            - &#39;alpha&#39;: numpy array</span>
+<span class="sd">                Array of cluster proportions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Implementation of the random initialization method</span>
         <span class="n">max_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -638,30 +634,28 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the parameters of the SkewMM model.</span>
 
-<span class="sd">        Args:</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        params : dict</span>
+<span class="sd">            A dictionary containing the initial values for the model parameters.</span>
 
-<span class="sd">            params (dict): A dictionary containing the initial values for the model parameters.</span>
+<span class="sd">            - &#39;mu&#39; : ndarray</span>
+<span class="sd">                The mean vectors for each cluster. Shape: (n_features, n_cluster).</span>
 
-<span class="sd">                - &#39;mu&#39; (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).</span>
+<span class="sd">            - &#39;sig&#39; : ndarray</span>
+<span class="sd">                The covariance matrices for each cluster. Shape: (n_features, n_cluster).</span>
 
-<span class="sd">                - &#39;sig&#39; (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).</span>
+<span class="sd">            - &#39;nu&#39; : ndarray</span>
+<span class="sd">                The degrees of freedom for each cluster. Shape: (n_features, n_cluster).</span>
 
-<span class="sd">                - &#39;nu&#39; (ndarray): The degrees of freedom for each cluster. Shape: (n_features, n_cluster).</span>
+<span class="sd">            - &#39;lamb&#39; : ndarray</span>
+<span class="sd">                The skewness parameters for each cluster. Shape: (n_features, n_cluster).</span>
 
-<span class="sd">                - &#39;lamb&#39; (ndarray): The skewness parameters for each cluster. Shape: (n_features, n_cluster).</span>
+<span class="sd">            - &#39;alpha&#39; : ndarray</span>
+<span class="sd">                The mixing proportions for each cluster. Shape: (n_cluster,).</span>
 
-<span class="sd">                - &#39;alpha&#39; (ndarray): The mixing proportions for each cluster. Shape: (n_cluster,).</span>
-
-<span class="sd">            X (ndarray): The input data. Shape: (n_samples, n_features).</span>
-
-<span class="sd">        Returns:</span>
-
-<span class="sd">            self: The updated instance of the SkewMM model.</span>
-
-<span class="sd">        Raises:</span>
-
-<span class="sd">            ValueError: If the shape of any parameter matrix does not match the expected shape.</span>
-
+<span class="sd">        X : ndarray</span>
+<span class="sd">            The input data. Shape: (n_samples, n_features).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cluster</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -702,23 +696,33 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes the parameters for the SkewMM algorithm using the K-means initialization method.</span>
 
-<span class="sd">        Args:</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like</span>
+<span class="sd">            The input data matrix of shape (n_samples, n_features).</span>
 
-<span class="sd">            - X: The input data matrix of shape (n_samples, n_features).</span>
+<span class="sd">        default_n_init : int, default=&#39;auto&#39;</span>
+<span class="sd">            The number of times the K-means algorithm will be run with different centroid seeds. Default is &#39;auto&#39;.</span>
 
-<span class="sd">            - default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is &#39;auto&#39;.</span>
-
-<span class="sd">        Returns:</span>
-
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict : dict</span>
 <span class="sd">            A dictionary containing the initialized parameters:</span>
-<span class="sd">            - mu: The cluster centers obtained from K-means.</span>
 
-<span class="sd">            - sig: The initial covariance matrix, initialized as an identity matrix.</span>
-<span class="sd">            - nu: The initial degrees of freedom.</span>
+<span class="sd">            - &#39;mu&#39;: numpy array</span>
+<span class="sd">                Matrix of means.</span>
 
-<span class="sd">            - lamb: The initial skewness parameters.</span>
+<span class="sd">            - &#39;sig&#39;: numpy array</span>
+<span class="sd">                Matrix of covariances.</span>
 
-<span class="sd">            - alpha: The initial cluster proportions.</span>
+<span class="sd">            - &#39;nu&#39;: numpy array</span>
+<span class="sd">                Matrix of degrees of freedom.</span>
+
+<span class="sd">            - &#39;lamb&#39;: numpy array</span>
+<span class="sd">                Matrix of skewness parameters.</span>
+
+<span class="sd">            - &#39;alpha&#39;: numpy array</span>
+<span class="sd">                Array of cluster proportions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
 
@@ -755,31 +759,30 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the parameters for the Gaussian Mixture Model (GMM).</span>
 
-<span class="sd">        Parameters:</span>
-
-<span class="sd">        - X: numpy array</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like</span>
 <span class="sd">            Input data matrix of shape (n_samples, n_features).</span>
 
-<span class="sd">        Returns:</span>
-
-<span class="sd">        - dict</span>
-<span class="sd">            A dictionary containing the initialized parameters for the GMM:</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict : dict</span>
+<span class="sd">            A dictionary containing the initialized parameters:</span>
 
 <span class="sd">            - &#39;mu&#39;: numpy array</span>
-<span class="sd">                Initial means of the GMM components, of shape (n_features, n_components).</span>
+<span class="sd">                Matrix of means.</span>
 
 <span class="sd">            - &#39;sig&#39;: numpy array</span>
-<span class="sd">                Initial covariance matrices of the GMM components, of shape (n_features, n_features, n_components).</span>
+<span class="sd">                Matrix of covariances.</span>
 
 <span class="sd">            - &#39;nu&#39;: numpy array</span>
-<span class="sd">                Initial degrees of freedom for the GMM components, of shape (n_features, n_components).</span>
+<span class="sd">                Matrix of degrees of freedom.</span>
 
 <span class="sd">            - &#39;lamb&#39;: numpy array</span>
-<span class="sd">                Initial lambda values for the GMM components, of shape (n_features, n_components).</span>
+<span class="sd">                Matrix of skewness parameters.</span>
 
 <span class="sd">            - &#39;alpha&#39;: numpy array</span>
-<span class="sd">                Initial proportions of the GMM components, of shape (n_components,).</span>
-
+<span class="sd">                Array of cluster proportions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">sklearn.mixture</span> <span class="kn">import</span> <span class="n">GaussianMixture</span>
 
@@ -816,12 +819,13 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the value of g(nu) for a given x and nu.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        x (float): The input value.</span>
-<span class="sd">        nu (float): The parameter value.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">        float: The calculated value of g(nu).</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : float</span>
+<span class="sd">            The input value.</span>
+<span class="sd">        </span>
+<span class="sd">        nu : float</span>
+<span class="sd">            The parameter value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">digamma</span><span class="p">((</span><span class="n">nu</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">B</span> <span class="o">=</span> <span class="o">-</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">digamma</span><span class="p">((</span><span class="n">nu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -835,26 +839,26 @@ document.write(`
     <span class="k">def</span> <span class="nf">skew_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">lamb</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;probability density fonction of the skew t</span>
 
-<span class="sd">        Parameters:</span>
-
-<span class="sd">        - x : float</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : float</span>
 <span class="sd">            The input data.</span>
 
-<span class="sd">        - mu : float</span>
+<span class="sd">        mu : float</span>
 <span class="sd">            The mean of the cluster.</span>
 
-<span class="sd">        - sigma : float</span>
+<span class="sd">        sigma : float</span>
 <span class="sd">            The standard deviation of the cluster.</span>
 
-<span class="sd">        - nu : float</span>
+<span class="sd">        nu : float</span>
 <span class="sd">            The degree of freedom of the cluster.</span>
 
-<span class="sd">        - lamb : float</span>
+<span class="sd">        lamb : float</span>
 <span class="sd">            The skewness of the cluster.</span>
 
-<span class="sd">        Returns:</span>
-
-<span class="sd">        - proba : float</span>
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">        proba : float</span>
 <span class="sd">            The probability of the data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span>
@@ -870,15 +874,15 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the probability density function (PDF) for each data point in x.</span>
 
-<span class="sd">        Parameters:</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : array-like</span>
+<span class="sd">            Shape : (n_samples, n_features). The input data points.</span>
 
-<span class="sd">        - x: numpy array of shape (n_samples, n_features)</span>
-<span class="sd">            The input data points.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">        </span>
-<span class="sd">        - p: numpy array of shape (n_samples, n_cluster)</span>
-<span class="sd">            The PDF values for each data point in x.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p : array-like </span>
+<span class="sd">            Shape : (n_samples, n_cluster). The PDF values for each data point in x.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cluster</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -1007,11 +1011,15 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the log-likelihood of the model.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - x: Input parameter (not used in the calculation)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : array-like</span>
+<span class="sd">            Input parameter (not used in the calculation)</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - LL: Log-likelihood value</span>
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">        LL : float </span>
+<span class="sd">            Log-likelihood value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">LL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
@@ -1024,14 +1032,21 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calcul of the function h for the update of lambda.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - y (float): The input parameter.</span>
-<span class="sd">        - X (array-like): The input data.</span>
-<span class="sd">        - k (int): The cluster index.</span>
-<span class="sd">        - j (int): The feature index.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        y : float</span>
+<span class="sd">            The input parameter.</span>
+<span class="sd">        X : array-like</span>
+<span class="sd">            The input data.</span>
+<span class="sd">        k : int</span>
+<span class="sd">            The cluster index.</span>
+<span class="sd">        j : int</span>
+<span class="sd">            The feature index.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - result (float): The result of the function h.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : float</span>
+<span class="sd">            The result of the function h.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">delta</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -1058,13 +1073,21 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calcul of the function i for the update of nu.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - y (float): The input parameter.</span>
-<span class="sd">        - k (int): The cluster index.</span>
-<span class="sd">        - j (int): The feature index.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        y : float</span>
+<span class="sd">            The input parameter.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - result (float): The result of the function i.</span>
+<span class="sd">        k : int</span>
+<span class="sd">            The cluster index.</span>
+<span class="sd">        </span>
+<span class="sd">        j : int</span>
+<span class="sd">            The feature index.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------</span>
+<span class="sd">        result : float</span>
+<span class="sd">            The result of the function i.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">term1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -1084,8 +1107,10 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calcul new parameters of the model.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - X (array-like): The input data.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like</span>
+<span class="sd">            The input data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
         <span class="kn">import</span> <span class="nn">warnings</span>
@@ -1162,11 +1187,15 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the posterior probabilities of the data belonging to each cluster.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - X (array-like): The input data.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like</span>
+<span class="sd">            The input data.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - proba (array-like): The posterior probabilities.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        proba : array-like</span>
+<span class="sd">            The posterior probabilities.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Implementation of the predict_proba method</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -1182,11 +1211,15 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the cluster labels for the data.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - X (array-like): The input data.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like</span>
+<span class="sd">            The input data.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - labels (array-like): The predicted cluster labels.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : array-like</span>
+<span class="sd">            The predicted cluster labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Implementation of the predict method</span>
         <span class="n">proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -1202,12 +1235,18 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the confusion matrix.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - y_true (array-like): The true labels.</span>
-<span class="sd">        - y_pred (array-like): The predicted labels.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        y_true : array-like</span>
+<span class="sd">            The true labels.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - matrix (DataFrame): The confusion matrix.</span>
+<span class="sd">        y_pred : array-like, default=None</span>
+<span class="sd">            The predicted labels.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matrix : DataFrame</span>
+<span class="sd">            The confusion matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -1243,11 +1282,18 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the accuracy of the model.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - y (array-like): The true labels.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : array-like</span>
+<span class="sd">            The input data.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        - acc (float): The accuracy.</span>
+<span class="sd">        y : array-like</span>
+<span class="sd">            The true labels.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        acc : float</span>
+<span class="sd">            The accuracy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">adjusted_rand_score</span>
 
@@ -1262,8 +1308,10 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the model to a file.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        - filename (str): The name of the file.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The name of the file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">h5py</span>
 
@@ -1293,11 +1341,10 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load matrices from a given file.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        filename (str): The path to the file containing the matrices.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">        None</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The path to the file containing the matrices.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">h5py</span>
 

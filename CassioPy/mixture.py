@@ -66,14 +66,10 @@ class SkewMixture:
         """
         Fits the SkewMM model to the input data.
 
-        Parameters:
-
-        - X : array-like of shape (n_samples, n_features)
-            Input data. Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
-
-        Raises:
-
-        - ValueError: If the initialization method is not recognized.
+        Parameters
+        -----------
+        X : array-like 
+            Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
         """
 
         # Implementation of the fit method
@@ -198,30 +194,30 @@ class SkewMixture:
         """
         Random initialization method for the SkewMM algorithm.
 
-        Args:
+        Parameters
+        ----------
+        X : array-like
+            Input data array.
 
-            - X: numpy array
-                Input data array.
+        Returns
+        -------
+        dict : dict
+            A dictionary containing the initialized parameters:
 
-        Returns:
+            - 'mu': numpy array
+                Matrix of means.
 
-            - dict:
-                A dictionary containing the initialized parameters:
+            - 'sig': numpy array
+                Matrix of covariances.
 
-                - 'mu': numpy array
-                    Matrix of means.
+            - 'nu': numpy array
+                Matrix of degrees of freedom.
 
-                - 'sig': numpy array
-                    Matrix of covariances.
+            - 'lamb': numpy array
+                Matrix of skewness parameters.
 
-                - 'nu': numpy array
-                    Matrix of degrees of freedom.
-
-                - 'lamb': numpy array
-                    Matrix of skewness parameters.
-
-                - 'alpha': numpy array
-                    Array of cluster proportions.
+            - 'alpha': numpy array
+                Array of cluster proportions.
         """
         # Implementation of the random initialization method
         max_x = np.max(X, axis=0)[:, np.newaxis] if X.ndim > 1 else np.max(X)
@@ -247,30 +243,28 @@ class SkewMixture:
         """
         Initialize the parameters of the SkewMM model.
 
-        Args:
+        Parameters
+        -----------
+        params : dict
+            A dictionary containing the initial values for the model parameters.
 
-            params (dict): A dictionary containing the initial values for the model parameters.
+            - 'mu' : ndarray
+                The mean vectors for each cluster. Shape: (n_features, n_cluster).
 
-                - 'mu' (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).
+            - 'sig' : ndarray
+                The covariance matrices for each cluster. Shape: (n_features, n_cluster).
 
-                - 'sig' (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).
+            - 'nu' : ndarray
+                The degrees of freedom for each cluster. Shape: (n_features, n_cluster).
 
-                - 'nu' (ndarray): The degrees of freedom for each cluster. Shape: (n_features, n_cluster).
+            - 'lamb' : ndarray
+                The skewness parameters for each cluster. Shape: (n_features, n_cluster).
 
-                - 'lamb' (ndarray): The skewness parameters for each cluster. Shape: (n_features, n_cluster).
+            - 'alpha' : ndarray
+                The mixing proportions for each cluster. Shape: (n_cluster,).
 
-                - 'alpha' (ndarray): The mixing proportions for each cluster. Shape: (n_cluster,).
-
-            X (ndarray): The input data. Shape: (n_samples, n_features).
-
-        Returns:
-
-            self: The updated instance of the SkewMM model.
-
-        Raises:
-
-            ValueError: If the shape of any parameter matrix does not match the expected shape.
-
+        X : ndarray
+            The input data. Shape: (n_samples, n_features).
         """
         if params["mu"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
@@ -308,23 +302,33 @@ class SkewMixture:
         """
         Initializes the parameters for the SkewMM algorithm using the K-means initialization method.
 
-        Args:
+        Parameters
+        ----------
+        X : array-like
+            The input data matrix of shape (n_samples, n_features).
 
-            - X: The input data matrix of shape (n_samples, n_features).
+        default_n_init : int, default='auto'
+            The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
 
-            - default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
-
-        Returns:
-
+        Returns
+        -------
+        dict : dict
             A dictionary containing the initialized parameters:
-            - mu: The cluster centers obtained from K-means.
 
-            - sig: The initial covariance matrix, initialized as an identity matrix.
-            - nu: The initial degrees of freedom.
+            - 'mu': numpy array
+                Matrix of means.
 
-            - lamb: The initial skewness parameters.
+            - 'sig': numpy array
+                Matrix of covariances.
 
-            - alpha: The initial cluster proportions.
+            - 'nu': numpy array
+                Matrix of degrees of freedom.
+
+            - 'lamb': numpy array
+                Matrix of skewness parameters.
+
+            - 'alpha': numpy array
+                Array of cluster proportions.
         """
         from sklearn.cluster import KMeans
 
@@ -358,31 +362,30 @@ class SkewMixture:
         """
         Initialize the parameters for the Gaussian Mixture Model (GMM).
 
-        Parameters:
-
-        - X: numpy array
+        Parameters
+        ----------
+        X : array-like
             Input data matrix of shape (n_samples, n_features).
 
-        Returns:
-
-        - dict
-            A dictionary containing the initialized parameters for the GMM:
+        Returns
+        -------
+        dict : dict
+            A dictionary containing the initialized parameters:
 
             - 'mu': numpy array
-                Initial means of the GMM components, of shape (n_features, n_components).
+                Matrix of means.
 
             - 'sig': numpy array
-                Initial covariance matrices of the GMM components, of shape (n_features, n_features, n_components).
+                Matrix of covariances.
 
             - 'nu': numpy array
-                Initial degrees of freedom for the GMM components, of shape (n_features, n_components).
+                Matrix of degrees of freedom.
 
             - 'lamb': numpy array
-                Initial lambda values for the GMM components, of shape (n_features, n_components).
+                Matrix of skewness parameters.
 
             - 'alpha': numpy array
-                Initial proportions of the GMM components, of shape (n_components,).
-
+                Array of cluster proportions.
         """
         from sklearn.mixture import GaussianMixture
 
@@ -416,12 +419,13 @@ class SkewMixture:
         """
         Calculate the value of g(nu) for a given x and nu.
 
-        Parameters:
-        x (float): The input value.
-        nu (float): The parameter value.
-
-        Returns:
-        float: The calculated value of g(nu).
+        Parameters
+        ----------
+        x : float
+            The input value.
+        
+        nu : float
+            The parameter value.
         """
         A = scipy.special.digamma((nu + 2) / 2)
         B = -scipy.special.digamma((nu + 1) / 2)
@@ -432,26 +436,26 @@ class SkewMixture:
     def skew_t(self, x, mu, sigma, nu, lamb):
         """probability density fonction of the skew t
 
-        Parameters:
-
-        - x : float
+        Parameters
+        ----------
+        x : float
             The input data.
 
-        - mu : float
+        mu : float
             The mean of the cluster.
 
-        - sigma : float
+        sigma : float
             The standard deviation of the cluster.
 
-        - nu : float
+        nu : float
             The degree of freedom of the cluster.
 
-        - lamb : float
+        lamb : float
             The skewness of the cluster.
 
-        Returns:
-
-        - proba : float
+        Returns
+        --------
+        proba : float
             The probability of the data.
         """
         eta = (x - mu) / sigma
@@ -464,15 +468,15 @@ class SkewMixture:
         """
         Calculates the probability density function (PDF) for each data point in x.
 
-        Parameters:
+        Parameters
+        ----------
+        x : array-like
+            Shape : (n_samples, n_features). The input data points.
 
-        - x: numpy array of shape (n_samples, n_features)
-            The input data points.
-
-        Returns:
-        
-        - p: numpy array of shape (n_samples, n_cluster)
-            The PDF values for each data point in x.
+        Returns
+        -------
+        p : array-like 
+            Shape : (n_samples, n_cluster). The PDF values for each data point in x.
         """
         p = np.zeros((x.shape[0], self.n_cluster))
         for index, value in enumerate(x):
@@ -595,11 +599,15 @@ class SkewMixture:
         """
         Calculate the log-likelihood of the model.
 
-        Parameters:
-        - x: Input parameter (not used in the calculation)
+        Parameters
+        ----------
+        x : array-like
+            Input parameter (not used in the calculation)
 
-        Returns:
-        - LL: Log-likelihood value
+        Returns
+        --------
+        LL : float 
+            Log-likelihood value
         """
         LL = np.sum(np.log(np.sum(self.p, axis=(1))), axis=0)
 
@@ -609,14 +617,21 @@ class SkewMixture:
         """
         Calcul of the function h for the update of lambda.
 
-        Parameters:
-        - y (float): The input parameter.
-        - X (array-like): The input data.
-        - k (int): The cluster index.
-        - j (int): The feature index.
+        Parameters
+        ----------
+        y : float
+            The input parameter.
+        X : array-like
+            The input data.
+        k : int
+            The cluster index.
+        j : int
+            The feature index.
 
-        Returns:
-        - result (float): The result of the function h.
+        Returns
+        -------
+        result : float
+            The result of the function h.
         """
 
         delta = y / np.sqrt(1 + y**2)
@@ -640,13 +655,21 @@ class SkewMixture:
         """
         Calcul of the function i for the update of nu.
 
-        Parameters:
-        - y (float): The input parameter.
-        - k (int): The cluster index.
-        - j (int): The feature index.
+        Parameters
+        ----------
+        y : float
+            The input parameter.
 
-        Returns:
-        - result (float): The result of the function i.
+        k : int
+            The cluster index.
+        
+        j : int
+            The feature index.
+
+        Returns
+        ---------
+        result : float
+            The result of the function i.
         """
 
         term1 = np.log(y / 2)
@@ -663,8 +686,10 @@ class SkewMixture:
         """
         Calcul new parameters of the model.
 
-        Parameters:
-        - X (array-like): The input data.
+        Parameters
+        ----------
+        X : array-like
+            The input data.
         """
         from joblib import Parallel, delayed
         import warnings
@@ -738,11 +763,15 @@ class SkewMixture:
         """
         Predict the posterior probabilities of the data belonging to each cluster.
 
-        Parameters:
-        - X (array-like): The input data.
+        Parameters
+        ----------
+        X : array-like
+            The input data.
 
-        Returns:
-        - proba (array-like): The posterior probabilities.
+        Returns
+        -------
+        proba : array-like
+            The posterior probabilities.
         """
         # Implementation of the predict_proba method
         p = self.phi(X)
@@ -755,11 +784,15 @@ class SkewMixture:
         """
         Predict the cluster labels for the data.
 
-        Parameters:
-        - X (array-like): The input data.
+        Parameters
+        ----------
+        X : array-like
+            The input data.
 
-        Returns:
-        - labels (array-like): The predicted cluster labels.
+        Returns
+        -------
+        labels : array-like
+            The predicted cluster labels.
         """
         # Implementation of the predict method
         proba = self.predict_proba(X)
@@ -772,12 +805,18 @@ class SkewMixture:
         """
         Calculate the confusion matrix.
 
-        Parameters:
-        - y_true (array-like): The true labels.
-        - y_pred (array-like): The predicted labels.
+        Parameters
+        ----------
+        y_true : array-like
+            The true labels.
 
-        Returns:
-        - matrix (DataFrame): The confusion matrix.
+        y_pred : array-like, default=None
+            The predicted labels.
+
+        Returns
+        -------
+        matrix : DataFrame
+            The confusion matrix.
         """
         import pandas as pd
 
@@ -810,11 +849,18 @@ class SkewMixture:
         """
         Compute the accuracy of the model.
 
-        Parameters:
-        - y (array-like): The true labels.
+        Parameters
+        ----------
+        x : array-like
+            The input data.
 
-        Returns:
-        - acc (float): The accuracy.
+        y : array-like
+            The true labels.
+
+        Returns
+        -------
+        acc : float
+            The accuracy.
         """
         from sklearn.metrics import adjusted_rand_score
 
@@ -826,8 +872,10 @@ class SkewMixture:
         """
         Save the model to a file.
 
-        Parameters:
-        - filename (str): The name of the file.
+        Parameters
+        ----------
+        filename : str
+            The name of the file.
         """
         import h5py
 
@@ -854,11 +902,10 @@ class SkewMixture:
         """
         Load matrices from a given file.
 
-        Parameters:
-        filename (str): The path to the file containing the matrices.
-
-        Returns:
-        None
+        Parameters
+        ----------
+        filename : str
+            The path to the file containing the matrices.
         """
         import h5py
 
