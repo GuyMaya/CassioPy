@@ -20,9 +20,10 @@ scikit-learn = ">=1.5.1"
 
 [tool.poetry.extras]
 docs = [
-  "sphinx-book-theme",
-  "sphinx",
-  "sphinx-copybutton",
+  "pydata-sphinx-theme>=0.15.3",
+  "sphinx>=7.3.7",
+  "sphinx-copybutton>=0.5.2",
+  "sphinx-gallery>=0.16.0",
   "sphinx-hoverxref",
   "sphinx-redactor-theme",
   "spinx_design"
