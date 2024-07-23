@@ -3,7 +3,6 @@ import os
 import scipy
 
 
-
 class SkewMixture:
     """
     Skew-t Mixture Model for clustering.
@@ -12,7 +11,7 @@ class SkewMixture:
 
     - n_cluster : int
         The number of mixture components (clusters).
-        
+
     - n_iter : int, default=10
         The number of iterations to perform during the parameter estimation.
 
@@ -23,7 +22,7 @@ class SkewMixture:
     - init : {'random', 'kmeans', 'gmm', 'params'}, default='random'
         The method used to initialize the parameters.
         Must be one of:
-        
+
         - 'random': Parameters are initialized randomly.
         - 'params': User-provided parameters are used for initialization.
         - 'kmeans': Parameters are initialized using K-means.
@@ -47,7 +46,7 @@ class SkewMixture:
         Number of iterations performed.
 
     Examples:
-    
+
     >>> import numpy as np
     >>> from cassiopy.mixture import SkewMixture
     >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
@@ -64,15 +63,17 @@ class SkewMixture:
     >>> model.save('model.h5')
     """
 
-    def __init__(self, n_cluster:int, n_iter=10, tol=1e-8, init='gmm', params=None, n_init_gmm=8):
+    def __init__(
+        self, n_cluster: int, n_iter=10, tol=1e-8, init="gmm", params=None, n_init_gmm=8
+    ):
         self.n_cluster = n_cluster
         self.n_iter = n_iter
         self.tol = tol
         self.init_method = init
-        if self.init_method == 'params':
+        if self.init_method == "params":
             self.params = params
 
-        if self.init_method == 'gmm':
+        if self.init_method == "gmm":
             self.n_init_gmm = n_init_gmm
 
     def fit(self, X):
@@ -80,40 +81,39 @@ class SkewMixture:
         Fits the SkewMM model to the input data.
 
         Parameters:
+
         - X : array-like of shape (n_samples, n_features)
             Input data. Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
 
-        Returns:
-        - self : SkewMM
-            The fitted SkewMM model.
-
         Raises:
-        - ValueError: If the initialization method is not recognized.
 
+        - ValueError: If the initialization method is not recognized.
         """
 
         # Implementation of the fit method
-        if self.init_method == 'random':
+        if self.init_method == "random":
             best_params = self.initialisation_random(X)
             self.initialisation_params(best_params, X)
 
-        elif self.init_method == 'kmeans':
+        elif self.init_method == "kmeans":
             best_params = self.initialisation_kmeans(X)
             self.initialisation_params(best_params, X)
 
-        elif self.init_method == 'params':
+        elif self.init_method == "params":
             self.initialisation_params(self.params, X)
 
-        elif self.init_method == 'gmm':
+        elif self.init_method == "gmm":
             best_params = None
             best_LL = -np.inf
 
-            params_to_test = [self.initialisation_gmm(X) for _ in range(self.n_init_gmm)]
+            params_to_test = [
+                self.initialisation_gmm(X) for _ in range(self.n_init_gmm)
+            ]
 
             # Test each set of parameters and keep the best one
             for params in params_to_test:
                 self.initialisation_params(params, X)
-                self.p = self.phi(X)  
+                self.p = self.phi(X)
                 LL = self.LL(X)
                 if LL > best_LL:
                     best_LL = LL
@@ -122,7 +122,7 @@ class SkewMixture:
             # Apply the best parameters found
             self.initialisation_params(best_params, X)
 
-        elif self.init_method == 'likelihood':
+        elif self.init_method == "likelihood":
             param_random = self.initialisation_random(X)
             LLN_random = self.E_step(X)
             param_gmm = self.initialisation_gmm(X)
@@ -130,37 +130,39 @@ class SkewMixture:
 
             if LLN_random > LLN_gmm:
                 self.initialisation_params(param_random, X)
-                print('initialization random')
+                print("initialization random")
             else:
                 self.initialisation_params(param_gmm, X)
-                print('initialization gmm')
+                print("initialization gmm")
         else:
-            raise ValueError(f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'")
+            raise ValueError(
+                f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'"
+            )
 
-        print('initialization method :', self.init_method)
+        print("initialization method :", self.init_method)
 
         self.E_log_likelihood = [-np.inf]
 
-        self.save('track_0')
+        self.save("track_0")
 
-        i=0
+        i = 0
 
-        while i<self.n_iter+1:
-            print(f'iteration: {i}/{self.n_iter}')
-            
+        while i < self.n_iter + 1:
+            print(f"iteration: {i}/{self.n_iter}")
+
             self.E_step(X)
             E_log_likelihood_new = self.LL(X)
 
             if np.abs(E_log_likelihood_new - self.E_log_likelihood[i]) <= self.tol:
-                if i <2:
-                    print('reinitialization not enough iteration')
+                if i < 2:
+                    print("reinitialization not enough iteration")
                     return self.fit(X)
                 else:
                     break
 
             if E_log_likelihood_new < self.E_log_likelihood[i]:
-                if i <2:
-                    print('reinitialization not enough iteration')
+                if i < 2:
+                    print("reinitialization not enough iteration")
                     return self.fit(X)
                 else:
                     break
@@ -169,63 +171,69 @@ class SkewMixture:
             self.M_step(X)
 
             if np.any(np.isnan(self.sig)):
-                if i <2:
-                    print('reinitialization : sig nan')
+                if i < 2:
+                    print("reinitialization : sig nan")
                     return self.fit(X)
                 else:
-                    self.load(f'Models_folder/track_{i-1}.h5')
-                    self.n_iter = i-1
+                    self.load(f"Models_folder/track_{i-1}.h5")
+                    self.n_iter = i - 1
                     break
 
-            if np.any(self.nu<0):
-                if i<2:
-                    print('reinitialization : nu <0')
+            if np.any(self.nu < 0):
+                if i < 2:
+                    print("reinitialization : nu <0")
                     return self.fit(X)
                 else:
-                    self.load(f'Models_folder/track_{i-1}.h5')
-                    self.n_iter = i-1
+                    self.load(f"Models_folder/track_{i-1}.h5")
+                    self.n_iter = i - 1
                     break
 
-            if np.any(np.diagonal(self.sig, axis1=0, axis2=1)<0):
-                if i<2:
+            if np.any(np.diagonal(self.sig, axis1=0, axis2=1) < 0):
+                if i < 2:
                     np.diagonal(self.sig, axis1=0, axis2=1)
 
-                    print('sig', self.sig)
+                    print("sig", self.sig)
 
-                    print('eig:',np.diagonal(self.sig, axis1=0, axis2=1))
-                    print('reinitialization : negative equity')
+                    print("eig:", np.diagonal(self.sig, axis1=0, axis2=1))
+                    print("reinitialization : negative equity")
                     return self.fit(X)
                 else:
-                    model = self.load(f'Models_folder/track_{i-1}.h5')
-                    self.n_iter = i-1
+                    model = self.load(f"Models_folder/track_{i-1}.h5")
+                    self.n_iter = i - 1
                     break
-            
-            self.save(f'track_{i}')
 
-            i+=1
+            self.save(f"track_{i}")
+
+            i += 1
 
         return self
-
 
     def initialisation_random(self, X):
         """
         Random initialization method for the SkewMM algorithm.
 
         Parameters:
+
         - X: numpy array
             Input data array.
 
         Returns:
+
         - dict:
             A dictionary containing the initialized parameters:
+
             - 'mu': numpy array
                 Matrix of means.
+
             - 'sig': numpy array
                 Matrix of covariances.
+
             - 'nu': numpy array
                 Matrix of degrees of freedom.
+
             - 'lamb': numpy array
                 Matrix of skewness parameters.
+
             - 'alpha': numpy array
                 Array of cluster proportions.
         """
@@ -233,7 +241,7 @@ class SkewMixture:
         max_x = np.max(X, axis=0)[:, np.newaxis] if X.ndim > 1 else np.max(X)
 
         # initialization of the average matrix
-        mu = np.random.rand(X.shape[1], self.n_cluster)*max_x 
+        mu = np.random.rand(X.shape[1], self.n_cluster) * max_x
 
         # initialization of the covariance matrix
         sig = np.ones((X.shape[1], self.n_cluster))
@@ -242,19 +250,19 @@ class SkewMixture:
         nu = np.random.rand(X.shape[1], self.n_cluster)
 
         # initialization of the skewness parameter
-        lamb = np.random.uniform(low=1e-6, high=5., size=(X.shape[1], self.n_cluster))
+        lamb = np.random.uniform(low=1e-6, high=5.0, size=(X.shape[1], self.n_cluster))
 
         # initialization of the prior, proportion of data in cluster k
-        alpha = np.random.rand( self.n_cluster)
+        alpha = np.random.rand(self.n_cluster)
 
-        return {'mu': mu, 'sig': sig, 'nu': nu, 'lamb': lamb, 'alpha': alpha}
-
+        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def initialisation_params(self, params, X):
         """
         Initialize the parameters of the SkewMM model.
 
         Args:
+
             params (dict): A dictionary containing the initial values for the model parameters.
                 - 'mu' (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).
                 - 'sig' (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).
@@ -264,56 +272,71 @@ class SkewMixture:
             X (ndarray): The input data. Shape: (n_samples, n_features).
 
         Returns:
+
             self: The updated instance of the SkewMM model.
 
         Raises:
+
             ValueError: If the shape of any parameter matrix does not match the expected shape.
 
         """
-        if params['mu'].shape != (X.shape[1], self.n_cluster):
-            raise ValueError(f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['mu'].shape}")
-        self.mu = np.array(params['mu'], dtype=float)
+        if params["mu"].shape != (X.shape[1], self.n_cluster):
+            raise ValueError(
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['mu'].shape}"
+            )
+        self.mu = np.array(params["mu"], dtype=float)
 
-        if params['sig'].shape != (X.shape[1],  self.n_cluster):
-            raise ValueError(f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['sig'].shape}")
-        self.sig = np.array(params['sig'], dtype=float)
+        if params["sig"].shape != (X.shape[1], self.n_cluster):
+            raise ValueError(
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['sig'].shape}"
+            )
+        self.sig = np.array(params["sig"], dtype=float)
 
-        if params['nu'].shape != (X.shape[1], self.n_cluster):
-            raise ValueError(f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['nu'].shape}")
-        self.nu = np.array(params['nu'], dtype=float)
+        if params["nu"].shape != (X.shape[1], self.n_cluster):
+            raise ValueError(
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['nu'].shape}"
+            )
+        self.nu = np.array(params["nu"], dtype=float)
 
-        if params['lamb'].shape != (X.shape[1], self.n_cluster):
-            raise ValueError(f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['lamb'].shape}")
-        self.lamb = np.array(params['lamb'], dtype=float)
+        if params["lamb"].shape != (X.shape[1], self.n_cluster):
+            raise ValueError(
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['lamb'].shape}"
+            )
+        self.lamb = np.array(params["lamb"], dtype=float)
 
-        if params['alpha'].shape != (self.n_cluster,):
-            raise ValueError(f"Error: The size of the matrix must be {(self.n_cluster)}, but it is {params['alpha'].shape}")
-        self.alpha = np.array(params['alpha'], dtype=float)
+        if params["alpha"].shape != (self.n_cluster,):
+            raise ValueError(
+                f"Error: The size of the matrix must be {(self.n_cluster)}, but it is {params['alpha'].shape}"
+            )
+        self.alpha = np.array(params["alpha"], dtype=float)
 
         return self
 
-    def initialisation_kmeans(self, X, default_n_init='auto'):
+    def initialisation_kmeans(self, X, default_n_init="auto"):
         """
         Initializes the parameters for the SkewMM algorithm using the K-means initialization method.
 
         Parameters:
+
         - X: The input data matrix of shape (n_samples, n_features).
         - default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
 
         Returns:
+
         A dictionary containing the initialized parameters:
         - mu: The cluster centers obtained from K-means.
         - sig: The initial covariance matrix, initialized as an identity matrix.
         - nu: The initial degrees of freedom.
         - lamb: The initial skewness parameters.
         - alpha: The initial cluster proportions.
-
         """
         from sklearn.cluster import KMeans
 
         # Implementation of the K-means initialization method
         # Use KMeans to get the cluster centers
-        kmeans = KMeans(n_clusters=self.n_cluster, n_init=20) # pas de cluster pour le bruit
+        kmeans = KMeans(
+            n_clusters=self.n_cluster, n_init=20
+        )  # pas de cluster pour le bruit
         kmeans.fit(X)
         cluster_centers = kmeans.cluster_centers_
 
@@ -325,42 +348,55 @@ class SkewMixture:
 
         # Initializations of the degree of freedom
         nu = np.random.rand(X.shape[1], self.n_cluster)
-        
+
         # Initializations of the skewness parameter
-        lamb = np.random.uniform(low=1e-6, high=10., size=(X.shape[1], self.n_cluster))
+        lamb = np.random.uniform(low=1e-6, high=10.0, size=(X.shape[1], self.n_cluster))
 
         # Initializations of the prior, proportion of data in cluster k
-        alpha = np.random.rand( self.n_cluster)
-        self.alpha = self.alpha/ np.sum(self.alpha)
+        alpha = np.random.rand(self.n_cluster)
+        self.alpha = self.alpha / np.sum(self.alpha)
 
-        return {'mu': mu, 'sig': sig, 'nu': nu, 'lamb': lamb, 'alpha': alpha}
+        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def initialisation_gmm(self, X):
         """
         Initialize the parameters for the Gaussian Mixture Model (GMM).
 
         Parameters:
+
         - X: numpy array
             Input data matrix of shape (n_samples, n_features).
 
         Returns:
+
         - dict
             A dictionary containing the initialized parameters for the GMM:
+
             - 'mu': numpy array
                 Initial means of the GMM components, of shape (n_features, n_components).
+
             - 'sig': numpy array
                 Initial covariance matrices of the GMM components, of shape (n_features, n_features, n_components).
+
             - 'nu': numpy array
                 Initial degrees of freedom for the GMM components, of shape (n_features, n_components).
+
             - 'lamb': numpy array
                 Initial lambda values for the GMM components, of shape (n_features, n_components).
+
             - 'alpha': numpy array
                 Initial proportions of the GMM components, of shape (n_components,).
+
         """
         from sklearn.mixture import GaussianMixture
 
         # Use the Gaussian Mixture Model to initialize the parameters
-        gmm = GaussianMixture(n_components=self.n_cluster, covariance_type='diag', reg_covar=1e-6, tol=1e-6)
+        gmm = GaussianMixture(
+            n_components=self.n_cluster,
+            covariance_type="diag",
+            reg_covar=1e-6,
+            tol=1e-6,
+        )
         gmm.fit(X)
 
         # Initializations of the mean matrix with the means of the GMM
@@ -378,7 +414,7 @@ class SkewMixture:
         # Initializations of the prior, proportion of data in cluster k
         alpha = gmm.weights_
 
-        return {'mu': mu, 'sig': sig, 'nu': nu, 'lamb': lamb, 'alpha': alpha}
+        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def g_of_nu(self, x, nu):
         """
@@ -391,28 +427,39 @@ class SkewMixture:
         Returns:
         float: The calculated value of g(nu).
         """
-        A = scipy.special.digamma((nu + 2)/2)
-        B = - scipy.special.digamma((nu +1)/2)
-        C = - np.log(1 + (x**2) / (nu + 1))
-        D = ((nu + 1) * x**2 - nu - 1)/ ((nu + 1)* (nu + 1 + x**2))
+        A = scipy.special.digamma((nu + 2) / 2)
+        B = -scipy.special.digamma((nu + 1) / 2)
+        C = -np.log(1 + (x**2) / (nu + 1))
+        D = ((nu + 1) * x**2 - nu - 1) / ((nu + 1) * (nu + 1 + x**2))
         return A + B + C + D
 
-    def skew_t(self, x, mu, sigma, nu, lambda_):
-        """densite de la skew t
-        Implementation de l'equation (3) de Lin2007
+    def skew_t(self, x, mu, sigma, nu, lamb):
+        """probability density fonction of the skew t
 
         Parameters:
-        - x (float): The input data.
-        - mu (float): The mean of the cluster.
-        - sigma (float): The standard deviation of the cluster.
-        - nu (float): The degree of freedom of the cluster.
-        - lambda_ (float): The skewness of the cluster.
+
+        - x : float
+            The input data.
+
+        - mu : float
+            The mean of the cluster.
+
+        - sigma : float
+            The standard deviation of the cluster.
+
+        - nu : float
+            The degree of freedom of the cluster.
+
+        - lamb : float
+            The skewness of the cluster.
 
         Returns:
-        - proba (float): The probability of the data.
+
+        - proba : float
+            The probability of the data.
         """
         eta = (x - mu) / sigma
-        A = lambda_ * eta * np.sqrt((nu + 1) / (nu + eta ** 2))
+        A = lamb * eta * np.sqrt((nu + 1) / (nu + eta**2))
         B = scipy.stats.t.cdf(A, nu + 1)
         C = scipy.stats.t.pdf(eta, nu)
         return 2 / sigma * C * B
@@ -422,10 +469,12 @@ class SkewMixture:
         Calculates the probability density function (PDF) for each data point in x.
 
         Parameters:
+
         - x: numpy array of shape (n_samples, n_features)
             The input data points.
 
         Returns:
+        
         - p: numpy array of shape (n_samples, n_cluster)
             The PDF values for each data point in x.
         """
@@ -433,21 +482,19 @@ class SkewMixture:
         for index, value in enumerate(x):
             p[index, :] = self.alpha[:]
             for dim in range(x.shape[1]):
-                p[index, :] *= self.skew_t(value[dim], self.mu[dim, :], self.sig[dim, :], self.nu[dim, :], self.lamb[dim, :])
+                p[index, :] *= self.skew_t(
+                    value[dim],
+                    self.mu[dim, :],
+                    self.sig[dim, :],
+                    self.nu[dim, :],
+                    self.lamb[dim, :],
+                )
 
         return p
 
     def E_step(self, X):
         """
         Performs the E-step of the SkewMM algorithm.
-
-        Parameters:
-        - X: numpy array
-            Input data of shape (n_samples, n_features)
-
-        Returns:
-        - self: SkewMM object
-            Updated SkewMM object with intermediate variables calculated during the E-step.
         """
 
         # Implementation of the predict_proba method
@@ -458,60 +505,95 @@ class SkewMixture:
         # Calculation of s1
         nu_expended = self.nu[np.newaxis, :, :]
 
-        self.eta = (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) / self.sig[np.newaxis, :, :]
+        self.eta = (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) / self.sig[
+            np.newaxis, :, :
+        ]
 
-        M = self.lamb[np.newaxis, :, :] * self.eta * np.sqrt((self.nu[np.newaxis, :, :] + 1) / (nu_expended + (self.eta) ** 2))
-        T3_cdf = scipy.stats.t.cdf(M * np.sqrt((nu_expended + 3) / (nu_expended + 1)), df=(nu_expended + 3))
+        M = (
+            self.lamb[np.newaxis, :, :]
+            * self.eta
+            * np.sqrt((self.nu[np.newaxis, :, :] + 1) / (nu_expended + (self.eta) ** 2))
+        )
+        T3_cdf = scipy.stats.t.cdf(
+            M * np.sqrt((nu_expended + 3) / (nu_expended + 1)), df=(nu_expended + 3)
+        )
         T1_cdf = scipy.stats.t.cdf(M, df=(nu_expended + 1))
 
-        self.s1 = self.tik[:, np.newaxis, :] * ((nu_expended + 1) / (nu_expended + (self.eta) ** 2)) * (T3_cdf / T1_cdf)
+        self.s1 = (
+            self.tik[:, np.newaxis, :]
+            * ((nu_expended + 1) / (nu_expended + (self.eta) ** 2))
+            * (T3_cdf / T1_cdf)
+        )
 
         # Calculation of s2
-        self.delta = self.lamb / np.sqrt(1 + self.lamb ** 2)
-        term1 = (self.delta[np.newaxis, :, :] * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) * self.s1)
+        self.delta = self.lamb / np.sqrt(1 + self.lamb**2)
+        term1 = (
+            self.delta[np.newaxis, :, :]
+            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :])
+            * self.s1
+        )
 
         f = np.zeros((X.shape[0], X.shape[1], self.n_cluster))
 
         for dim in range(X.shape[1]):
-            f[:, dim, :] = self.skew_t(X[:, dim][:, np.newaxis], self.mu[dim, :], self.sig[dim, :], self.nu[dim, :],
-                                       self.lamb[dim, :])
+            f[:, dim, :] = self.skew_t(
+                X[:, dim][:, np.newaxis],
+                self.mu[dim, :],
+                self.sig[dim, :],
+                self.nu[dim, :],
+                self.lamb[dim, :],
+            )
 
         term2 = np.sqrt(1 - self.delta[np.newaxis, :, :] ** 2) / (np.pi * f[:, :, :])
 
-        term3 = (self.eta ** 2) / (nu_expended * (1 - (self.delta[np.newaxis, :, :]) ** 2))
-        term4 = ((term3 + 1) ** (-((nu_expended / 2) + 1)))
+        term3 = (self.eta**2) / (
+            nu_expended * (1 - (self.delta[np.newaxis, :, :]) ** 2)
+        )
+        term4 = (term3 + 1) ** (-((nu_expended / 2) + 1))
         self.s2 = term1 + self.tik[:, np.newaxis, :] * term2 * term4
 
         # Calculation of s3
-        partie1 = self.delta[np.newaxis, :, :] ** 2 * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) ** 2 * self.s1
+        partie1 = (
+            self.delta[np.newaxis, :, :] ** 2
+            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) ** 2
+            * self.s1
+        )
 
-        partie2 = (1 - self.delta[np.newaxis, :, :] ** 2) * (self.sig[np.newaxis, :, :] ** 2)
+        partie2 = (1 - self.delta[np.newaxis, :, :] ** 2) * (
+            self.sig[np.newaxis, :, :] ** 2
+        )
 
-        partie3 = (self.delta[np.newaxis, :, :] * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) * np.sqrt(
-            1 - self.delta[np.newaxis, :, :] ** 2)) / (np.pi * f)
+        partie3 = (
+            self.delta[np.newaxis, :, :]
+            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :])
+            * np.sqrt(1 - self.delta[np.newaxis, :, :] ** 2)
+        ) / (np.pi * f)
 
-        partie4 = self.eta ** 2 / (nu_expended * (1 - (self.delta[np.newaxis, :, :]) ** 2))
-        partie5 = ((partie4 + 1) ** (-((self.nu[np.newaxis, :, :] / 2) + 1)))
+        partie4 = self.eta**2 / (
+            nu_expended * (1 - (self.delta[np.newaxis, :, :]) ** 2)
+        )
+        partie5 = (partie4 + 1) ** (-((self.nu[np.newaxis, :, :] / 2) + 1))
 
         self.s3 = partie1 + self.tik[:, np.newaxis, :] * (partie2 + partie3 * partie5)
 
         # Calculation of s4
-        P = np.log((self.eta ** 2 + nu_expended) / 2)
+        P = np.log((self.eta**2 + nu_expended) / 2)
 
         Q = (nu_expended + 1) / (nu_expended + (self.eta) ** 2)
 
         R = scipy.special.digamma((nu_expended + 1) / 2)
 
-        S = (self.lamb[np.newaxis, :, :] * self.eta * (self.eta ** 2 - 1)) / np.sqrt(
-            (nu_expended + 1) * (nu_expended + (self.eta) ** 2) ** 3)
+        S = (self.lamb[np.newaxis, :, :] * self.eta * (self.eta**2 - 1)) / np.sqrt(
+            (nu_expended + 1) * (nu_expended + (self.eta) ** 2) ** 3
+        )
 
         T1_pdf = scipy.stats.t.pdf(M, nu_expended + 1)
 
         self.s4 = self.tik[:, np.newaxis, :] * (
-                    self.s1 - P - Q + R + S * (T1_pdf / T1_cdf))
+            self.s1 - P - Q + R + S * (T1_pdf / T1_cdf)
+        )
 
         return self
-
 
     def LL(self, x):
         """
@@ -523,10 +605,9 @@ class SkewMixture:
         Returns:
         - LL: Log-likelihood value
         """
-        LL = np.sum(np.log(np.sum(self.p,axis=(1))), axis=0)
+        LL = np.sum(np.log(np.sum(self.p, axis=(1))), axis=0)
 
         return LL
-
 
     def update_lambda(self, y, X, k, j):
         """
@@ -547,15 +628,17 @@ class SkewMixture:
         term1 = delta * (1 - delta**2) * np.sum(self.tik[:, k], axis=0)
 
         diff_X_mu = X[:, j] - self.mu[j, k]
-        term2_part1 = np.sum((self.s1[:, j, k] * diff_X_mu**2) / self.sig[j, k]**2, axis=0)
-        term2_part2 = np.sum(self.s3[:, j, k] / self.sig[j, k]**2, axis=0)
+        term2_part1 = np.sum(
+            (self.s1[:, j, k] * diff_X_mu**2) / self.sig[j, k] ** 2, axis=0
+        )
+        term2_part2 = np.sum(self.s3[:, j, k] / self.sig[j, k] ** 2, axis=0)
         term2 = delta * (term2_part1 + term2_part2)
 
-        term3 = (1 + delta**2) * np.sum((self.s2[:, j, k] * diff_X_mu) / self.sig[j, k]**2, axis=0)
-
+        term3 = (1 + delta**2) * np.sum(
+            (self.s2[:, j, k] * diff_X_mu) / self.sig[j, k] ** 2, axis=0
+        )
 
         return term1 - term2 + term3
-
 
     def update_nu(self, y, k, j):
         """
@@ -570,7 +653,7 @@ class SkewMixture:
         - result (float): The result of the function i.
         """
 
-        term1 = np.log(y / 2 )
+        term1 = np.log(y / 2)
 
         term2 = scipy.special.digamma(y / 2)
 
@@ -580,41 +663,55 @@ class SkewMixture:
 
         return term1 - term2 + term3
 
-
     def M_step(self, X):
         """
         Calcul new parameters of the model.
 
         Parameters:
         - X (array-like): The input data.
-
         """
         from joblib import Parallel, delayed
         import warnings
 
         # Update of alpha PX_CM-step-1
         self.alpha[:] = np.sum(self.tik[:, :], axis=0) / X.shape[0]
-        
-        self.mu = (np.sum(self.s1* X[:, :, np.newaxis], axis=0) - self.delta * np.sum(self.s2, axis=0)) / np.sum(self.s1, axis=0)
+
+        self.mu = (
+            np.sum(self.s1 * X[:, :, np.newaxis], axis=0)
+            - self.delta * np.sum(self.s2, axis=0)
+        ) / np.sum(self.s1, axis=0)
 
         # Update of sigma PX_CM-step-3
-        self.sig[:, :] = np.sqrt((np.sum(self.s1  * (X[:, :, np.newaxis] - self.mu[:, :])**2, axis=0 )
-                                        - 2*self.delta * np.sum(self.s2*(X[:, :, np.newaxis]- self.mu[:, :]), axis=0 )
-                                        +np.sum(self.s3, axis=0))
-                        /(2*(1-self.delta**2)*np.sum(self.s1, axis=0)))
-
+        self.sig[:, :] = np.sqrt(
+            (
+                np.sum(self.s1 * (X[:, :, np.newaxis] - self.mu[:, :]) ** 2, axis=0)
+                - 2
+                * self.delta
+                * np.sum(self.s2 * (X[:, :, np.newaxis] - self.mu[:, :]), axis=0)
+                + np.sum(self.s3, axis=0)
+            )
+            / (2 * (1 - self.delta**2) * np.sum(self.s1, axis=0))
+        )
 
         # Update of lambda PX_CM-step-4
-        def find_root_lamb( dim, k):
+        def find_root_lamb(dim, k):
             with warnings.catch_warnings():
-                warnings.filterwarnings("ignore", message="invalid value encountered in log")
-                sol_lamb_1 = scipy.optimize.root(self.update_lambda, x0=self.lamb[dim,k], args=(X, k, dim), tol=10e-6)
+                warnings.filterwarnings(
+                    "ignore", message="invalid value encountered in log"
+                )
+                sol_lamb_1 = scipy.optimize.root(
+                    self.update_lambda,
+                    x0=self.lamb[dim, k],
+                    args=(X, k, dim),
+                    tol=10e-6,
+                )
             return sol_lamb_1.x[0]
-
 
         def parallel_find_root_lamb(X):
             indices = np.ndindex(X.shape[1], self.n_cluster)
-            results = Parallel(n_jobs=-1)(delayed(find_root_lamb)(*index) for index in indices)
+            results = Parallel(n_jobs=-1)(
+                delayed(find_root_lamb)(*index) for index in indices
+            )
             return np.array(results).reshape(X.shape[1], self.n_cluster)
 
         self.lamb = parallel_find_root_lamb(X)
@@ -622,20 +719,24 @@ class SkewMixture:
         # Update of nu PX_CM-step-6
         def find_root_nu(dim, k):
             with warnings.catch_warnings():
-                warnings.filterwarnings("ignore", message="invalid value encountered in log")
-                sol_nu = scipy.optimize.root(self.update_nu, x0=self.nu[dim, k], args=(k, dim),  tol=10e-6)
+                warnings.filterwarnings(
+                    "ignore", message="invalid value encountered in log"
+                )
+                sol_nu = scipy.optimize.root(
+                    self.update_nu, x0=self.nu[dim, k], args=(k, dim), tol=10e-6
+                )
             return sol_nu.x[0]
-        
+
         def parallel_find_root_nu(X):
             indices = np.ndindex(X.shape[1], self.n_cluster)
-            results = Parallel(n_jobs=-1)(delayed(find_root_nu)(*index) for index in indices)
+            results = Parallel(n_jobs=-1)(
+                delayed(find_root_nu)(*index) for index in indices
+            )
             return np.array(results).reshape(X.shape[1], self.n_cluster)
 
         self.nu = parallel_find_root_nu(X)
 
         return self
-
-
 
     def predict_proba(self, X):
         """
@@ -650,10 +751,10 @@ class SkewMixture:
         # Implementation of the predict_proba method
         p = self.phi(X)
 
-        self.tik = p / np.sum(p, axis=(1))[: , np.newaxis]
+        self.tik = p / np.sum(p, axis=(1))[:, np.newaxis]
 
         return self.tik
-    
+
     def predict(self, X):
         """
         Predict the cluster labels for the data.
@@ -666,11 +767,10 @@ class SkewMixture:
         """
         # Implementation of the predict method
         proba = self.predict_proba(X)
-        labels=[]
+        labels = []
         for i in range(proba.shape[0]):
             labels.append(np.argmax(proba[i, :]))
         return labels
-    
 
     def confusion_matrix(self, y_true, y_pred=None):
         """
@@ -686,8 +786,8 @@ class SkewMixture:
         import pandas as pd
 
         if y_true is None:
-            raise ValueError('Error: The true labels are missing, please provide them.')
-        
+            raise ValueError("Error: The true labels are missing, please provide them.")
+
         y_true = y_true.astype(int)
 
         # Predict the labels if they are not provided
@@ -721,12 +821,12 @@ class SkewMixture:
         - acc (float): The accuracy.
         """
         from sklearn.metrics import adjusted_rand_score
+
         ari = adjusted_rand_score(y, np.argmax(self.predict_proba(x), axis=1))
 
-        return print('ARI:', ari)
+        return print("ARI:", ari)
 
-
-    def save(self, filename:str):
+    def save(self, filename: str):
         """
         Save the model to a file.
 
@@ -735,25 +835,26 @@ class SkewMixture:
         """
         import h5py
 
-        if not filename.endswith('.h5'):
-            filename = f'{filename}.h5'
+        if not filename.endswith(".h5"):
+            filename = f"{filename}.h5"
 
         if not filename:
-            raise ValueError('Error: The filename is empty, please provide a valid filename.')
-        
-        if not os.path.exists('Models_folder'):
-            os.makedirs('Models_folder')
+            raise ValueError(
+                "Error: The filename is empty, please provide a valid filename."
+            )
 
-        with h5py.File(f'Models_folder/{filename}', 'w') as f:
-            f.create_dataset('mu', data=self.mu)
-            f.create_dataset('sig', data=self.sig)
-            f.create_dataset('nu', data=self.nu)
-            f.create_dataset('lamb', data=self.lamb)
-            f.create_dataset('alpha', data=self.alpha)
-            f.create_dataset('E_log_likelihood', data=self.E_log_likelihood)
+        if not os.path.exists("Models_folder"):
+            os.makedirs("Models_folder")
 
+        with h5py.File(f"Models_folder/{filename}", "w") as f:
+            f.create_dataset("mu", data=self.mu)
+            f.create_dataset("sig", data=self.sig)
+            f.create_dataset("nu", data=self.nu)
+            f.create_dataset("lamb", data=self.lamb)
+            f.create_dataset("alpha", data=self.alpha)
+            f.create_dataset("E_log_likelihood", data=self.E_log_likelihood)
 
-    def load(self, filename:str):
+    def load(self, filename: str):
         """
         Load matrices from a given file.
 
@@ -765,10 +866,10 @@ class SkewMixture:
         """
         import h5py
 
-        with h5py.File(filename, 'r') as f:
-            self.mu = f['mu'][:]
-            self.sig = f['sig'][:]
-            self.nu = f['nu'][:]
-            self.lamb = f['lamb'][:]
-            self.alpha = f['alpha'][:]
-            self.E_log_likelihood = f['E_log_likelihood'][:]
+        with h5py.File(filename, "r") as f:
+            self.mu = f["mu"][:]
+            self.sig = f["sig"][:]
+            self.nu = f["nu"][:]
+            self.lamb = f["lamb"][:]
+            self.alpha = f["alpha"][:]
+            self.E_log_likelihood = f["E_log_likelihood"][:]

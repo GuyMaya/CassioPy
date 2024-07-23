@@ -411,7 +411,11 @@ document.write(`
 <h1>cassiopy.mixture.SkewMixture<a class="headerlink" href="#cassiopy-mixture-skewmixture" title="Link to this heading">#</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code> class models a mixture of skew-t distributions. It provides various methods for working with skew-t distributed data, including generating samples and calculating densities.</p>
 <p><strong>cassiopy.mixture.</strong> <code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code> <strong>(n_cluster, n_iter=10, tol=1e-5, init=’random’ )</strong></p>
-<p id="module-cassiopy.mixture.SkewMixture">Skew-t Mixture Model for clustering.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cassiopy.mixture.</span></span><span class="sig-name descname"><span class="pre">SkewMixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cluster</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gmm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init_gmm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Skew-t Mixture Model for clustering.</p>
 <p>Parameters:</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -488,6 +492,353 @@ Must be one of:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;model.h5&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.ARI">
+<span class="sig-name descname"><span class="pre">ARI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.ARI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.ARI" title="Link to this definition">#</a></dt>
+<dd><p>Compute the accuracy of the model.</p>
+<p>Parameters:
+- y (array-like): The true labels.</p>
+<p>Returns:
+- acc (float): The accuracy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.E_step">
+<span class="sig-name descname"><span class="pre">E_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.E_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.E_step" title="Link to this definition">#</a></dt>
+<dd><p>Performs the E-step of the SkewMM algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.LL">
+<span class="sig-name descname"><span class="pre">LL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.LL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.LL" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the log-likelihood of the model.</p>
+<p>Parameters:
+- x: Input parameter (not used in the calculation)</p>
+<p>Returns:
+- LL: Log-likelihood value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.M_step">
+<span class="sig-name descname"><span class="pre">M_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.M_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.M_step" title="Link to this definition">#</a></dt>
+<dd><p>Calcul new parameters of the model.</p>
+<p>Parameters:
+- X (array-like): The input data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.confusion_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.confusion_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the confusion matrix.</p>
+<p>Parameters:
+- y_true (array-like): The true labels.
+- y_pred (array-like): The predicted labels.</p>
+<p>Returns:
+- matrix (DataFrame): The confusion matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.fit" title="Link to this definition">#</a></dt>
+<dd><p>Fits the SkewMM model to the input data.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input data. Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Raises:</p>
+<ul class="simple">
+<li><p>ValueError: If the initialization method is not recognized.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.g_of_nu">
+<span class="sig-name descname"><span class="pre">g_of_nu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.g_of_nu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.g_of_nu" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the value of g(nu) for a given x and nu.</p>
+<p>Parameters:
+x (float): The input value.
+nu (float): The parameter value.</p>
+<p>Returns:
+float: The calculated value of g(nu).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.initialisation_gmm">
+<span class="sig-name descname"><span class="pre">initialisation_gmm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.initialisation_gmm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.initialisation_gmm" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the parameters for the Gaussian Mixture Model (GMM).</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>X: numpy array</dt><dd><p>Input data matrix of shape (n_samples, n_features).</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing the initialized parameters for the GMM:</p>
+<ul>
+<li><dl class="simple">
+<dt>‘mu’: numpy array</dt><dd><p>Initial means of the GMM components, of shape (n_features, n_components).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘sig’: numpy array</dt><dd><p>Initial covariance matrices of the GMM components, of shape (n_features, n_features, n_components).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘nu’: numpy array</dt><dd><p>Initial degrees of freedom for the GMM components, of shape (n_features, n_components).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘lamb’: numpy array</dt><dd><p>Initial lambda values for the GMM components, of shape (n_features, n_components).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘alpha’: numpy array</dt><dd><p>Initial proportions of the GMM components, of shape (n_components,).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.initialisation_kmeans">
+<span class="sig-name descname"><span class="pre">initialisation_kmeans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_n_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.initialisation_kmeans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.initialisation_kmeans" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the parameters for the SkewMM algorithm using the K-means initialization method.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p>X: The input data matrix of shape (n_samples, n_features).</p></li>
+<li><p>default_n_init: The number of times the K-means algorithm will be run with different centroid seeds. Default is ‘auto’.</p></li>
+</ul>
+<p>Returns:</p>
+<p>A dictionary containing the initialized parameters:
+- mu: The cluster centers obtained from K-means.
+- sig: The initial covariance matrix, initialized as an identity matrix.
+- nu: The initial degrees of freedom.
+- lamb: The initial skewness parameters.
+- alpha: The initial cluster proportions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.initialisation_params">
+<span class="sig-name descname"><span class="pre">initialisation_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.initialisation_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.initialisation_params" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the parameters of the SkewMM model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the initial values for the model parameters.
+- ‘mu’ (ndarray): The mean vectors for each cluster. Shape: (n_features, n_cluster).
+- ‘sig’ (ndarray): The covariance matrices for each cluster. Shape: (n_features, n_cluster).
+- ‘nu’ (ndarray): The degrees of freedom for each cluster. Shape: (n_features, n_cluster).
+- ‘lamb’ (ndarray): The skewness parameters for each cluster. Shape: (n_features, n_cluster).
+- ‘alpha’ (ndarray): The mixing proportions for each cluster. Shape: (n_cluster,).</p></li>
+<li><p><strong>X</strong> (<em>ndarray</em>) – The input data. Shape: (n_samples, n_features).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated instance of the SkewMM model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the shape of any parameter matrix does not match the expected shape.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.initialisation_random">
+<span class="sig-name descname"><span class="pre">initialisation_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.initialisation_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.initialisation_random" title="Link to this definition">#</a></dt>
+<dd><p>Random initialization method for the SkewMM algorithm.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>X: numpy array</dt><dd><p>Input data array.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dict:</dt><dd><p>A dictionary containing the initialized parameters:</p>
+<ul>
+<li><dl class="simple">
+<dt>‘mu’: numpy array</dt><dd><p>Matrix of means.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘sig’: numpy array</dt><dd><p>Matrix of covariances.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘nu’: numpy array</dt><dd><p>Matrix of degrees of freedom.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘lamb’: numpy array</dt><dd><p>Matrix of skewness parameters.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘alpha’: numpy array</dt><dd><p>Array of cluster proportions.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.load" title="Link to this definition">#</a></dt>
+<dd><p>Load matrices from a given file.</p>
+<p>Parameters:
+filename (str): The path to the file containing the matrices.</p>
+<p>Returns:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.phi" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the probability density function (PDF) for each data point in x.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>x: numpy array of shape (n_samples, n_features)</dt><dd><p>The input data points.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>p: numpy array of shape (n_samples, n_cluster)</dt><dd><p>The PDF values for each data point in x.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.predict" title="Link to this definition">#</a></dt>
+<dd><p>Predict the cluster labels for the data.</p>
+<p>Parameters:
+- X (array-like): The input data.</p>
+<p>Returns:
+- labels (array-like): The predicted cluster labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.predict_proba" title="Link to this definition">#</a></dt>
+<dd><p>Predict the posterior probabilities of the data belonging to each cluster.</p>
+<p>Parameters:
+- X (array-like): The input data.</p>
+<p>Returns:
+- proba (array-like): The posterior probabilities.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.save" title="Link to this definition">#</a></dt>
+<dd><p>Save the model to a file.</p>
+<p>Parameters:
+- filename (str): The name of the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.skew_t">
+<span class="sig-name descname"><span class="pre">skew_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lamb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.skew_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.skew_t" title="Link to this definition">#</a></dt>
+<dd><p>probability density fonction of the skew t</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>x<span class="classifier">float</span></dt><dd><p>The input data.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mu<span class="classifier">float</span></dt><dd><p>The mean of the cluster.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>sigma<span class="classifier">float</span></dt><dd><p>The standard deviation of the cluster.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>nu<span class="classifier">float</span></dt><dd><p>The degree of freedom of the cluster.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>lamb<span class="classifier">float</span></dt><dd><p>The skewness of the cluster.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>proba<span class="classifier">float</span></dt><dd><p>The probability of the data.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.update_lambda">
+<span class="sig-name descname"><span class="pre">update_lambda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.update_lambda"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.update_lambda" title="Link to this definition">#</a></dt>
+<dd><p>Calcul of the function h for the update of lambda.</p>
+<p>Parameters:
+- y (float): The input parameter.
+- X (array-like): The input data.
+- k (int): The cluster index.
+- j (int): The feature index.</p>
+<p>Returns:
+- result (float): The result of the function h.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.update_nu">
+<span class="sig-name descname"><span class="pre">update_nu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.update_nu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.update_nu" title="Link to this definition">#</a></dt>
+<dd><p>Calcul of the function i for the update of nu.</p>
+<p>Parameters:
+- y (float): The input parameter.
+- k (int): The cluster index.
+- j (int): The feature index.</p>
+<p>Returns:
+- result (float): The result of the function i.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -527,6 +878,39 @@ Must be one of:</p>
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture"><code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.ARI"><code class="docutils literal notranslate"><span class="pre">SkewMixture.ARI()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.E_step"><code class="docutils literal notranslate"><span class="pre">SkewMixture.E_step()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.LL"><code class="docutils literal notranslate"><span class="pre">SkewMixture.LL()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.M_step"><code class="docutils literal notranslate"><span class="pre">SkewMixture.M_step()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.confusion_matrix"><code class="docutils literal notranslate"><span class="pre">SkewMixture.confusion_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.fit"><code class="docutils literal notranslate"><span class="pre">SkewMixture.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.g_of_nu"><code class="docutils literal notranslate"><span class="pre">SkewMixture.g_of_nu()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.initialisation_gmm"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_gmm()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.initialisation_kmeans"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_kmeans()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.initialisation_params"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.initialisation_random"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_random()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.load"><code class="docutils literal notranslate"><span class="pre">SkewMixture.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.phi"><code class="docutils literal notranslate"><span class="pre">SkewMixture.phi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.predict"><code class="docutils literal notranslate"><span class="pre">SkewMixture.predict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.predict_proba"><code class="docutils literal notranslate"><span class="pre">SkewMixture.predict_proba()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.save"><code class="docutils literal notranslate"><span class="pre">SkewMixture.save()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.skew_t"><code class="docutils literal notranslate"><span class="pre">SkewMixture.skew_t()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.update_lambda"><code class="docutils literal notranslate"><span class="pre">SkewMixture.update_lambda()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.mixture.SkewMixture.update_nu"><code class="docutils literal notranslate"><span class="pre">SkewMixture.update_nu()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 
