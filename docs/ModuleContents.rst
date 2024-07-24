@@ -4,6 +4,4 @@ Module contents
 ===============
 
 
-.. automodule:: test
-    :members:
 
