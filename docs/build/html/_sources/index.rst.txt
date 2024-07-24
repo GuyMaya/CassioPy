@@ -17,5 +17,7 @@ documentation for details.
    Home <self>
    Getting Started <getting_started>
    API <API>
+   Module Contents <ModuleContents>
    Glossary <glossary>
+
 

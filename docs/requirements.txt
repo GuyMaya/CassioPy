@@ -20,18 +20,12 @@ docutils==0.21.2
     # via sphinx
 fonttools==4.53.1
     # via matplotlib
-h5py==3.11.0
-    # via -r requirements.in
 idna==3.7
     # via requests
 imagesize==1.4.1
     # via sphinx
 jinja2==3.1.4
     # via sphinx
-joblib==1.4.2
-    # via
-    #   -r requirements.in
-    #   scikit-learn
 kiwisolver==1.4.5
     # via matplotlib
 markupsafe==2.1.5
@@ -68,12 +62,6 @@ pytz==2024.1
     # via pandas
 requests==2.32.3
     # via sphinx
-# scikit-learn==1.5.1
-#     # via -r requirements.in
-# scipy==1.13.1
-#     # via
-#     #   -r requirements.in
-#     #   scikit-learn
 six==1.16.0
     # via python-dateutil
 snowballstemmer==2.2.0
@@ -99,8 +87,6 @@ sphinx-autodoc-typehints
     # via sphinx
 sphinx-hoverxref
 sphinx-remove-toctrees>=1.0.0.post1
-
-
 threadpoolctl==3.5.0
     # via scikit-learn
 tomli==2.0.1
