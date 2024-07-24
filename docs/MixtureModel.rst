@@ -2,7 +2,7 @@ Mixture Model
 =============
 
 .. toctree::
-   :maxdepth: 2
+   :hidden: 
 
-   cassiopy.mixture.SkewMixture <SkewMixtureModel>
-   Module Contents <ModuleContents>
+   SkewMixtureModel
+   ModuleContents

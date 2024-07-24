@@ -12,12 +12,11 @@ documentation for details.
 
 
 .. toctree::
-   :maxdepth: 2
+   :hidden: 
 
    Home <self>
    Getting Started <getting_started>
    API <API>
-   Module Contents <ModuleContents>
    Glossary <glossary>
 
 

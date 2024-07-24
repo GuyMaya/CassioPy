@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'SkewMixtureModel';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Module contents" href="ModuleContents.html" />
+    <link rel="next" title="cassiopy.mixture.SkewMixture" href="_autosummary/cassiopy.mixture.SkewMixture.html" />
     <link rel="prev" title="Mixture Model" href="MixtureModel.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -152,13 +152,6 @@
 <li class="nav-item pst-header-nav-item current active">
   <a class="nav-link nav-internal" href="API.html">
     API
-  </a>
-</li>
-
-
-<li class="nav-item pst-header-nav-item">
-  <a class="nav-link nav-internal" href="ModuleContents.html">
-    Module Contents
   </a>
 </li>
 
@@ -291,13 +284,6 @@ document.write(`
 
 
 <li class="nav-item pst-header-nav-item">
-  <a class="nav-link nav-internal" href="ModuleContents.html">
-    Module Contents
-  </a>
-</li>
-
-
-<li class="nav-item pst-header-nav-item">
   <a class="nav-link nav-internal" href="glossary.html">
     Glossary
   </a>
@@ -352,8 +338,11 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="MixtureModel.html">cassiopy.mixture</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">cassiopy.mixture.SkewMixture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ModuleContents.html">Module Contents</a></li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">cassiopy.mixture.SkewMixture</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cassiopy.mixture.SkewMixture.html">cassiopy.mixture.SkewMixture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="ModuleContents.html">Module contents</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="stats.html">cassiopy.stats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -422,12 +411,13 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="cassiopy-mixture-skewmixture">
-<h1>cassiopy.mixture.SkewMixture<a class="headerlink" href="#cassiopy-mixture-skewmixture" title="Link to this heading">#</a></h1>
+<span id="skewmixturemodel"></span><h1>cassiopy.mixture.SkewMixture<a class="headerlink" href="#cassiopy-mixture-skewmixture" title="Link to this heading">#</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code> class models a mixture of skew-t distributions. It provides various methods for working with skew-t distributed data, including generating samples and calculating densities.</p>
-<dl class="py class">
+<span class="target" id="module-cassiopy.mixture"></span><dl class="py class">
 <dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cassiopy.mixture.</span></span><span class="sig-name descname"><span class="pre">SkewMixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_cluster</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gmm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init_gmm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture" title="Link to this definition">#</a></dt>
-<dd><p>Skew-t Mixture Model for clustering.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Skew-t Mixture Model for clustering.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -948,6 +938,14 @@ Must be one of:</p>
 
 </dd></dl>
 
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture" title="cassiopy.mixture.SkewMixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewMixture</span></code></a>(n_cluster[, n_iter, tol, init, ...])</p></td>
+<td><p>Skew-t Mixture Model for clustering.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 
 
@@ -970,11 +968,11 @@ Must be one of:</p>
       </div>
     </a>
     <a class="right-next"
-       href="ModuleContents.html"
+       href="_autosummary/cassiopy.mixture.SkewMixture.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Module contents</p>
+        <p class="prev-next-title">cassiopy.mixture.SkewMixture</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

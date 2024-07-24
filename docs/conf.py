@@ -7,9 +7,7 @@ import sys
 import mock
 
 # List of modules to mock import
-MOCK_MODULES = ["scipy.stats", "sklearn", 'scipy', 'matplotlib', 'numpy']
-for mod_name in MOCK_MODULES:
-   sys.modules[mod_name] = mock.Mock() 
+autodoc_mock_imports = ["scipy.stats", "sklearn", 'scipy', 'matplotlib', 'numpy']
 
 # -- Path setup --------------------------------------------------------------
 import os
@@ -44,6 +42,8 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autosectionlabel',
     'numpydoc',
+    'sphinx_autodoc_typehints',
+
 ]
 
 autosummary_generate = True
