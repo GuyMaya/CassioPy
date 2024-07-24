@@ -72,7 +72,7 @@ six==1.16.0
     # via python-dateutil
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==7.4.7
+sphinx==7.3.7
     # via -r requirements.in
 sphinx-design==0.6.0
 sphinxcontrib-applehelp==1.0.8
