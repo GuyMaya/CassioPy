@@ -465,6 +465,69 @@ Must be one of:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;model.h5&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.ARI" title="cassiopy.mixture.SkewMixture.ARI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ARI</span></code></a>(x, y)</p></td>
+<td><p>Compute the accuracy of the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.E_step" title="cassiopy.mixture.SkewMixture.E_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">E_step</span></code></a>(X)</p></td>
+<td><p>Performs the E-step of the SkewMM algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.LL" title="cassiopy.mixture.SkewMixture.LL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LL</span></code></a>(x)</p></td>
+<td><p>Calculate the log-likelihood of the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.M_step" title="cassiopy.mixture.SkewMixture.M_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">M_step</span></code></a>(X)</p></td>
+<td><p>Calcul new parameters of the model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.confusion_matrix" title="cassiopy.mixture.SkewMixture.confusion_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confusion_matrix</span></code></a>(y_true[, y_pred])</p></td>
+<td><p>Calculate the confusion matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.fit" title="cassiopy.mixture.SkewMixture.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X)</p></td>
+<td><p>Fits the SkewMM model to the input data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.g_of_nu" title="cassiopy.mixture.SkewMixture.g_of_nu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g_of_nu</span></code></a>(x, nu)</p></td>
+<td><p>Calculate the value of g(nu) for a given x and nu.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.initialisation_gmm" title="cassiopy.mixture.SkewMixture.initialisation_gmm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialisation_gmm</span></code></a>(X)</p></td>
+<td><p>Initialize the parameters for the Gaussian Mixture Model (GMM).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.initialisation_kmeans" title="cassiopy.mixture.SkewMixture.initialisation_kmeans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialisation_kmeans</span></code></a>(X[, default_n_init])</p></td>
+<td><p>Initializes the parameters for the SkewMM algorithm using the K-means initialization method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.initialisation_params" title="cassiopy.mixture.SkewMixture.initialisation_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialisation_params</span></code></a>(params, X)</p></td>
+<td><p>Initialize the parameters of the SkewMM model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.initialisation_random" title="cassiopy.mixture.SkewMixture.initialisation_random"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialisation_random</span></code></a>(X)</p></td>
+<td><p>Random initialization method for the SkewMM algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.load" title="cassiopy.mixture.SkewMixture.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(filename)</p></td>
+<td><p>Load matrices from a given file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.phi" title="cassiopy.mixture.SkewMixture.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(x)</p></td>
+<td><p>Calculates the probability density function (PDF) for each data point in x.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.predict" title="cassiopy.mixture.SkewMixture.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
+<td><p>Predict the cluster labels for the data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.predict_proba" title="cassiopy.mixture.SkewMixture.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
+<td><p>Predict the posterior probabilities of the data belonging to each cluster.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.save" title="cassiopy.mixture.SkewMixture.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(filename)</p></td>
+<td><p>Save the model to a file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.skew_t" title="cassiopy.mixture.SkewMixture.skew_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skew_t</span></code></a>(x, mu, sigma, nu, lamb)</p></td>
+<td><p>probability density fonction of the skew t</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.update_lambda" title="cassiopy.mixture.SkewMixture.update_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_lambda</span></code></a>(y, X, k, j)</p></td>
+<td><p>Calcul of the function h for the update of lambda.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cassiopy.mixture.SkewMixture.update_nu" title="cassiopy.mixture.SkewMixture.update_nu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_nu</span></code></a>(y, k, j)</p></td>
+<td><p>Calcul of the function i for the update of nu.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="cassiopy.mixture.SkewMixture.ARI">
 <span class="sig-name descname"><span class="pre">ARI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/mixture.html#SkewMixture.ARI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.mixture.SkewMixture.ARI" title="Link to this definition">#</a></dt>

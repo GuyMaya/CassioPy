@@ -7,7 +7,7 @@ import sys
 import mock
 
 # List of modules to mock import
-MOCK_MODULES = ["scipy.stats", "sklearn"]
+MOCK_MODULES = ["scipy.stats", "sklearn", 'scipy', 'matplotlib', 'numpy']
 for mod_name in MOCK_MODULES:
    sys.modules[mod_name] = mock.Mock() 
 
@@ -42,7 +42,12 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx_design',
     'sphinx.ext.doctest',
+    'sphinx.ext.autosectionlabel',
+    'numpydoc',
 ]
+
+autosummary_generate = True
+
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
