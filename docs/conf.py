@@ -14,8 +14,12 @@ for mod_name in MOCK_MODULES:
 # -- Path setup --------------------------------------------------------------
 import os
 
-sys.path.insert(0, os.path.abspath("../../cassiopy"))
-# sys.path.insert(0, os.path.abspath('../../cassiopy'))
+sys.path.insert(0, os.path.abspath("../"))
+
+print("Chemins dans sys.path:")
+for p in sys.path:
+    print(p)
+
 
 
 # -- Project information -----------------------------------------------------
