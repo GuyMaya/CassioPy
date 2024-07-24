@@ -1,8 +1,0 @@
-Mixture Model
-=============
-
-.. toctree::
-   :hidden: 
-
-   cassiopy.mixture.SkewMixture <SkewMixtureModel>
-   ModuleContents

@@ -32,7 +32,7 @@ class SkewMixture:
         The user-provided initial parameters. Used only if `init` is 'params'.
 
     Examples
-    =========
+    ========
     >>> import numpy as np
     >>> from cassiopy.mixture import SkewMixture
     >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])

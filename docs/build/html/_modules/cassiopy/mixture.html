@@ -385,7 +385,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="SkewMixture">
-<a class="viewcode-back" href="../../_autosummary/cassiopy.mixture.SkewMixture.html#cassiopy.mixture.SkewMixture">[docs]</a>
+<a class="viewcode-back" href="../../SkewMixtureModel.html#cassiopy.mixture.SkewMixture">[docs]</a>
 <span class="k">class</span> <span class="nc">SkewMixture</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Skew-t Mixture Model for clustering.</span>
@@ -415,7 +415,7 @@ document.write(`
 <span class="sd">        The user-provided initial parameters. Used only if `init` is &#39;params&#39;.</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">    =========</span>
+<span class="sd">    ========</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; from cassiopy.mixture import SkewMixture</span>
 <span class="sd">    &gt;&gt;&gt; X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])</span>
@@ -432,8 +432,6 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; model.save(&#39;model.h5&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SkewMixture.__init__">
-<a class="viewcode-back" href="../../_autosummary/cassiopy.mixture.SkewMixture.html#cassiopy.mixture.SkewMixture.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">n_cluster</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;gmm&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_init_gmm</span><span class="o">=</span><span class="mi">8</span>
     <span class="p">):</span>
@@ -445,8 +443,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_method</span> <span class="o">==</span> <span class="s2">&quot;gmm&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_init_gmm</span> <span class="o">=</span> <span class="n">n_init_gmm</span></div>
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_init_gmm</span> <span class="o">=</span> <span class="n">n_init_gmm</span>
 
 <div class="viewcode-block" id="SkewMixture.fit">
 <a class="viewcode-back" href="../../SkewMixtureModel.html#cassiopy.mixture.SkewMixture.fit">[docs]</a>
