@@ -2,14 +2,14 @@ def affiche(x):
     """
     Print the input data.
 
-    Parameters:
-    ===========
-    - x : float
+    Parameters
+    ----------
+    x : float
         The input data.
 
-    Returns:
+    Returns
     ========
-    - x : float
+    x : float
         The input data.
     """
     return x
