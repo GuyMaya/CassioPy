@@ -7,6 +7,10 @@ import pydata_sphinx_theme
 from sphinx.application import Sphinx
 from sphinx.locale import _
 
+# List of modules to mock import
+autodoc_mock_imports = ["scipy", "sklearn"]
+
+
 # -- Path setup --------------------------------------------------------------
 import os
 import sys

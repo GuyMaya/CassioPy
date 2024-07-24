@@ -5,7 +5,4 @@ The ``pdf`` method calculates the probability density function of the skew-t dis
 
 **cassiopy.stats.Skew.** ``pdf``
 
-.. automodule:: cassiopy.stats.Skew.pdf
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automethod:: cassiopy.stats.Skew.pdf

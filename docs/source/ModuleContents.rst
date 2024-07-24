@@ -1,7 +1,4 @@
 Module contents
 ===============
 
-.. automodule:: cassiopy
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. autofunction:: cassiopy.test.affiche
