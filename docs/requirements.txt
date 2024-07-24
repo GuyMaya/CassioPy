@@ -43,6 +43,8 @@ numpy==2.0.1
     #   pandas
     #   scikit-learn
     #   scipy
+numpydoc==1.7.0
+    # via sphinx
 packaging==24.1
     # via
     #   matplotlib
