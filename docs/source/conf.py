@@ -3,18 +3,18 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import sys
+import mock
 
 # List of modules to mock import
-autodoc_mock_imports = ["scipy", "sklearn"]
-
+MOCK_MODULES = ["scipy.stats", "sklearn"]
+for mod_name in MOCK_MODULES:
+   sys.modules[mod_name] = mock.Mock() 
 
 # -- Path setup --------------------------------------------------------------
 import os
-import sys
 
-sys.path.insert(0, os.path.abspath("../../"))
-# sys.path.insert(0, os.path.abspath('.'))
-# sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath("../.."))
 # sys.path.insert(0, os.path.abspath('../../cassiopy'))
 
 
