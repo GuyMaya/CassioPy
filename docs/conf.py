@@ -12,7 +12,7 @@ autodoc_mock_imports = ["scipy.stats", "sklearn", 'scipy', 'matplotlib', 'numpy'
 # -- Path setup --------------------------------------------------------------
 import os
 
-sys.path.insert(0, os.path.abspath("../"))
+sys.path.insert(0, os.path.abspath("../cassiopy"))
 
 print("Chemins dans sys.path:")
 for p in sys.path:
