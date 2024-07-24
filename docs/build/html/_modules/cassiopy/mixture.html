@@ -391,7 +391,7 @@ document.write(`
 <span class="sd">    Skew-t Mixture Model for clustering.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
+<span class="sd">    ==========</span>
 <span class="sd">    n_cluster : int</span>
 <span class="sd">        The number of mixture components (clusters).</span>
 
@@ -415,7 +415,7 @@ document.write(`
 <span class="sd">        The user-provided initial parameters. Used only if `init` is &#39;params&#39;.</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">    --------</span>
+<span class="sd">    =========</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; from cassiopy.mixture import SkewMixture</span>
 <span class="sd">    &gt;&gt;&gt; X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])</span>
@@ -452,7 +452,7 @@ document.write(`
 <span class="sd">        Fits the SkewMM model to the input data.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        X : array-like </span>
 <span class="sd">            Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -583,12 +583,12 @@ document.write(`
 <span class="sd">        Random initialization method for the SkewMM algorithm.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        X : array-like</span>
 <span class="sd">            Input data array.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        dict : dict</span>
 <span class="sd">            A dictionary containing the initialized parameters:</span>
 
@@ -635,7 +635,7 @@ document.write(`
 <span class="sd">        Initialize the parameters of the SkewMM model.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        params : dict</span>
 <span class="sd">            A dictionary containing the initial values for the model parameters.</span>
 
@@ -697,7 +697,7 @@ document.write(`
 <span class="sd">        Initializes the parameters for the SkewMM algorithm using the K-means initialization method.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        X : array-like</span>
 <span class="sd">            The input data matrix of shape (n_samples, n_features).</span>
 
@@ -705,7 +705,7 @@ document.write(`
 <span class="sd">            The number of times the K-means algorithm will be run with different centroid seeds. Default is &#39;auto&#39;.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        dict : dict</span>
 <span class="sd">            A dictionary containing the initialized parameters:</span>
 
@@ -760,12 +760,12 @@ document.write(`
 <span class="sd">        Initialize the parameters for the Gaussian Mixture Model (GMM).</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        X : array-like</span>
 <span class="sd">            Input data matrix of shape (n_samples, n_features).</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        dict : dict</span>
 <span class="sd">            A dictionary containing the initialized parameters:</span>
 
@@ -820,7 +820,7 @@ document.write(`
 <span class="sd">        Calculate the value of g(nu) for a given x and nu.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        x : float</span>
 <span class="sd">            The input value.</span>
 <span class="sd">        </span>
@@ -840,7 +840,7 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;probability density fonction of the skew t</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        x : float</span>
 <span class="sd">            The input data.</span>
 
@@ -857,7 +857,7 @@ document.write(`
 <span class="sd">            The skewness of the cluster.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        --------</span>
+<span class="sd">        =======</span>
 <span class="sd">        proba : float</span>
 <span class="sd">            The probability of the data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -875,12 +875,12 @@ document.write(`
 <span class="sd">        Calculates the probability density function (PDF) for each data point in x.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        x : array-like</span>
 <span class="sd">            Shape : (n_samples, n_features). The input data points.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        p : array-like </span>
 <span class="sd">            Shape : (n_samples, n_cluster). The PDF values for each data point in x.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1012,12 +1012,12 @@ document.write(`
 <span class="sd">        Calculate the log-likelihood of the model.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        x : array-like</span>
 <span class="sd">            Input parameter (not used in the calculation)</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        --------</span>
+<span class="sd">        =======</span>
 <span class="sd">        LL : float </span>
 <span class="sd">            Log-likelihood value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1033,7 +1033,7 @@ document.write(`
 <span class="sd">        Calcul of the function h for the update of lambda.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        y : float</span>
 <span class="sd">            The input parameter.</span>
 <span class="sd">        X : array-like</span>
@@ -1044,7 +1044,7 @@ document.write(`
 <span class="sd">            The feature index.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        result : float</span>
 <span class="sd">            The result of the function h.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1074,7 +1074,7 @@ document.write(`
 <span class="sd">        Calcul of the function i for the update of nu.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        y : float</span>
 <span class="sd">            The input parameter.</span>
 
@@ -1085,7 +1085,7 @@ document.write(`
 <span class="sd">            The feature index.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ---------</span>
+<span class="sd">        =======</span>
 <span class="sd">        result : float</span>
 <span class="sd">            The result of the function i.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1108,7 +1108,7 @@ document.write(`
 <span class="sd">        Calcul new parameters of the model.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        X : array-like</span>
 <span class="sd">            The input data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1188,12 +1188,12 @@ document.write(`
 <span class="sd">        Predict the posterior probabilities of the data belonging to each cluster.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        X : array-like</span>
 <span class="sd">            The input data.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        proba : array-like</span>
 <span class="sd">            The posterior probabilities.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1212,12 +1212,12 @@ document.write(`
 <span class="sd">        Predict the cluster labels for the data.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        X : array-like</span>
 <span class="sd">            The input data.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        labels : array-like</span>
 <span class="sd">            The predicted cluster labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1236,7 +1236,7 @@ document.write(`
 <span class="sd">        Calculate the confusion matrix.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        y_true : array-like</span>
 <span class="sd">            The true labels.</span>
 
@@ -1244,7 +1244,7 @@ document.write(`
 <span class="sd">            The predicted labels.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        matrix : DataFrame</span>
 <span class="sd">            The confusion matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1283,7 +1283,7 @@ document.write(`
 <span class="sd">        Compute the accuracy of the model.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        x : array-like</span>
 <span class="sd">            The input data.</span>
 
@@ -1291,7 +1291,7 @@ document.write(`
 <span class="sd">            The true labels.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+<span class="sd">        =======</span>
 <span class="sd">        acc : float</span>
 <span class="sd">            The accuracy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1309,7 +1309,7 @@ document.write(`
 <span class="sd">        Save the model to a file.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        filename : str</span>
 <span class="sd">            The name of the file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1342,7 +1342,7 @@ document.write(`
 <span class="sd">        Load matrices from a given file.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+<span class="sd">        ==========</span>
 <span class="sd">        filename : str</span>
 <span class="sd">            The path to the file containing the matrices.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

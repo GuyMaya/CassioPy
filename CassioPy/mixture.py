@@ -8,7 +8,7 @@ class SkewMixture:
     Skew-t Mixture Model for clustering.
 
     Parameters
-    ----------
+    ==========
     n_cluster : int
         The number of mixture components (clusters).
 
@@ -32,7 +32,7 @@ class SkewMixture:
         The user-provided initial parameters. Used only if `init` is 'params'.
 
     Examples
-    --------
+    =========
     >>> import numpy as np
     >>> from cassiopy.mixture import SkewMixture
     >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
@@ -67,7 +67,7 @@ class SkewMixture:
         Fits the SkewMM model to the input data.
 
         Parameters
-        -----------
+        ==========
         X : array-like 
             Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
         """
@@ -195,12 +195,12 @@ class SkewMixture:
         Random initialization method for the SkewMM algorithm.
 
         Parameters
-        ----------
+        ==========
         X : array-like
             Input data array.
 
         Returns
-        -------
+        =======
         dict : dict
             A dictionary containing the initialized parameters:
 
@@ -244,7 +244,7 @@ class SkewMixture:
         Initialize the parameters of the SkewMM model.
 
         Parameters
-        -----------
+        ==========
         params : dict
             A dictionary containing the initial values for the model parameters.
 
@@ -303,7 +303,7 @@ class SkewMixture:
         Initializes the parameters for the SkewMM algorithm using the K-means initialization method.
 
         Parameters
-        ----------
+        ==========
         X : array-like
             The input data matrix of shape (n_samples, n_features).
 
@@ -311,7 +311,7 @@ class SkewMixture:
             The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
 
         Returns
-        -------
+        =======
         dict : dict
             A dictionary containing the initialized parameters:
 
@@ -363,12 +363,12 @@ class SkewMixture:
         Initialize the parameters for the Gaussian Mixture Model (GMM).
 
         Parameters
-        ----------
+        ==========
         X : array-like
             Input data matrix of shape (n_samples, n_features).
 
         Returns
-        -------
+        =======
         dict : dict
             A dictionary containing the initialized parameters:
 
@@ -420,7 +420,7 @@ class SkewMixture:
         Calculate the value of g(nu) for a given x and nu.
 
         Parameters
-        ----------
+        ==========
         x : float
             The input value.
         
@@ -437,7 +437,7 @@ class SkewMixture:
         """probability density fonction of the skew t
 
         Parameters
-        ----------
+        ==========
         x : float
             The input data.
 
@@ -454,7 +454,7 @@ class SkewMixture:
             The skewness of the cluster.
 
         Returns
-        --------
+        =======
         proba : float
             The probability of the data.
         """
@@ -469,12 +469,12 @@ class SkewMixture:
         Calculates the probability density function (PDF) for each data point in x.
 
         Parameters
-        ----------
+        ==========
         x : array-like
             Shape : (n_samples, n_features). The input data points.
 
         Returns
-        -------
+        =======
         p : array-like 
             Shape : (n_samples, n_cluster). The PDF values for each data point in x.
         """
@@ -600,12 +600,12 @@ class SkewMixture:
         Calculate the log-likelihood of the model.
 
         Parameters
-        ----------
+        ==========
         x : array-like
             Input parameter (not used in the calculation)
 
         Returns
-        --------
+        =======
         LL : float 
             Log-likelihood value
         """
@@ -618,7 +618,7 @@ class SkewMixture:
         Calcul of the function h for the update of lambda.
 
         Parameters
-        ----------
+        ==========
         y : float
             The input parameter.
         X : array-like
@@ -629,7 +629,7 @@ class SkewMixture:
             The feature index.
 
         Returns
-        -------
+        =======
         result : float
             The result of the function h.
         """
@@ -656,7 +656,7 @@ class SkewMixture:
         Calcul of the function i for the update of nu.
 
         Parameters
-        ----------
+        ==========
         y : float
             The input parameter.
 
@@ -667,7 +667,7 @@ class SkewMixture:
             The feature index.
 
         Returns
-        ---------
+        =======
         result : float
             The result of the function i.
         """
@@ -687,7 +687,7 @@ class SkewMixture:
         Calcul new parameters of the model.
 
         Parameters
-        ----------
+        ==========
         X : array-like
             The input data.
         """
@@ -764,12 +764,12 @@ class SkewMixture:
         Predict the posterior probabilities of the data belonging to each cluster.
 
         Parameters
-        ----------
+        ==========
         X : array-like
             The input data.
 
         Returns
-        -------
+        =======
         proba : array-like
             The posterior probabilities.
         """
@@ -785,12 +785,12 @@ class SkewMixture:
         Predict the cluster labels for the data.
 
         Parameters
-        ----------
+        ==========
         X : array-like
             The input data.
 
         Returns
-        -------
+        =======
         labels : array-like
             The predicted cluster labels.
         """
@@ -806,7 +806,7 @@ class SkewMixture:
         Calculate the confusion matrix.
 
         Parameters
-        ----------
+        ==========
         y_true : array-like
             The true labels.
 
@@ -814,7 +814,7 @@ class SkewMixture:
             The predicted labels.
 
         Returns
-        -------
+        =======
         matrix : DataFrame
             The confusion matrix.
         """
@@ -850,7 +850,7 @@ class SkewMixture:
         Compute the accuracy of the model.
 
         Parameters
-        ----------
+        ==========
         x : array-like
             The input data.
 
@@ -858,7 +858,7 @@ class SkewMixture:
             The true labels.
 
         Returns
-        -------
+        =======
         acc : float
             The accuracy.
         """
@@ -873,7 +873,7 @@ class SkewMixture:
         Save the model to a file.
 
         Parameters
-        ----------
+        ==========
         filename : str
             The name of the file.
         """
@@ -903,7 +903,7 @@ class SkewMixture:
         Load matrices from a given file.
 
         Parameters
-        ----------
+        ==========
         filename : str
             The path to the file containing the matrices.
         """
