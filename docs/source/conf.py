@@ -6,6 +6,8 @@
 import pydata_sphinx_theme
 from sphinx.application import Sphinx
 from sphinx.locale import _
+
+# -- Path setup --------------------------------------------------------------
 import os
 import sys
 
@@ -13,6 +15,9 @@ sys.path.insert(0, os.path.abspath("../../"))
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 
+
+import logging
+logging.basicConfig(level=logging.INFO)
 
 
 # -- Project information -----------------------------------------------------
@@ -32,11 +37,9 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_copybutton',
     'sphinx.ext.extlinks',
-    "sphinx.ext.autosummary",
-    "sphinx_design",
-    "sphinx.ext.doctest",
-
-
+    'sphinx.ext.autosummary',
+    'sphinx_design',
+    'sphinx.ext.doctest',
 ]
 
 templates_path = ['_templates']
@@ -53,7 +56,6 @@ html_static_path = ['_static']
 
 # -- Options for HTMLHelp output ---------------------------------------------
 html_theme_options = {
-
     "show_toc_level": 3,
     "navigation_depth": 3,
     "navbar_end": [ "theme-switcher", "icon-links" ],
@@ -66,8 +68,8 @@ html_theme_options = {
             "type": "fontawesome",
         }
    ],
-      "secondary_sidebar_items": {
-    "**": ["page-toc", "sourcelink"],
-    "index": ["page-toc"],
-  }
+  #     "secondary_sidebar_items": {
+  #   "**": ["page-toc", "sourcelink"],
+  #   "index": ["page-toc"],
+  # }
 }
