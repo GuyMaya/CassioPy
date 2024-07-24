@@ -5,36 +5,6 @@ import scipy.stats
 class Skew:
     """
     Generate synthetic data with skewness.
-
-    Parameters:
-
-    - n_samples :int
-        Number of samples to generate.
-
-    - n_dim : int
-        Number of dimensions.
-        
-    - n_clusters : int
-        Number of clusters.
-
-    - random_state : int
-        Random seed for reproducibility.
-
-    Returns:
-
-    - data : ndarray
-        Generated data with shape (n_samples, n_dim).
-
-    - y_true : ndarray
-        Labels for the generated data with shape (n_samples,).
-
-    Example:
-
-    >>> from cassiopy.stats import Skew
-    >>> skew_set = Skew()
-    >>> data, y_true = skew_set.generate(n_samples=100, n_dim=1, n_cluster=4, random_state=42)
-
-
     """
 
     def __init__(self):
@@ -65,6 +35,17 @@ class Skew:
 
         - y_true : ndarray
             Labels for the generated data with shape (n_samples,).
+
+        Example:
+
+        >>> from cassiopy import Skew
+        >>> sm = Skew()
+        >>> data, labels = sm.generate(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+        >>> data.shape
+        (200, 2)
+        >>> labels.shape
+        (200,)
+
         """
         parametre = {
             'mu' : np.random.uniform(-50, 50, size=(n_dim, n_clusters)),
@@ -109,31 +90,39 @@ class Skew:
         else:
             return data
 
-    def pdf(self, x, mu, sigma, nu, lambda_):
-        """densite de la skew t
-        Implementation de l'equation (3) de Lin2007
+    def pdf(self, x, mu, sigma, nu, lamb):
+        """
+        Probability density fonction
 
         Parameters:
 
         - x : float
             The input data.
         - mu : float
-            The mean of the cluster.
+            The mean.
         - sigma : float
-            The standard deviation of the cluster.
+            The standard deviation.
         - nu : float
-            The degree of freedom of the cluster.
-        - lambda_ : float
-            The skewness of the cluster.
+            The degree of freedom.
+        - lamb : float
+            The skewness.
 
         Returns:
 
         - proba : float
             The probability of the data.
             
+
+        Example:
+
+        >>> from cassiopy import Skew
+        >>> sm = Skew()
+        >>> x, mu, sigma, nu, lamb = 0.5, 0, 1, 10, 0.5
+        >>> sm.pdf(x, mu, sigma, nu, lamb)
+        0.3520653267642995    
         """
         eta = (x - mu) / sigma
-        A = lambda_ * eta * np.sqrt((nu + 1) / (nu + eta ** 2))
+        A = lamb * eta * np.sqrt((nu + 1) / (nu + eta ** 2))
         B = scipy.stats.t.cdf(A, nu + 1)
         C = scipy.stats.t.pdf(eta, nu)
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Mixture Model &#8212; cassiopy 0.0.1 documentation</title>
+    <title>cassiopy.stats.Skew.generate &#8212; cassiopy 0.0.1 documentation</title>
   
   
   
@@ -43,11 +43,11 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'MixtureModel';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stats.skew.generate';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="cassiopy.mixture.SkewMixture" href="SkewMixtureModel.html" />
-    <link rel="prev" title="API" href="API.html" />
+    <link rel="next" title="cassiopy.stats.Skew.pdf" href="stats.skew.pdf.html" />
+    <link rel="prev" title="stats" href="stats.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -351,13 +351,13 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">cassiopy.mixture</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="MixtureModel.html">cassiopy.mixture</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="SkewMixtureModel.html">cassiopy.mixture.SkewMixture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ModuleContents.html">Module Contents</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="stats.html">cassiopy.stats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="stats.skew.generate.html">cassiopy.stats.skew.generate</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="stats.html">cassiopy.stats</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">cassiopy.stats.skew.generate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.skew.pdf.html">cassiopy.stats.skew.pdf</a></li>
 </ul>
 </details></li>
@@ -401,7 +401,10 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="API.html" class="nav-link">API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Mixture Model</li>
+    
+    <li class="breadcrumb-item"><a href="stats.html" class="nav-link">stats</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">cassiopy.sta...</li>
   </ul>
 </nav>
 </div>
@@ -418,20 +421,62 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="mixture-model">
-<h1>Mixture Model<a class="headerlink" href="#mixture-model" title="Link to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="SkewMixtureModel.html">cassiopy.mixture.SkewMixture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture"><code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code></a></li>
-</ul>
+  <section id="cassiopy-stats-skew-generate">
+<h1>cassiopy.stats.Skew.generate<a class="headerlink" href="#cassiopy-stats-skew-generate" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">generate</span></code> method generates values from a skew-t distribution.</p>
+<p><strong>cassiopy.stats.Skew.</strong> <code class="docutils literal notranslate"><span class="pre">generate</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cassiopy.stats.Skew.generate">
+<span class="sig-prename descclassname"><span class="pre">Skew.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cassiopy/stats.html#Skew.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cassiopy.stats.Skew.generate" title="Link to this definition">#</a></dt>
+<dd><p>Generate synthetic data with specified parameters.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>n_samples<span class="classifier">int</span></dt><dd><p>Number of samples to generate.</p>
+</dd>
+</dl>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ModuleContents.html">Module Contents</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ModuleContents.html#cassiopy.test.essai.affiche"><code class="docutils literal notranslate"><span class="pre">essai.affiche()</span></code></a></li>
-</ul>
+<li><dl class="simple">
+<dt>n_dim<span class="classifier">int</span></dt><dd><p>Number of dimensions.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>n_clusters<span class="classifier">int</span></dt><dd><p>Number of clusters.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>random_state<span class="classifier">int</span></dt><dd><p>Random seed for reproducibility.</p>
+</dd>
+</dl>
 </li>
 </ul>
+<p>Returns:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>data<span class="classifier">ndarray</span></dt><dd><p>Generated data with shape (n_samples, n_dim).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>y_true<span class="classifier">ndarray</span></dt><dd><p>Labels for the generated data with shape (n_samples,).</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cassiopy</span> <span class="kn">import</span> <span class="n">Skew</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">n_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(200, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(200,)</span>
+</pre></div>
 </div>
+</dd></dl>
+
 </section>
 
 
@@ -445,20 +490,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="API.html"
+       href="stats.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">API</p>
+        <p class="prev-next-title">stats</p>
       </div>
     </a>
     <a class="right-next"
-       href="SkewMixtureModel.html"
+       href="stats.skew.pdf.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">cassiopy.mixture.SkewMixture</p>
+        <p class="prev-next-title">cassiopy.stats.Skew.pdf</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -473,9 +518,21 @@ document.write(`
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cassiopy.stats.Skew.generate"><code class="docutils literal notranslate"><span class="pre">Skew.generate()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/MixtureModel.rst.txt">
+    <a href="_sources/stats.skew.generate.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

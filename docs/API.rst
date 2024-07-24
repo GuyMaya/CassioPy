@@ -4,5 +4,5 @@ API
 .. toctree::
    :maxdepth: 2
 
-   cassiopy.mixturemodel <MixtureModel>
+   cassiopy.mixture <MixtureModel>
    cassiopy.stats <stats>

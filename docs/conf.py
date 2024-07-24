@@ -3,6 +3,25 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import sys
+import mock
+
+# List of modules to mock import
+MOCK_MODULES = ["scipy.stats", "sklearn"]
+for mod_name in MOCK_MODULES:
+   sys.modules[mod_name] = mock.Mock() 
+
+# -- Path setup --------------------------------------------------------------
+import os
+
+sys.path.insert(0, os.path.abspath("../"))
+
+print("Chemins dans sys.path:")
+for p in sys.path:
+    print(p)
+
+
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -20,6 +39,9 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_copybutton',
     'sphinx.ext.extlinks',
+    'sphinx.ext.autosummary',
+    'sphinx_design',
+    'sphinx.ext.doctest',
 ]
 
 templates_path = ['_templates']
@@ -36,7 +58,6 @@ html_static_path = ['_static']
 
 # -- Options for HTMLHelp output ---------------------------------------------
 html_theme_options = {
-
     "show_toc_level": 3,
     "navigation_depth": 3,
     "navbar_end": [ "theme-switcher", "icon-links" ],
@@ -49,8 +70,8 @@ html_theme_options = {
             "type": "fontawesome",
         }
    ],
-      "secondary_sidebar_items": {
-    "**": ["page-toc", "sourcelink"],
-    "index": ["page-toc"],
-  }
+  #     "secondary_sidebar_items": {
+  #   "**": ["page-toc", "sourcelink"],
+  #   "index": ["page-toc"],
+  # }
 }

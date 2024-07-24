@@ -1,8 +1,0 @@
-stats
-=====
-
-.. toctree::
-   :maxdepth: 1
-
-   cassiopy.stats.skew <stats.skew>
-
