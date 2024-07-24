@@ -3,9 +3,6 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import pydata_sphinx_theme
-from sphinx.application import Sphinx
-from sphinx.locale import _
 
 # List of modules to mock import
 autodoc_mock_imports = ["scipy", "sklearn"]
@@ -16,14 +13,22 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../../"))
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../../cassiopy'))
+# sys.path.insert(0, os.path.abspath('.'))
+# sys.path.insert(0, os.path.abspath('..'))
+# sys.path.insert(0, os.path.abspath('../../cassiopy'))
 
 
-import logging
-logging.basicConfig(level=logging.INFO)
-
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+# sys.path.append(os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath("../sphinxext"))
+sys.path.extend(
+    [
+        # numpy standard doc extensions
+        os.path.join(os.path.dirname(__file__), "..", "../..", "sphinxext")
+    ]
+)
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
