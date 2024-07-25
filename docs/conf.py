@@ -4,10 +4,10 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import sys
-import mock
+# import mock
 
-# List of modules to mock import
-autodoc_mock_imports = ["scipy.stats", "sklearn", 'scipy', 'matplotlib', 'numpy']
+# # List of modules to mock import
+# autodoc_mock_imports = ["scipy.stats", "sklearn", 'scipy', 'matplotlib', 'numpy']
 
 # -- Path setup --------------------------------------------------------------
 import os
@@ -22,7 +22,7 @@ needs_sphinx = '4.3'
 project = 'cassiopy'
 copyright = '2024, Maya GUY'
 author = 'Maya GUY'
-release = '0.0.1'
+release = 'alpha'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
