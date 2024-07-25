@@ -1,3 +1,6 @@
+.. _stats.Skew.pdf:
+
+
 cassiopy.stats.Skew.pdf
 ~~~~~~~~~~~~~~~~~~~~~~~~
 

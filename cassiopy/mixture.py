@@ -5,7 +5,7 @@ import scipy
 
 class SkewMixture:
     """
-    Skew-t Mixture Model for clustering.
+    Skew-t Mixture Model for clustering using PX-EM algorithm.
 
     Parameters
     ==========
@@ -30,6 +30,16 @@ class SkewMixture:
 
     params : dict, default=None
         The user-provided initial parameters. Used only if `init` is 'params'.
+
+    References
+    ==========
+
+    [1] `Lin, Tsung & Lee, Jack & Hsieh, Wan. (2007). Robust mixture models using the skew-t distribution. Statistics and Computing. 17. 81-92. 10.1007/s11222-006-9005-8. <https://doi.org/10.1007/s11222-006-9005-8>`_
+
+    Notes
+    =====
+
+    For more information, refer to the documentation:ref:`doc.mixture.SkewMixture`
 
     Examples
     ========
@@ -304,7 +314,7 @@ class SkewMixture:
 
         Parameters
         ==========
-        X : array-like
+        X : ndarray
             The input data matrix of shape (n_samples, n_features).
 
         default_n_init : int, default='auto'

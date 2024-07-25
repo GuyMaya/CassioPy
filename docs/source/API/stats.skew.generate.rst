@@ -1,3 +1,6 @@
+.. _stats.Skew.generate:
+
+
 cassiopy.stats.Skew.generate
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

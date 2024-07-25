@@ -1,0 +1,5 @@
+Mixture Model
+=============
+
+.. toctree::
+   SkewMixtureModel

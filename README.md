@@ -13,3 +13,4 @@ You can install CassioPy via pip:
 
 ## Documentation
 
+Check out the documentation at [https://cassiopy.readthedocs.io](https://cassiopy.readthedocs.io/en/latest/)

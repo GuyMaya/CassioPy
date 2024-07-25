@@ -1,4 +1,4 @@
-.. _SkewmixtureModel:
+.. _Skewmixture:
 
 cassiopy.mixture.SkewMixture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

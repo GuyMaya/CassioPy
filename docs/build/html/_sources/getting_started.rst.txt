@@ -6,7 +6,7 @@ Getting Started
 Install ``cassiopy`` with pip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``cassiopy`` is available on the `python package index <https://pypi.org>`_ as *cassiopy*:
+``cassiopy`` is available on the `python package index (pypi) <https://pypi.org/project/cassiopy/>`_ as *cassiopy*:
 
 .. code-block:: bash
 
