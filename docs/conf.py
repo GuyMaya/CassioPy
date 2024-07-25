@@ -4,31 +4,25 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import sys
-import mock
+# import mock
 
-# List of modules to mock import
-MOCK_MODULES = ["scipy.stats", "sklearn"]
-for mod_name in MOCK_MODULES:
-   sys.modules[mod_name] = mock.Mock() 
+# # List of modules to mock import
+# autodoc_mock_imports = ["scipy.stats", "sklearn", 'scipy', 'matplotlib', 'numpy']
 
 # -- Path setup --------------------------------------------------------------
 import os
 
-sys.path.insert(0, os.path.abspath("../"))
-
-print("Chemins dans sys.path:")
-for p in sys.path:
-    print(p)
-
+sys.path.insert(0, os.path.abspath("../CassioPy"))
 
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+needs_sphinx = '4.3'
 
 project = 'cassiopy'
 copyright = '2024, Maya GUY'
 author = 'Maya GUY'
-release = '0.0.1'
+release = 'alpha'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -38,10 +32,6 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx_copybutton',
-    'sphinx.ext.extlinks',
-    'sphinx.ext.autosummary',
-    'sphinx_design',
-    'sphinx.ext.doctest',
 ]
 
 templates_path = ['_templates']
@@ -70,8 +60,8 @@ html_theme_options = {
             "type": "fontawesome",
         }
    ],
-  #     "secondary_sidebar_items": {
-  #   "**": ["page-toc", "sourcelink"],
-  #   "index": ["page-toc"],
-  # }
+      "secondary_sidebar_items": {
+    "**": ["page-toc", "sourcelink"],
+    "index": ["page-toc"],
+  }
 }

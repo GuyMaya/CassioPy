@@ -14,30 +14,30 @@ class Skew:
         """
         Generate synthetic data with specified parameters.
 
-        Parameters:
-
-        - n_samples : int
+        Parameters
+        ==========
+        n_samples : int
             Number of samples to generate.
 
-        - n_dim : int
+        n_dim : int
             Number of dimensions.
 
-        - n_clusters : int
+        n_clusters : int
             Number of clusters.
 
-        - random_state : int
+        random_state : int
             Random seed for reproducibility.
 
-        Returns:
-
-        - data : ndarray
+        Returns
+        =======
+        data : ndarray
             Generated data with shape (n_samples, n_dim).
 
-        - y_true : ndarray
+        y_true : ndarray
             Labels for the generated data with shape (n_samples,).
 
-        Example:
-
+        Example
+        =======
         >>> from cassiopy import Skew
         >>> sm = Skew()
         >>> data, labels = sm.generate(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
@@ -94,26 +94,32 @@ class Skew:
         """
         Probability density fonction
 
-        Parameters:
-
-        - x : float
+        Parameters
+        ==========
+        x : float
             The input data.
-        - mu : float
+
+        mu : float
             The mean.
-        - sigma : float
+
+        sigma : float
             The standard deviation.
-        - nu : float
+
+        nu : float
             The degree of freedom.
-        - lamb : float
+
+        lamb : float
             The skewness.
 
-        Returns:
+        Returns
+        =======
 
-        - proba : float
+        proba : float
             The probability of the data.
             
 
-        Example:
+        Example
+        =======
 
         >>> from cassiopy import Skew
         >>> sm = Skew()

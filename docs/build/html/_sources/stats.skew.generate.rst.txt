@@ -3,7 +3,4 @@ cassiopy.stats.Skew.generate
 
 The ``generate`` method generates values from a skew-t distribution.
 
-**cassiopy.stats.Skew.** ``generate``
-
-.. automethod:: cassiopy.stats.Skew.generate
-
+.. autofunction:: stats.Skew.generate

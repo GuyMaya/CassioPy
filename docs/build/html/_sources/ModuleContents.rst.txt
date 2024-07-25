@@ -1,5 +1,7 @@
+.. _ModuleContents:
+
 Module contents
 ===============
 
 
-.. automethod:: cassiopy.test.essai.affiche
+
