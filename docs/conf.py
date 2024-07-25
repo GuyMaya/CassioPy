@@ -12,7 +12,7 @@ import sys
 # -- Path setup --------------------------------------------------------------
 import os
 
-sys.path.insert(0, os.path.abspath("../cassiopy"))
+sys.path.insert(0, os.path.abspath("../CassioPy"))
 
 
 # -- Project information -----------------------------------------------------
