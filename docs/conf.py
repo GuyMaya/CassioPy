@@ -48,20 +48,20 @@ html_static_path = ['_static']
 
 # -- Options for HTMLHelp output ---------------------------------------------
 html_theme_options = {
-    # "show_toc_level": 3,
-    # "navigation_depth": 3,
-    # "navbar_end": [ "theme-switcher", "icon-links" ],
-#     "icon_links": [
-#         {
-#             # Label for this link
-#             "name": "GitHub",
-#             "url": "https://github.com/GuyMaya/CassioPy",  # required
-#             "icon": "fa-brands fa-square-github",
-#             "type": "fontawesome",
-#         }
-#    ],
-  #     "secondary_sidebar_items": {
-  #   "**": ["page-toc", "sourcelink"],
-  #   "index": ["page-toc"],
-  # }
+    "show_toc_level": 3,
+    "navigation_depth": 3,
+    "navbar_end": [ "theme-switcher", "icon-links" ],
+    "icon_links": [
+        {
+            # Label for this link
+            "name": "GitHub",
+            "url": "https://github.com/GuyMaya/CassioPy",  # required
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        }
+   ],
+      "secondary_sidebar_items": {
+    "**": ["page-toc", "sourcelink"],
+    "index": ["page-toc"],
+  }
 }

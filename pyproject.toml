@@ -26,8 +26,6 @@ docs = [
   "sphinx-hoverxref",
   "sphinx-redactor-theme",
   "spinx_design",
-  "sphinx-remove-toctrees>=1.0.0.post1",
-
 ]
 
 [build-system]
