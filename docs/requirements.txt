@@ -72,7 +72,6 @@ snowballstemmer==2.2.0
     # via sphinx
 sphinx
     # via -r requirements.in
-sphinx-basic
 sphinx-design == 0.6.0
 sphinxcontrib-applehelp==1.0.8
     # via sphinx
