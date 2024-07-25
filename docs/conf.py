@@ -7,7 +7,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../cassiocy"))
+sys.path.insert(0, os.path.abspath("../"))
 
 
 # -- Project information -----------------------------------------------------
