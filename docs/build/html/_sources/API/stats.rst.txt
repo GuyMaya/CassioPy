@@ -4,7 +4,7 @@ stats
 .. toctree::
    :maxdepth: 1
 
-   cassiopy.stats.skew.generate <stats.skew.generate>
-   cassiopy.stats.skew.pdf <stats.skew.pdf>
+   skew.rvs <stats.skew.rvs>
+   skew.pdf <stats.skew.pdf>
 
 

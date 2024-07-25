@@ -24,5 +24,6 @@ Main Features
    Getting Started <getting_started>
    API <API>
    User Guide <User_guide>
+   Contact <Contact>
 
 

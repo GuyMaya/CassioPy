@@ -10,9 +10,9 @@ class Skew:
     def __init__(self):
         return
 
-    def generate(self, n_samples=100, n_dim=1, n_clusters=4, random_state=42, labels=None):
+    def rvs(self, n_samples=100, n_dim=1, n_clusters=4, random_state=42, labels=None):
         """
-        Generate synthetic data with specified parameters.
+        Generate skew-t distribution.
 
         Parameters
         ==========
@@ -45,7 +45,7 @@ class Skew:
         =======
         >>> from cassiopy.stats import Skew
         >>> sm = Skew()
-        >>> data, labels = sm.generate(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+        >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
         >>> data.shape
         (200, 2)
         >>> labels.shape

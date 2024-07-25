@@ -8,7 +8,7 @@ Mixture Model
 Skew-t Mixture models
 ----------------------
 
-:ref:`SkewMixture` models a mixture of skew-t distributions. It provides various methods for working with skew-t distributed data, including generating samples and calculating densities.
+Skew Mixture models a mixture of skew-t distributions. It provides various methods for working with skew-t distributed data, including generating samples and calculating densities.
 
 
 **Examples:**
@@ -29,3 +29,7 @@ Skew-t Mixture models
     array([[0.99999999, 0.        ],
            [0.        , 0.90        ]])
     >>> model.save('model.h5')
+
+**See also**
+
+:func:`Skew-t Mixture <cassiopy.mixture.SkewMixture>`

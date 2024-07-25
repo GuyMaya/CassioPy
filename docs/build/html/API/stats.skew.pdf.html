@@ -45,7 +45,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="User guide" href="../User_guide.html" />
-    <link rel="prev" title="cassiopy.stats.Skew.generate" href="stats.skew.generate.html" />
+    <link rel="prev" title="cassiopy.stats.Skew.rvs" href="stats.skew.rvs.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -157,6 +157,13 @@
 <li class="nav-item pst-header-nav-item">
   <a class="nav-link nav-internal" href="../User_guide.html">
     User Guide
+  </a>
+</li>
+
+
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../Contact.html">
+    Contact
   </a>
 </li>
 
@@ -287,6 +294,13 @@ document.write(`
   </a>
 </li>
 
+
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../Contact.html">
+    Contact
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -340,8 +354,8 @@ document.write(`
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="stats.html">cassiopy.stats</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="stats.skew.generate.html">cassiopy.stats.skew.generate</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">cassiopy.stats.skew.pdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stats.skew.rvs.html">skew.rvs</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">skew.pdf</a></li>
 </ul>
 </details></li>
 </ul>
@@ -433,7 +447,7 @@ document.write(`
 <p class="rubric">Notes</p>
 <p>For more information, refer to the documentation <a class="reference internal" href="../User_guide/Stats.html#doc-stats-skew"><span class="std std-ref">Stats</span></a></p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cassiopy</span> <span class="kn">import</span> <span class="n">Skew</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cassiopy.stats</span> <span class="kn">import</span> <span class="n">Skew</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">lamb</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
@@ -455,12 +469,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="stats.skew.generate.html"
+       href="stats.skew.rvs.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">cassiopy.stats.Skew.generate</p>
+        <p class="prev-next-title">cassiopy.stats.Skew.rvs</p>
       </div>
     </a>
     <a class="right-next"

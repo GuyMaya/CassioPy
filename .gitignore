@@ -10,3 +10,6 @@ env/
 tests/
 
 docs/requirements.in
+docs/build
+docs/make.bat
+docs/Makefile
