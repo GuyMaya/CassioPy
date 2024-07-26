@@ -7,8 +7,14 @@ Stats
 Skew-t
 ------
 
-Random variates distribution
+Random cluster distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Skew-t distribution can be described as a continuous probability distribution that incorporates skewness and heavy tails, making it more flexible in modeling asymmetric data with outliers compared to the normal distribution. 
+It extends the Student's t-distribution by including a skewness parameter.
+
+The random variate \( Y \) from a Skew-t distribution is given by:
+
 
 .. math::
        Y = \mu + \sigma \frac{Z}{\sqrt{\tau}}, \qquad Z\sim\mathcal{SN}(\mu=0, \sigma=1, \lambda), \qquad \tau\sim\Gamma\left(\frac{\nu}{2}, \frac{\nu}{2}\right) 
@@ -25,6 +31,10 @@ With
 :math:`\lambda` : skewness parameter
 
 :math:`\Gamma` : gamma distribution
+
+ **Special Cases:**
+   - When :math:`\lambda=0` and :math:`\nu\to\infty`, the Skew-t distribution reduces to the normal distribution.
+   - When :math:`\lambda=0`, the Skew-t distribution reduces to the Student's t-distribution.
 
 
 .. figure:: ../_static/Images/skewrvs_1D_3cluster.jpg
@@ -46,7 +56,7 @@ With
 
 **See also**
 
-:func:`Skew-t rvs <cassiopy.stats.Skew.rvs>`
+:func:`Skew-t rvs <cassiopy.stats.Skew.random_cluster>`
 
 Probability density function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
