@@ -52,7 +52,7 @@ class SkewTMixture:
     array([[10.,  2.],
            [ 1.,  2.]])
     >>> model.predict([[0, 0], [12, 3]])
-    array([1, 0])
+    array([0, 1])
     >>> model.predict_proba([[0, 0], [12, 3]])
     array([[0.99999999, 0.        ],
            [0.10      , 0.90      ]])
@@ -1262,7 +1262,6 @@ class SkewTUniformMixture:
 
         # Initializations of the prior, proportion of data in cluster k
         alpha = np.random.rand(self.n_cluster)
-        self.alpha = self.alpha / np.sum(self.alpha)
 
         return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
 
@@ -1313,7 +1312,7 @@ class SkewTUniformMixture:
         sig = gmm.covariances_.T
 
         # Initialisations of the degree of freedom
-        nu = np.random.uniform(0, 10, size=(X.shape[1], self.n_cluster))
+        nu = np.random.uniform(0., 10., size=(X.shape[1], self.n_cluster))
 
         # Initialisations of the skewness parameter
         lamb = np.random.uniform(low=1e-6, high=1e-5, size=(X.shape[1], self.n_cluster))
@@ -1361,14 +1360,15 @@ class SkewTUniformMixture:
             p[index, :-1] = self.alpha[:-1]
             p[index, -1] = self.alpha[-1]
             for dim in range(x.shape[1]):
-                p[index, :] *= Skew.pdf(
+                p[index, :-1] *= Skew.pdf(
                     x = value[dim],
                     mu = self.mu[dim, :],
                     sigma = self.sig[dim, :],
                     nu = self.nu[dim, :],
                     lamb = self.lamb[dim, :]
                 )
-                p[index, -1] *= 1 / (x[dim].max() - x[dim].min())         
+
+                p[index, -1] *= 1 / (x[:, dim].max() - x[:, dim].min())         
 
         return p
 
@@ -1400,7 +1400,7 @@ class SkewTUniformMixture:
         T1_cdf = scipy.stats.t.cdf(M, df=(nu_expended + 1))
 
         self.s1 = (
-            self.tik[:, np.newaxis, :]
+            self.tik[:, np.newaxis, :-1]
             * ((nu_expended + 1) / (nu_expended + (self.eta) ** 2))
             * (T3_cdf / T1_cdf)
         )
@@ -1430,7 +1430,7 @@ class SkewTUniformMixture:
             nu_expended * (1 - (self.delta[np.newaxis, :, :]) ** 2)
         )
         term4 = (term3 + 1) ** (-((nu_expended / 2) + 1))
-        self.s2 = term1 + self.tik[:, np.newaxis, :] * term2 * term4
+        self.s2 = term1 + self.tik[:, np.newaxis, :-1] * term2 * term4
 
         # Calculation of s3
         partie1 = (
@@ -1454,7 +1454,7 @@ class SkewTUniformMixture:
         )
         partie5 = (partie4 + 1) ** (-((self.nu[np.newaxis, :, :] / 2) + 1))
 
-        self.s3 = partie1 + self.tik[:, np.newaxis, :] * (partie2 + partie3 * partie5)
+        self.s3 = partie1 + self.tik[:, np.newaxis, :-1] * (partie2 + partie3 * partie5)
 
         # Calculation of s4
         P = np.log((self.eta**2 + nu_expended) / 2)
@@ -1469,7 +1469,7 @@ class SkewTUniformMixture:
 
         T1_pdf = scipy.stats.t.pdf(M, nu_expended + 1)
 
-        self.s4 = self.tik[:, np.newaxis, :] * (
+        self.s4 = self.tik[:, np.newaxis, :-1] * (
             self.s1 - P - Q + R + S * (T1_pdf / T1_cdf)
         )
 
@@ -1681,7 +1681,7 @@ class SkewTUniformMixture:
             labels.append(np.argmax(proba[i, :]))
         return labels
 
-    def confusion_matrix(self, y_true, y_pred=None):
+    def confusion_matrix(self, y_true, y_pred):
         """
         Calculate the confusion matrix.
 
@@ -1690,7 +1690,7 @@ class SkewTUniformMixture:
         y_true : array-like
             The true labels.
 
-        y_pred : array-like, default=None
+        y_pred : array-like
             The predicted labels.
 
         Returns
@@ -1705,11 +1705,7 @@ class SkewTUniformMixture:
 
         y_true = y_true.astype(int)
 
-        # Predict the labels if they are not provided
-        if y_pred is None:
-            y_pred = self.predict(y_true).astype(int)
-        else:
-            y_pred = np.array(y_pred).astype(int)
+        y_pred = np.array(y_pred).astype(int)
 
         # Get the unique classes
         classes = np.unique(np.concatenate((y_true, y_pred)))
