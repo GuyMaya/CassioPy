@@ -12,7 +12,7 @@ Main Features
 -------------
 
 - **Skew-t Clustering**: Utilize skew-t mixture models to perform complex clustering tasks.
-- **Skewness Calculation**: Access functions to measure and manipulate skewness in your data.
+- **Uniform Background**: Use skew-t uniform mixture models to cluster data with a uniform background.
 - **Sampling and Density**: Generate samples and calculate densities for skew-t distributions.
 
 

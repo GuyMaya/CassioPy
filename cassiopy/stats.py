@@ -7,7 +7,61 @@ class Skew:
     Generate synthetic data with skewness.
     """
     @staticmethod
-    def rvs(n_samples=100, n_dim=1, n_clusters=4, random_state=None, labels=None):
+    def rvs(mu, sigma, nu, lamb, n_samples=100, n_dim=1):
+        """
+        Generate skew-t distribution.
+
+        Parameters
+        ==========
+        n_samples : int
+            Number of samples to generate.
+
+        n_dim : int
+            Number of dimensions.
+
+        n_clusters : int
+            Number of clusters.
+
+        random_state : int
+            Random seed for reproducibility.
+
+        Returns
+        =======
+        data : ndarray
+            Generated data with shape (n_samples, n_dim).
+
+        y_true : ndarray
+            Labels for the generated data with shape (n_samples,).
+
+        Notes
+        =====
+
+        For more information, refer to the documentation :ref:`doc.stats.Skew`
+
+        Example
+        =======
+        >>> from cassiopy.stats import Skew
+        >>> sm = Skew()
+        >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+        >>> data.shape
+        (200, 2)
+        >>> labels.shape
+        (200,)
+
+        """
+
+        # Listes pour stocker les résultats
+        data = np.zeros((n_samples, n_dim))
+
+        # Boucle sur chaque dimension
+        data[: :] = (mu[:, :] + 
+                sigma[:, :] * scipy.stats.skewnorm.rvs(a=lamb[:, :], loc=0, scale=1, size=(n_samples, n_dim)) /
+                np.sqrt(scipy.stats.gamma.rvs(a=nu[:, :]/2, scale=nu[:, :]/2, size=(n_samples, n_dim))))
+
+        return data
+        
+    @staticmethod
+    def random_cluster(n_samples=100, n_dim=1, n_clusters=4, random_state=None, labels=None):
         """
         Generate skew-t distribution.
 

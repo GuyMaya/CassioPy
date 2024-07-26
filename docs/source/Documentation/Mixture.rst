@@ -28,8 +28,8 @@ With
 A skew-t mixture model assumes that the data is generated from a finite mixture of skew-t distributions, each characterized by unknown parameters. This approach is particularly useful for modeling data with skewed distributions, providing a more flexible and accurate representation than traditional GMMs.
 
 .. math::
-   p(\vec{x_i};\vec{\theta_{k}})  = \sum_{k=1}^{K} \alpha_k  \; p(\vec{x_i}|\vec{\theta_{k}}) 
-
+   p(\vec{x_i};\vec{\theta_{k}})  = \sum_{k=1}^{K} \alpha_k  \; p(x_{ij} \mid \vec{y_i};\theta)
+   
 With 
 
 .. math::
