@@ -2,4 +2,6 @@ Mixture Model
 =============
 
 .. toctree::
-   SkewMixtureModel
+   SkewTMixture 
+   SkewTUniformMixture
+

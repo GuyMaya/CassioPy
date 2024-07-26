@@ -10,6 +10,28 @@ Skew-t
 Random variates distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. math::
+       Y = \mu + \sigma \frac{Z}{\sqrt{\tau}}, \qquad Z\sim\mathcal{SN}(\mu=0, \sigma=1, \lambda), \qquad \tau\sim\Gamma\left(\frac{\nu}{2}, \frac{\nu}{2}\right) 
+
+
+With 
+
+:math:`\mu` : location parameter
+
+:math:`\sigma` : scale parameter
+
+:math:`\nu` : degrees of freedom
+
+:math:`\lambda` : skewness parameter
+
+:math:`\Gamma` : gamma distribution
+
+
+.. figure:: ../_static/Images/skewrvs_1D_3cluster.jpg
+   :alt: Description de l'image
+   :width: 400px
+   :align: center
+
 **Examples:**
 
 .. code-block:: python

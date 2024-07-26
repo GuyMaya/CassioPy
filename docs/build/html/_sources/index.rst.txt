@@ -18,12 +18,11 @@ Main Features
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-
+   
    Home <self>
    Getting Started <getting_started>
    API <API>
-   User Guide <User_guide>
+   Documentation <Documentation>
    Contact <Contact>
 
 

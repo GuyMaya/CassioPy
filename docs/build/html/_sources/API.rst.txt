@@ -2,7 +2,7 @@ API
 ===
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
-   cassiopy.mixture <API/MixtureModel>
+   cassiopy.mixture <API/MixtureModel> 
    cassiopy.stats <API/stats>

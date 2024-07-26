@@ -6,11 +6,8 @@ class Skew:
     """
     Generate synthetic data with skewness.
     """
-
-    def __init__(self):
-        return
-
-    def rvs(self, n_samples=100, n_dim=1, n_clusters=4, random_state=42, labels=None):
+    @staticmethod
+    def rvs(n_samples=100, n_dim=1, n_clusters=4, random_state=None, labels=None):
         """
         Generate skew-t distribution.
 
@@ -52,6 +49,12 @@ class Skew:
         (200,)
 
         """
+
+        if random_state is None:
+            random_state = np.random.randint(0, 2**32 - 1) 
+
+        np.random.seed(random_state)
+
         parametre = {
             'mu' : np.random.uniform(-50, 50, size=(n_dim, n_clusters)),
             'sig' : np.random.uniform(0.5, 10., size=(n_dim, n_clusters)), 
@@ -78,7 +81,7 @@ class Skew:
         for i in range(len(n)):
             data[n_tot:n_tot+n[i], :] = (parametre['mu'][:, i] + 
                     parametre['sig'][:, i] * scipy.stats.skewnorm.rvs(a=parametre['lamb'][:, i], loc=0, scale=1, size=(n[i], n_dim), random_state=random_state) /
-                    np.sqrt(scipy.stats.gamma.rvs(a=parametre['nu'][:, i]/2, scale=2/parametre['nu'][:, i], size=(n[i], n_dim), random_state=random_state)))
+                    np.sqrt(scipy.stats.gamma.rvs(a=parametre['nu'][:, i]/2, scale=parametre['nu'][:, i]/2, size=(n[i], n_dim), random_state=random_state)))
             n_tot += n[i]
 
         data = sklearn.utils.shuffle(data, random_state=random_state)
@@ -95,7 +98,8 @@ class Skew:
         else:
             return data
 
-    def pdf(self, x, mu, sigma, nu, lamb):
+    @staticmethod
+    def pdf(x, mu, sigma, nu, lamb):
         """
         Probability density fonction
 

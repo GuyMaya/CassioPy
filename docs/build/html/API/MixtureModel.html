@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
@@ -41,10 +42,11 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'API/MixtureModel';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="cassiopy.mixture.SkewMixture" href="SkewMixtureModel.html" />
+    <link rel="next" title="cassiopy.mixture.SkewTMixture" href="SkewTMixture.html" />
     <link rel="prev" title="API" href="../API.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -155,8 +157,8 @@
 
 
 <li class="nav-item pst-header-nav-item">
-  <a class="nav-link nav-internal" href="../User_guide.html">
-    User Guide
+  <a class="nav-link nav-internal" href="../Documentation.html">
+    Documentation
   </a>
 </li>
 
@@ -289,8 +291,8 @@ document.write(`
 
 
 <li class="nav-item pst-header-nav-item">
-  <a class="nav-link nav-internal" href="../User_guide.html">
-    User Guide
+  <a class="nav-link nav-internal" href="../Documentation.html">
+    Documentation
   </a>
 </li>
 
@@ -350,7 +352,8 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">cassiopy.mixture</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="SkewMixtureModel.html">cassiopy.mixture.SkewMixture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SkewTMixture.html">cassiopy.mixture.SkewTMixture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SkewTUniformMixture.html">cassiopy.mixture.SkewTUniformMixture</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="stats.html">cassiopy.stats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -419,27 +422,50 @@ document.write(`
 <h1>Mixture Model<a class="headerlink" href="#mixture-model" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="SkewMixtureModel.html">cassiopy.mixture.SkewMixture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture"><code class="docutils literal notranslate"><span class="pre">SkewMixture</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.ARI"><code class="docutils literal notranslate"><span class="pre">SkewMixture.ARI()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.E_step"><code class="docutils literal notranslate"><span class="pre">SkewMixture.E_step()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.LL"><code class="docutils literal notranslate"><span class="pre">SkewMixture.LL()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.M_step"><code class="docutils literal notranslate"><span class="pre">SkewMixture.M_step()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.confusion_matrix"><code class="docutils literal notranslate"><span class="pre">SkewMixture.confusion_matrix()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.fit"><code class="docutils literal notranslate"><span class="pre">SkewMixture.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.g_of_nu"><code class="docutils literal notranslate"><span class="pre">SkewMixture.g_of_nu()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.initialisation_gmm"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_gmm()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.initialisation_kmeans"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_kmeans()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.initialisation_params"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_params()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.initialisation_random"><code class="docutils literal notranslate"><span class="pre">SkewMixture.initialisation_random()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.load"><code class="docutils literal notranslate"><span class="pre">SkewMixture.load()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.phi"><code class="docutils literal notranslate"><span class="pre">SkewMixture.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.predict"><code class="docutils literal notranslate"><span class="pre">SkewMixture.predict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.predict_proba"><code class="docutils literal notranslate"><span class="pre">SkewMixture.predict_proba()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.save"><code class="docutils literal notranslate"><span class="pre">SkewMixture.save()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.skew_t"><code class="docutils literal notranslate"><span class="pre">SkewMixture.skew_t()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.update_lambda"><code class="docutils literal notranslate"><span class="pre">SkewMixture.update_lambda()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="SkewMixtureModel.html#cassiopy.mixture.SkewMixture.update_nu"><code class="docutils literal notranslate"><span class="pre">SkewMixture.update_nu()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="SkewTMixture.html">cassiopy.mixture.SkewTMixture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture"><code class="docutils literal notranslate"><span class="pre">SkewTMixture</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.ARI"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.ARI()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.E_step"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.E_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.LL"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.LL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.M_step"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.M_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.confusion_matrix"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.confusion_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.fit"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.g_of_nu"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.g_of_nu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.initialisation_gmm"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.initialisation_gmm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.initialisation_kmeans"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.initialisation_kmeans()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.initialisation_params"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.initialisation_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.initialisation_random"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.initialisation_random()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.load"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.phi"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.phi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.predict"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.predict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.predict_proba"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.predict_proba()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.save"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.update_lambda"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.update_lambda()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTMixture.html#cassiopy.mixture.SkewTMixture.update_nu"><code class="docutils literal notranslate"><span class="pre">SkewTMixture.update_nu()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SkewTUniformMixture.html">cassiopy.mixture.SkewTUniformMixture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.ARI"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.ARI()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.E_step"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.E_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.LL"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.LL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.M_step"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.M_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.confusion_matrix"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.confusion_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.fit"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.g_of_nu"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.g_of_nu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.initialisation_gmm"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.initialisation_gmm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.initialisation_kmeans"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.initialisation_kmeans()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.initialisation_params"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.initialisation_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.initialisation_random"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.initialisation_random()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.load"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.phi"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.phi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.predict"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.predict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.predict_proba"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.predict_proba()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.save"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.update_lambda"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.update_lambda()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.update_nu"><code class="docutils literal notranslate"><span class="pre">SkewTUniformMixture.update_nu()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -468,11 +494,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="SkewMixtureModel.html"
+       href="SkewTMixture.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">cassiopy.mixture.SkewMixture</p>
+        <p class="prev-next-title">cassiopy.mixture.SkewTMixture</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
