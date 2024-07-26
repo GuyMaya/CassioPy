@@ -28,6 +28,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_copybutton',
     'sphinx.ext.mathjax',
+    'sphinx_design',
 ]
 
 templates_path = ['_templates']

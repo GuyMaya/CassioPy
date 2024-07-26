@@ -1,4 +1,4 @@
 Contact
 =======
 
-email : maya.guy@msomg.fr
+:octicon:`mail;1em` : maya.guy@msomg.fr
