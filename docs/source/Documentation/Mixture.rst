@@ -5,6 +5,8 @@ Mixture Model
 =============
 
 
+.. _doc.mixture.SkewTMixture:
+
 Skew-t Mixture models
 ----------------------
 
@@ -71,6 +73,8 @@ Where
 
 :func:`Skew-t Mixture <cassiopy.mixture.SkewTMixture>`
 
+
+.. _doc.mixture.SkewTUniformMixture:
 
 Skew-t Uniform Mixture models
 ------------------------------
