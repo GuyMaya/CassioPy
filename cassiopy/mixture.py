@@ -160,7 +160,6 @@ class SkewTMixture:
                 else:
                     break
 
-            self.E_log_likelihood.append(E_log_likelihood_new)
             self.M_step(X)
 
             if np.any(np.isnan(self.sig)):
@@ -195,6 +194,7 @@ class SkewTMixture:
                     self.n_iter = i - 1
                     break
 
+            self.E_log_likelihood.append(E_log_likelihood_new)
             self.save(f"track_{i}")
 
             i += 1
@@ -841,6 +841,27 @@ class SkewTMixture:
         ari = adjusted_rand_score(y_true, y_pred)
 
         return print('ARI:', ari)
+    
+
+    def bic(self, X):
+        """
+        Calculate the Bayesian Information Criterion (BIC) for the model.
+
+        Parameters
+        ==========
+        X (array-like): The input data.
+
+        Returns
+        =======
+        bic (float): The BIC value.
+        """
+        # Implementation of the BIC method
+        n = X.shape[0]
+        LL = self.E_log_likelihood[-1]
+        k = self.mu.size + self.sig.size + self.nu.size + self.lamb.size + self.alpha.size - 1
+        bic = -2 * LL + k * np.log(n)
+
+        return bic
 
     def save(self, filename: str):
         """
@@ -1049,7 +1070,7 @@ class SkewTUniformMixture:
                 else:
                     break
 
-            self.E_log_likelihood.append(E_log_likelihood_new)
+            
             self.M_step(X)
 
             if np.any(np.isnan(self.sig)):
@@ -1084,6 +1105,7 @@ class SkewTUniformMixture:
                     self.n_iter = i - 1
                     break
 
+            self.E_log_likelihood.append(E_log_likelihood_new)
             self.save(f"track_{i}")
 
             i += 1
@@ -1733,6 +1755,27 @@ class SkewTUniformMixture:
         ari = adjusted_rand_score(y_true, y_pred)
 
         return print('ARI:', ari)
+    
+
+    def bic(self, X):
+        """
+        Calculate the Bayesian Information Criterion (BIC) for the model.
+
+        Parameters
+        ==========
+        X (array-like): The input data.
+
+        Returns
+        =======
+        bic (float): The BIC value.
+        """
+        # Implementation of the BIC method
+        n = X.shape[0]
+        LL = self.E_log_likelihood[-1]
+        k = self.mu.size + self.sig.size + self.nu.size + self.lamb.size + self.alpha.size - 1
+        bic = -2 * LL + k * np.log(n)
+
+        return bic
 
     def save(self, filename: str):
         """
