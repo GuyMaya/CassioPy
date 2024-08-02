@@ -2,7 +2,7 @@ import numpy as np
 import sklearn
 import scipy.stats
 
-class Skew:
+class SkewT:
     """
     Generate synthetic data with skewness.
     """
@@ -36,12 +36,12 @@ class Skew:
         Notes
         =====
 
-        For more information, refer to the documentation :ref:`doc.stats.Skew`
+        For more information, refer to the documentation :ref:`doc.stats.SkewT`
 
         Example
         =======
         >>> from cassiopy.stats import Skew
-        >>> sm = Skew()
+        >>> sm = SkewT()
         >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
         >>> data.shape
         (200, 2)
@@ -54,7 +54,7 @@ class Skew:
         data = np.zeros((n_samples, n_dim))
 
         # Boucle sur chaque dimension
-        data[: :] = (mu[:, :] + 
+        data[:, :] = (mu[:, :] + 
                 sigma[:, :] * scipy.stats.skewnorm.rvs(a=lamb[:, :], loc=0, scale=1, size=(n_samples, n_dim)) /
                 np.sqrt(scipy.stats.gamma.rvs(a=nu[:, :]/2, scale=nu[:, :]/2, size=(n_samples, n_dim))))
 
@@ -90,12 +90,12 @@ class Skew:
         Notes
         =====
 
-        For more information, refer to the documentation :ref:`doc.stats.Skew`
+        For more information, refer to the documentation :ref:`doc.stats.SkewT`
 
         Example
         =======
         >>> from cassiopy.stats import Skew
-        >>> sm = Skew()
+        >>> sm = SkewT()
         >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
         >>> data.shape
         (200, 2)
@@ -187,13 +187,13 @@ class Skew:
         Notes
         =====
 
-        For more information, refer to the documentation :ref:`doc.stats.Skew`
+        For more information, refer to the documentation :ref:`doc.stats.SkewT`
 
         Example
         =======
 
         >>> from cassiopy.stats import Skew
-        >>> sm = Skew()
+        >>> sm = SkewT()
         >>> x, mu, sigma, nu, lamb = 0.5, 0, 1, 10, 0.5
         >>> sm.pdf(x, mu, sigma, nu, lamb)
         0.3520653267642995    

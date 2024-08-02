@@ -1,4 +1,4 @@
-.. _doc.stats.Skew:
+.. _doc.stats.SkewT:
 
 
 Stats
@@ -46,8 +46,8 @@ With
 
 .. code-block:: python
 
-    >>> from cassiopy.stats import Skew
-    >>> sm = Skew()
+    >>> from cassiopy.stats import SkewT
+    >>> sm = SkewT()
     >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
     >>> data.shape
     (200, 2)
@@ -56,7 +56,7 @@ With
 
 **See also**
 
-:func:`Skew-t rvs <cassiopy.stats.Skew.random_cluster>`
+:func:`Skew-t rvs <cassiopy.stats.SkewT.random_cluster>`
 
 Probability density function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,12 +80,12 @@ Where :
 
 .. code-block:: python
 
-    >>> from cassiopy.stats import Skew
-    >>> sm = Skew()
+    >>> from cassiopy.stats import SkewT
+    >>> sm = SkewT()
     >>> x, mu, sigma, nu, lamb = 0.5, 0, 1, 10, 0.5
     >>> sm.pdf(x, mu, sigma, nu, lamb)
     0.3520653267642995   
 
 **See also**
 
-:func:`Skew-t pdf <cassiopy.stats.Skew.pdf>`
+:func:`Skew-t pdf <cassiopy.stats.SkewT.pdf>`

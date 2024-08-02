@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "cassiopy"
-version = "0.0.19"
+version = "0.0.22"
 description = "A skew library"
 authors = ["Maya GUY <Maya.guy@msomg.fr>"]
 license = "MIT"
@@ -20,12 +20,11 @@ scikit-learn = ">=1.5.1"
 
 [tool.poetry.extras]
 docs = [
-  "pydata-sphinx-theme==0.15.3",
-  "sphinx==7.3.7",
-  "sphinx-copybutton>=0.5.2",
+  "pydata-sphinx-theme",
+  "sphinx",
+  "sphinx-copybutton",
   "sphinx-hoverxref",
-  "sphinx-redactor-theme",
-  "spinx_design",
+  "spinx_design"
 ]
 
 [build-system]

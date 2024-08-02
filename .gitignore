@@ -13,3 +13,5 @@ docs/requirements.in
 docs/build
 docs/make.bat
 docs/Makefile
+
+cassiopy/grid.py

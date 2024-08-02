@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import scipy
-from cassiopy.stats import Skew
+from cassiopy.stats import SkewT
 
 class SkewTMixture:
     """
@@ -39,24 +39,25 @@ class SkewTMixture:
     Notes
     =====
 
-    For more information, refer to the documentation:ref:`doc.mixture.SkewTMixture`
+    For more information, refer to the documentation :ref:`doc.mixture.SkewTMixture`
 
     Examples
     ========
     >>> import numpy as np
     >>> from cassiopy.mixture import SkewTMixture
-    >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
+    >>> X = np.array([[5, 3], [5, 7], [5, 1], [20, 3], [20, 7], [20, 1]])
     >>> model = SkewTMixture(n_cluster=2, n_iter=100, tol=1e-4, init='random')
     >>> model.fit(X)
     >>> model.mu
-    array([[10.,  2.],
-           [ 1.,  2.]])
-    >>> model.predict([[0, 0], [12, 3]])
-    array([0, 1])
-    >>> model.predict_proba([[0, 0], [12, 3]])
-    array([[0.99999999, 0.        ],
-           [0.10      , 0.90      ]])
+    array([[20.,  3.],
+        [ 5.,  3.]])
+    >>> model.predict_proba([[0, 0], [22, 5]])
+    array([[1.00000000, 0.        ],
+        [0.15      , 0.85      ]])
     >>> model.save('model.h5')
+    >>> model.load('model.h5')
+    >>> model.predict([[0, 0], [22, 5]])
+    array([0, 1])
     """
 
     def __init__(
@@ -159,7 +160,6 @@ class SkewTMixture:
                 else:
                     break
 
-            self.E_log_likelihood.append(E_log_likelihood_new)
             self.M_step(X)
 
             if np.any(np.isnan(self.sig)):
@@ -194,6 +194,7 @@ class SkewTMixture:
                     self.n_iter = i - 1
                     break
 
+            self.E_log_likelihood.append(E_log_likelihood_new)
             self.save(f"track_{i}")
 
             i += 1
@@ -461,7 +462,7 @@ class SkewTMixture:
         for index, value in enumerate(x):
             p[index, :] = self.alpha[:]
             for dim in range(x.shape[1]):
-                p[index, :] *= Skew.pdf(
+                p[index, :] *= SkewT.pdf(
                     x = value[dim],
                     mu = self.mu[dim, :],
                     sigma = self.sig[dim, :],
@@ -515,7 +516,7 @@ class SkewTMixture:
         f = np.zeros((X.shape[0], X.shape[1], self.n_cluster))
 
         for dim in range(X.shape[1]):
-            f[:, dim, :] = Skew.pdf(
+            f[:, dim, :] = SkewT.pdf(
                 X[:, dim][:, np.newaxis],
                 self.mu[dim, :],
                 self.sig[dim, :],
@@ -824,28 +825,43 @@ class SkewTMixture:
 
         return matrix
 
-    def ARI(self, x, y):
+    def ARI(self, y_true, y_pred):
         """
         Compute the accuracy of the model.
 
         Parameters
         ==========
-        x : array-like
-            The input data.
-
-        y : array-like
-            The true labels.
+        y (array-like): The true labels.
 
         Returns
         =======
-        acc : float
-            The accuracy.
+        ari (float): The ARI.
         """
         from sklearn.metrics import adjusted_rand_score
+        ari = adjusted_rand_score(y_true, y_pred)
 
-        ari = adjusted_rand_score(y, np.argmax(self.predict_proba(x), axis=1))
+        return print('ARI:', ari)
+    
 
-        return print("ARI:", ari)
+    def bic(self, X):
+        """
+        Calculate the Bayesian Information Criterion (BIC) for the model.
+
+        Parameters
+        ==========
+        X (array-like): The input data.
+
+        Returns
+        =======
+        bic (float): The BIC value.
+        """
+        # Implementation of the BIC method
+        n = X.shape[0]
+        LL = self.E_log_likelihood[-1]
+        k = self.mu.size + self.sig.size + self.nu.size + self.lamb.size + self.alpha.size - 1
+        bic = -2 * LL + k * np.log(n)
+
+        return bic
 
     def save(self, filename: str):
         """
@@ -933,24 +949,25 @@ class SkewTUniformMixture:
     Notes
     =====
 
-    For more information, refer to the documentation:ref:`doc.mixture.SkewTUniformMixture`
+    For more information, refer to the documentation :ref:`doc.mixture.SkewTUniformMixture`
 
     Examples
     ========
     >>> import numpy as np
     >>> from cassiopy.mixture import SkewTUniformMixture
-    >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
+    >>> X = np.array([[3, 5], [3, 8], [3, 2], [15, 5], [15, 8], [15, 2]])
     >>> model = SkewTUniformMixture(n_cluster=2, n_iter=100, tol=1e-4, init='random')
     >>> model.fit(X)
     >>> model.mu
-    array([[10.,  2.],
-           [ 1.,  2.]])
-    >>> model.predict([[0, 0], [12, 3]])
-    array([0, 1])
-    >>> model.predict_proba([[0, 0], [12, 3]])
-    array([[0.99999999, 0.        , 0.        ],
-           [0.        , 0.90      , 0.10      ]])
+    array([[15.,  5.],
+        [ 3.,  5.]])
+    >>> model.predict_proba([[0, 0], [17, 6]])
+    array([[1.        , 0.        , 0.        ],
+        [0.        , 0.15      , 0.85      ]])
     >>> model.save('model.h5')
+    >>> model.load('model.h5')
+    >>> model.predict([[0, 0], [17, 6]])
+    array([0, 1])
     """
 
     def __init__(
@@ -1053,7 +1070,7 @@ class SkewTUniformMixture:
                 else:
                     break
 
-            self.E_log_likelihood.append(E_log_likelihood_new)
+            
             self.M_step(X)
 
             if np.any(np.isnan(self.sig)):
@@ -1088,6 +1105,7 @@ class SkewTUniformMixture:
                     self.n_iter = i - 1
                     break
 
+            self.E_log_likelihood.append(E_log_likelihood_new)
             self.save(f"track_{i}")
 
             i += 1
@@ -1360,7 +1378,7 @@ class SkewTUniformMixture:
             p[index, :-1] = self.alpha[:-1]
             p[index, -1] = self.alpha[-1]
             for dim in range(x.shape[1]):
-                p[index, :-1] *= Skew.pdf(
+                p[index, :-1] *= SkewT.pdf(
                     x = value[dim],
                     mu = self.mu[dim, :],
                     sigma = self.sig[dim, :],
@@ -1416,7 +1434,7 @@ class SkewTUniformMixture:
         f = np.zeros((X.shape[0], X.shape[1], self.n_cluster))
 
         for dim in range(X.shape[1]):
-            f[:, dim, :] = Skew.pdf(
+            f[:, dim, :] = SkewT.pdf(
                 X[:, dim][:, np.newaxis],
                 self.mu[dim, :],
                 self.sig[dim, :],
@@ -1721,28 +1739,43 @@ class SkewTUniformMixture:
 
         return matrix
 
-    def ARI(self, x, y):
+    def ARI(self, y_true, y_pred):
         """
         Compute the accuracy of the model.
 
         Parameters
         ==========
-        x : array-like
-            The input data.
-
-        y : array-like
-            The true labels.
+        y (array-like): The true labels.
 
         Returns
         =======
-        acc : float
-            The accuracy.
+        ari (float): The ARI.
         """
         from sklearn.metrics import adjusted_rand_score
+        ari = adjusted_rand_score(y_true, y_pred)
 
-        ari = adjusted_rand_score(y, np.argmax(self.predict_proba(x), axis=1))
+        return print('ARI:', ari)
+    
 
-        return print("ARI:", ari)
+    def bic(self, X):
+        """
+        Calculate the Bayesian Information Criterion (BIC) for the model.
+
+        Parameters
+        ==========
+        X (array-like): The input data.
+
+        Returns
+        =======
+        bic (float): The BIC value.
+        """
+        # Implementation of the BIC method
+        n = X.shape[0]
+        LL = self.E_log_likelihood[-1]
+        k = self.mu.size + self.sig.size + self.nu.size + self.lamb.size + self.alpha.size - 1
+        bic = -2 * LL + k * np.log(n)
+
+        return bic
 
     def save(self, filename: str):
         """

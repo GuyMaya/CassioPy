@@ -17,7 +17,6 @@ needs_sphinx = '4.3'
 project = 'cassiopy'
 copyright = '2024, Maya GUY'
 author = 'Maya GUY'
-release = 'alpha'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

@@ -1,9 +1,9 @@
-.. _stats.Skew.pdf:
+.. _stats.SkewT.pdf:
 
 
-cassiopy.stats.Skew.pdf
+cassiopy.stats.SkewT.pdf
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``pdf`` method calculates the probability density function of the skew-t distribution.
 
-.. autofunction:: cassiopy.stats.Skew.pdf
+.. autofunction:: cassiopy.stats.SkewT.pdf

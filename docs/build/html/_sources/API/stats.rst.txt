@@ -4,7 +4,7 @@ stats
 .. toctree::
    :maxdepth: 1
 
-   skew.rvs <stats.skew.rvs>
-   skew.pdf <stats.skew.pdf>
+   SkewT.rvs <stats.SkewT.rvs>
+   SkewT.pdf <stats.SkewT.pdf>
 
 
