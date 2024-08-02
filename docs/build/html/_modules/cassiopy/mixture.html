@@ -559,7 +559,6 @@ document.write(`
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">break</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">E_log_likelihood</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">E_log_likelihood_new</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">M_step</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sig</span><span class="p">)):</span>
@@ -594,6 +593,7 @@ document.write(`
                     <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="k">break</span>
 
+            <span class="bp">self</span><span class="o">.</span><span class="n">E_log_likelihood</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">E_log_likelihood_new</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;track_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -1265,6 +1265,27 @@ document.write(`
 
         <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ARI:&#39;</span><span class="p">,</span> <span class="n">ari</span><span class="p">)</span></div>
 
+    
+
+    <span class="k">def</span> <span class="nf">bic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the Bayesian Information Criterion (BIC) for the model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ==========</span>
+<span class="sd">        X (array-like): The input data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        =======</span>
+<span class="sd">        bic (float): The BIC value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Implementation of the BIC method</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">LL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_log_likelihood</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lamb</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">LL</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">bic</span>
 
 <div class="viewcode-block" id="SkewTMixture.save">
 <a class="viewcode-back" href="../../API/SkewTMixture.html#cassiopy.mixture.SkewTMixture.save">[docs]</a>
@@ -1484,7 +1505,7 @@ document.write(`
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">break</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">E_log_likelihood</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">E_log_likelihood_new</span><span class="p">)</span>
+            
             <span class="bp">self</span><span class="o">.</span><span class="n">M_step</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sig</span><span class="p">)):</span>
@@ -1519,6 +1540,7 @@ document.write(`
                     <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="k">break</span>
 
+            <span class="bp">self</span><span class="o">.</span><span class="n">E_log_likelihood</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">E_log_likelihood_new</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;track_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -2193,6 +2215,27 @@ document.write(`
 
         <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ARI:&#39;</span><span class="p">,</span> <span class="n">ari</span><span class="p">)</span></div>
 
+    
+
+    <span class="k">def</span> <span class="nf">bic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the Bayesian Information Criterion (BIC) for the model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ==========</span>
+<span class="sd">        X (array-like): The input data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        =======</span>
+<span class="sd">        bic (float): The BIC value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Implementation of the BIC method</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">LL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_log_likelihood</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lamb</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">LL</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">bic</span>
 
 <div class="viewcode-block" id="SkewTUniformMixture.save">
 <a class="viewcode-back" href="../../API/SkewTUniformMixture.html#cassiopy.mixture.SkewTUniformMixture.save">[docs]</a>
