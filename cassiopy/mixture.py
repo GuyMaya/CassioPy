@@ -2,6 +2,8 @@ import numpy as np
 import os
 import scipy
 from cassiopy.stats import SkewT
+import pandas as pd
+
 
 class SkewTMixture:
     """
@@ -15,7 +17,7 @@ class SkewTMixture:
     n_iter : int, default=10
         The number of iterations to perform during the parameter estimation.
 
-    tol : float, default=1e-5
+    tol : float, default=1e-8
         The convergence threshold. Iterations will stop when the
         improvement is below this threshold.
 
@@ -28,13 +30,22 @@ class SkewTMixture:
         - 'kmeans': Parameters are initialized using K-means.
         - 'gmm': Parameters are initialized using a Gaussian Mixture Model.
 
+    n_init_gmm : int, default=8
+        The number of initializations to perform when using the GMM initialization method.
+
     params : dict, default=None
         The user-provided initial parameters. Used only if `init` is 'params'.
+
+    verbose : int, default=0
+        The verbosity level. If 1, the model will print the iteration number.
+
 
     References
     ==========
 
     [1] `Lin, Tsung & Lee, Jack & Hsieh, Wan. (2007). Robust mixture models using the skew-t distribution. Statistics and Computing. 17. 81-92. 10.1007/s11222-006-9005-8. <https://doi.org/10.1007/s11222-006-9005-8>`_
+
+    [2] `Chamroukhi, Faicel. (2016). Robust mixture of experts modeling using the skew-t distribution. Neurocomputing, 260, 86-99. <https://doi.org/10.1016/j.neucom.2017.05.044>`_
 
     Notes
     =====
@@ -61,12 +72,13 @@ class SkewTMixture:
     """
 
     def __init__(
-        self, n_cluster: int, n_iter=10, tol=1e-8, init="gmm", params=None, n_init_gmm=8
+        self, n_cluster: int, n_iter=10, tol=1e-8, init="gmm", params=None, n_init_gmm=8, verbose=0
     ):
         self.n_cluster = n_cluster
         self.n_iter = n_iter
         self.tol = tol
         self.init_method = init
+        self.verbose = verbose
         if self.init_method == "params":
             self.params = params
 
@@ -79,7 +91,7 @@ class SkewTMixture:
 
         Parameters
         ==========
-        X : array-like 
+        X : array-like
             Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
         """
 
@@ -107,7 +119,7 @@ class SkewTMixture:
             for params in params_to_test:
                 self.initialisation_params(params, X)
                 self.p = self.phi(X)
-                LL = self.LL(X)
+                LL = self.LL()
                 if LL > best_LL:
                     best_LL = LL
                     best_params = params
@@ -132,7 +144,8 @@ class SkewTMixture:
                 f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'"
             )
 
-        print("initialization method :", self.init_method)
+        if self.verbose==1:
+            print("initialization method :", self.init_method)
 
         self.E_log_likelihood = [-np.inf]
 
@@ -141,10 +154,11 @@ class SkewTMixture:
         i = 0
 
         while i < self.n_iter + 1:
-            print(f"iteration: {i}/{self.n_iter}")
+            if self.verbose==1:
+                print(f"iteration: {i}/{self.n_iter}")
 
             self.E_step(X)
-            E_log_likelihood_new = self.LL(X)
+            E_log_likelihood_new = self.LL()
 
             if np.abs(E_log_likelihood_new - self.E_log_likelihood[i]) <= self.tol:
                 if i < 2:
@@ -215,19 +229,19 @@ class SkewTMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': numpy array
+            - 'mu': array-like
                 Matrix of means.
 
-            - 'sig': numpy array
+            - 'sig': array-like
                 Matrix of covariances.
 
-            - 'nu': numpy array
+            - 'nu': array-like
                 Matrix of degrees of freedom.
 
-            - 'lamb': numpy array
+            - 'lamb': array-like
                 Matrix of skewness parameters.
 
-            - 'alpha': numpy array
+            - 'alpha': array-like
                 Array of cluster proportions.
         """
         # Implementation of the random initialization method
@@ -259,22 +273,22 @@ class SkewTMixture:
         params : dict
             A dictionary containing the initial values for the model parameters.
 
-            - 'mu' : ndarray
+            - 'mu' : array-like
                 The mean vectors for each cluster. Shape: (n_features, n_cluster).
 
-            - 'sig' : ndarray
+            - 'sig' : array-like
                 The covariance matrices for each cluster. Shape: (n_features, n_cluster).
 
-            - 'nu' : ndarray
+            - 'nu' : array-like
                 The degrees of freedom for each cluster. Shape: (n_features, n_cluster).
 
-            - 'lamb' : ndarray
+            - 'lamb' : array-like
                 The skewness parameters for each cluster. Shape: (n_features, n_cluster).
 
-            - 'alpha' : ndarray
+            - 'alpha' : array-like
                 The mixing proportions for each cluster. Shape: (n_cluster,).
 
-        X : ndarray
+        X : array-like
             The input data. Shape: (n_samples, n_features).
         """
         if params["mu"].shape != (X.shape[1], self.n_cluster):
@@ -315,7 +329,7 @@ class SkewTMixture:
 
         Parameters
         ==========
-        X : ndarray
+        X : array-like
             The input data matrix of shape (n_samples, n_features).
 
         default_n_init : int, default='auto'
@@ -404,8 +418,6 @@ class SkewTMixture:
         gmm = GaussianMixture(
             n_components=self.n_cluster,
             covariance_type="diag",
-            reg_covar=1e-6,
-            tol=1e-6,
         )
         gmm.fit(X)
 
@@ -434,7 +446,7 @@ class SkewTMixture:
         ==========
         x : float
             The input value.
-        
+
         nu : float
             The parameter value.
         """
@@ -444,7 +456,7 @@ class SkewTMixture:
         D = ((nu + 1) * x**2 - nu - 1) / ((nu + 1) * (nu + 1 + x**2))
         return A + B + C + D
 
-    def phi(self, x):
+    def phi(self, X):
         """
         Calculates the probability density function (PDF) for each data point in x.
 
@@ -455,20 +467,23 @@ class SkewTMixture:
 
         Returns
         =======
-        p : array-like 
+        p : array-like
             Shape : (n_samples, n_cluster). The PDF values for each data point in x.
         """
-        p = np.zeros((x.shape[0], self.n_cluster))
-        for index, value in enumerate(x):
-            p[index, :] = self.alpha[:]
-            for dim in range(x.shape[1]):
-                p[index, :] *= SkewT.pdf(
-                    x = value[dim],
-                    mu = self.mu[dim, :],
-                    sigma = self.sig[dim, :],
-                    nu = self.nu[dim, :],
-                    lamb = self.lamb[dim, :]
-                )
+        if isinstance(X, pd.DataFrame):
+            X = X.values
+            
+        p = np.ones((X.shape[0], self.n_cluster)) * self.alpha[np.newaxis, :]
+
+        for dim in range(X.shape[1]):
+            pdf_values = SkewT.pdf(
+                x=X[:, dim][:, np.newaxis],  # Shape (n_samples, 1)
+                mu=self.mu[dim, :],          # Shape (n_cluster,)
+                sigma=self.sig[dim, :],      # Shape (n_cluster,)
+                nu=self.nu[dim, :],          # Shape (n_cluster,)
+                lamb=self.lamb[dim, :]       # Shape (n_cluster,)
+            )
+            p *= pdf_values
 
         return p
 
@@ -476,6 +491,8 @@ class SkewTMixture:
         """
         Performs the E-step of the SkewMM algorithm.
         """
+        if isinstance(X, pd.DataFrame):
+            X = X.values
 
         # Implementation of the predict_proba method
         self.p = self.phi(X)
@@ -575,18 +592,13 @@ class SkewTMixture:
 
         return self
 
-    def LL(self, x):
+    def LL(self):
         """
         Calculate the log-likelihood of the model.
 
-        Parameters
-        ==========
-        x : array-like
-            Input parameter (not used in the calculation)
-
         Returns
         =======
-        LL : float 
+        LL : float
             Log-likelihood value
         """
         LL = np.sum(np.log(np.sum(self.p, axis=(1))), axis=0)
@@ -642,7 +654,7 @@ class SkewTMixture:
 
         k : int
             The cluster index.
-        
+
         j : int
             The feature index.
 
@@ -674,6 +686,9 @@ class SkewTMixture:
         from joblib import Parallel, delayed
         import warnings
 
+        if isinstance(X, pd.DataFrame):
+            X = X.values
+            
         # Update of alpha PX_CM-step-1
         self.alpha[:] = np.sum(self.tik[:, :], axis=0) / X.shape[0]
 
@@ -753,6 +768,7 @@ class SkewTMixture:
         proba : array-like
             The posterior probabilities.
         """
+            
         # Implementation of the predict_proba method
         p = self.phi(X)
 
@@ -776,9 +792,8 @@ class SkewTMixture:
         """
         # Implementation of the predict method
         proba = self.predict_proba(X)
-        labels = []
-        for i in range(proba.shape[0]):
-            labels.append(np.argmax(proba[i, :]))
+        labels = np.argmax(proba, axis=1)
+
         return labels
 
     def confusion_matrix(self, y_true, y_pred=None):
@@ -795,10 +810,9 @@ class SkewTMixture:
 
         Returns
         =======
-        matrix : DataFrame
-            The confusion matrix.
+        matrix : array-like
+            The confusion matrix. The last cluster correspond to the uniform cluster.
         """
-        import pandas as pd
 
         if y_true is None:
             raise ValueError("Error: The true labels are missing, please provide them.")
@@ -811,17 +825,21 @@ class SkewTMixture:
         else:
             y_pred = np.array(y_pred).astype(int)
 
-        # Get the unique classes
+        # Obtenez les classes uniques
         classes = np.unique(np.concatenate((y_true, y_pred)))
 
-        # Create the confusion matrix
-        matrix = pd.DataFrame(0, index=classes, columns=classes)
+        # Créez une matrice de confusion initialisée à zéro
+        matrix = np.zeros((self.n_cluster, self.n_cluster), dtype=int)
 
-        # Count the occurrences of each class
-        for i in range(len(y_true)):
-            true_label = y_true[i]
-            pred_label = y_pred[i]
-            matrix.at[true_label, pred_label] += 1
+        # Utilisez np.searchsorted pour obtenir les indices des classes
+        true_indices = np.searchsorted(classes, y_true)
+        pred_indices = np.searchsorted(classes, y_pred)
+
+        # Mettez à jour la matrice de confusion en comptant les occurrences
+        for true_idx, pred_idx in zip(true_indices, pred_indices):
+            matrix[true_idx, pred_idx] += 1
+
+
 
         return matrix
 
@@ -831,17 +849,19 @@ class SkewTMixture:
 
         Parameters
         ==========
-        y (array-like): The true labels.
+        y : array-like
+            The true labels.
 
         Returns
         =======
-        ari (float): The ARI.
+        ari : float
+            The ARI.
         """
         from sklearn.metrics import adjusted_rand_score
+
         ari = adjusted_rand_score(y_true, y_pred)
 
-        return print('ARI:', ari)
-    
+        return print("ARI:", ari)
 
     def bic(self, X):
         """
@@ -858,7 +878,14 @@ class SkewTMixture:
         # Implementation of the BIC method
         n = X.shape[0]
         LL = self.E_log_likelihood[-1]
-        k = self.mu.size + self.sig.size + self.nu.size + self.lamb.size + self.alpha.size - 1
+        k = (
+            self.mu.size
+            + self.sig.size
+            + self.nu.size
+            + self.lamb.size
+            + self.alpha.size
+            - 1
+        )
         bic = -2 * LL + k * np.log(n)
 
         return bic
@@ -925,7 +952,7 @@ class SkewTUniformMixture:
     n_iter : int, default=10
         The number of iterations to perform during the parameter estimation.
 
-    tol : float, default=1e-5
+    tol : float, default=1e-8
         The convergence threshold. Iterations will stop when the
         improvement is below this threshold.
 
@@ -938,13 +965,24 @@ class SkewTUniformMixture:
         - 'kmeans': Parameters are initialized using K-means.
         - 'gmm': Parameters are initialized using a Gaussian Mixture Model.
 
+    n_init_gmm : int, default=8
+        The number of initializations to perform when using the GMM initialization method.
+
+
     params : dict, default=None
         The user-provided initial parameters. Used only if `init` is 'params'.
+
+        
+    verbose : int, default=0
+        The verbosity level. If 1, the model will print the iteration number.
 
     References
     ==========
 
     [1] `Lin, Tsung & Lee, Jack & Hsieh, Wan. (2007). Robust mixture models using the skew-t distribution. Statistics and Computing. 17. 81-92. 10.1007/s11222-006-9005-8. <https://doi.org/10.1007/s11222-006-9005-8>`_
+
+    [2] `Chamroukhi, Faicel. (2016). Robust mixture of experts modeling using the skew-t distribution. Neurocomputing, 260, 86-99. <https://doi.org/10.1016/j.neucom.2017.05.044>`_
+
 
     Notes
     =====
@@ -971,12 +1009,13 @@ class SkewTUniformMixture:
     """
 
     def __init__(
-        self, n_cluster: int, n_iter=10, tol=1e-8, init="gmm", params=None, n_init_gmm=8
+        self, n_cluster: int, n_iter=10, tol=1e-8, init="gmm", params=None, n_init_gmm=8, verbose=0
     ):
         self.n_cluster = n_cluster
         self.n_iter = n_iter
         self.tol = tol
         self.init_method = init
+        self.verbose = verbose
         if self.init_method == "params":
             self.params = params
 
@@ -989,7 +1028,7 @@ class SkewTUniformMixture:
 
         Parameters
         ==========
-        X : array-like 
+        X : array-like
             Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
         """
 
@@ -1017,7 +1056,7 @@ class SkewTUniformMixture:
             for params in params_to_test:
                 self.initialisation_params(params, X)
                 self.p = self.phi(X)
-                LL = self.LL(X)
+                LL = self.LL()
                 if LL > best_LL:
                     best_LL = LL
                     best_params = params
@@ -1042,7 +1081,8 @@ class SkewTUniformMixture:
                 f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'"
             )
 
-        print("initialization method :", self.init_method)
+        if self.verbose==1:
+            print("initialization method :", self.init_method)
 
         self.E_log_likelihood = [-np.inf]
 
@@ -1051,10 +1091,11 @@ class SkewTUniformMixture:
         i = 0
 
         while i < self.n_iter + 1:
-            print(f"iteration: {i}/{self.n_iter}")
+            if self.verbose==1:
+                print(f"iteration: {i}/{self.n_iter}")
 
             self.E_step(X)
-            E_log_likelihood_new = self.LL(X)
+            E_log_likelihood_new = self.LL()
 
             if np.abs(E_log_likelihood_new - self.E_log_likelihood[i]) <= self.tol:
                 if i < 2:
@@ -1070,7 +1111,6 @@ class SkewTUniformMixture:
                 else:
                     break
 
-            
             self.M_step(X)
 
             if np.any(np.isnan(self.sig)):
@@ -1126,19 +1166,19 @@ class SkewTUniformMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': numpy array
+            - 'mu': array-like
                 Matrix of means.
 
-            - 'sig': numpy array
+            - 'sig': array-like
                 Matrix of covariances.
 
-            - 'nu': numpy array
+            - 'nu': array-like
                 Matrix of degrees of freedom.
 
-            - 'lamb': numpy array
+            - 'lamb': array-like
                 Matrix of skewness parameters.
 
-            - 'alpha': numpy array
+            - 'alpha': array-like
                 Array of cluster proportions.
         """
         # Implementation of the random initialization method
@@ -1170,22 +1210,22 @@ class SkewTUniformMixture:
         params : dict
             A dictionary containing the initial values for the model parameters.
 
-            - 'mu' : ndarray
+            - 'mu' : array-like
                 The mean vectors for each cluster. Shape: (n_features, n_cluster).
 
-            - 'sig' : ndarray
+            - 'sig' : array-like
                 The covariance matrices for each cluster. Shape: (n_features, n_cluster).
 
-            - 'nu' : ndarray
+            - 'nu' : array-like
                 The degrees of freedom for each cluster. Shape: (n_features, n_cluster).
 
-            - 'lamb' : ndarray
+            - 'lamb' : array-like
                 The skewness parameters for each cluster. Shape: (n_features, n_cluster).
 
-            - 'alpha' : ndarray
+            - 'alpha' : array-like
                 The mixing proportions for each cluster. Shape: (n_cluster,).
 
-        X : ndarray
+        X : array-like
             The input data. Shape: (n_samples, n_features).
         """
         if params["mu"].shape != (X.shape[1], self.n_cluster):
@@ -1220,7 +1260,7 @@ class SkewTUniformMixture:
 
         # Add the noise cluster
         self.alpha = np.append(self.alpha, 0.9)
-        self.alpha = self.alpha/ np.sum(self.alpha)
+        self.alpha = self.alpha / np.sum(self.alpha)
 
         return self
 
@@ -1230,7 +1270,7 @@ class SkewTUniformMixture:
 
         Parameters
         ==========
-        X : ndarray
+        X : array-like
             The input data matrix of shape (n_samples, n_features).
 
         default_n_init : int, default='auto'
@@ -1318,8 +1358,6 @@ class SkewTUniformMixture:
         gmm = GaussianMixture(
             n_components=self.n_cluster,
             covariance_type="diag",
-            reg_covar=1e-6,
-            tol=1e-6,
         )
         gmm.fit(X)
 
@@ -1330,7 +1368,7 @@ class SkewTUniformMixture:
         sig = gmm.covariances_.T
 
         # Initialisations of the degree of freedom
-        nu = np.random.uniform(0., 10., size=(X.shape[1], self.n_cluster))
+        nu = np.random.uniform(0.0, 10.0, size=(X.shape[1], self.n_cluster))
 
         # Initialisations of the skewness parameter
         lamb = np.random.uniform(low=1e-6, high=1e-5, size=(X.shape[1], self.n_cluster))
@@ -1348,7 +1386,7 @@ class SkewTUniformMixture:
         ==========
         x : float
             The input value.
-        
+
         nu : float
             The parameter value.
         """
@@ -1358,7 +1396,7 @@ class SkewTUniformMixture:
         D = ((nu + 1) * x**2 - nu - 1) / ((nu + 1) * (nu + 1 + x**2))
         return A + B + C + D
 
-    def phi(self, x):
+    def phi(self, X):
         """
         Calculates the probability density function (PDF) for each data point in x.
 
@@ -1369,24 +1407,27 @@ class SkewTUniformMixture:
 
         Returns
         =======
-        p : array-like 
+        p : array-like
             Shape : (n_samples, n_cluster). The PDF values for each data point in x.
         """
-        p = np.zeros((x.shape[0], self.n_cluster+1))
+        if isinstance(X, pd.DataFrame):
+            X = X.to_numpy()
 
-        for index, value in enumerate(x):
+        p = np.zeros((X.shape[0], self.n_cluster + 1))
+
+        for index, value in enumerate(X):
             p[index, :-1] = self.alpha[:-1]
             p[index, -1] = self.alpha[-1]
-            for dim in range(x.shape[1]):
+            for dim in range(X.shape[1]):
                 p[index, :-1] *= SkewT.pdf(
-                    x = value[dim],
-                    mu = self.mu[dim, :],
-                    sigma = self.sig[dim, :],
-                    nu = self.nu[dim, :],
-                    lamb = self.lamb[dim, :]
+                    x=value[dim],
+                    mu=self.mu[dim, :],
+                    sigma=self.sig[dim, :],
+                    nu=self.nu[dim, :],
+                    lamb=self.lamb[dim, :],
                 )
 
-                p[index, -1] *= 1 / (x[:, dim].max() - x[:, dim].min())         
+                p[index, -1] *= 1 / (X[:, dim].max() - X[:, dim].min())
 
         return p
 
@@ -1394,6 +1435,8 @@ class SkewTUniformMixture:
         """
         Performs the E-step of the SkewMM algorithm.
         """
+        if isinstance(X, pd.DataFrame):
+            X = X.to_numpy()
 
         # Implementation of the predict_proba method
         self.p = self.phi(X)
@@ -1493,7 +1536,7 @@ class SkewTUniformMixture:
 
         return self
 
-    def LL(self, x):
+    def LL(self):
         """
         Calculate the log-likelihood of the model.
 
@@ -1504,7 +1547,7 @@ class SkewTUniformMixture:
 
         Returns
         =======
-        LL : float 
+        LL : float
             Log-likelihood value
         """
         LL = np.sum(np.log(np.sum(self.p, axis=(1))), axis=0)
@@ -1560,7 +1603,7 @@ class SkewTUniformMixture:
 
         k : int
             The cluster index.
-        
+
         j : int
             The feature index.
 
@@ -1592,6 +1635,9 @@ class SkewTUniformMixture:
         from joblib import Parallel, delayed
         import warnings
 
+        if isinstance(X, pd.DataFrame):
+            X = X.to_numpy()
+            
         # Update of alpha PX_CM-step-1
         self.alpha[:] = np.sum(self.tik[:, :], axis=0) / X.shape[0]
 
@@ -1694,9 +1740,8 @@ class SkewTUniformMixture:
         """
         # Implementation of the predict method
         proba = self.predict_proba(X)
-        labels = []
-        for i in range(proba.shape[0]):
-            labels.append(np.argmax(proba[i, :]))
+        labels = np.argmax(proba, axis=1)
+
         return labels
 
     def confusion_matrix(self, y_true, y_pred):
@@ -1713,10 +1758,9 @@ class SkewTUniformMixture:
 
         Returns
         =======
-        matrix : DataFrame
-            The confusion matrix.
+        matrix : array-like
+            The confusion matrix. The last cluster correspond to the uniform cluster.
         """
-        import pandas as pd
 
         if y_true is None:
             raise ValueError("Error: The true labels are missing, please provide them.")
@@ -1725,17 +1769,15 @@ class SkewTUniformMixture:
 
         y_pred = np.array(y_pred).astype(int)
 
-        # Get the unique classes
         classes = np.unique(np.concatenate((y_true, y_pred)))
 
-        # Create the confusion matrix
-        matrix = pd.DataFrame(0, index=classes, columns=classes)
+        matrix = np.zeros((self.n_cluster+1, self.n_cluster+1), dtype=int)
 
-        # Count the occurrences of each class
-        for i in range(len(y_true)):
-            true_label = y_true[i]
-            pred_label = y_pred[i]
-            matrix.at[true_label, pred_label] += 1
+        true_indices = np.searchsorted(classes, y_true)
+        pred_indices = np.searchsorted(classes, y_pred)
+
+        for true_idx, pred_idx in zip(true_indices, pred_indices):
+            matrix[true_idx, pred_idx] += 1
 
         return matrix
 
@@ -1745,17 +1787,19 @@ class SkewTUniformMixture:
 
         Parameters
         ==========
-        y (array-like): The true labels.
+        y : array-like
+            The true labels.
 
         Returns
         =======
-        ari (float): The ARI.
+        ari : float
+            The ARI.
         """
         from sklearn.metrics import adjusted_rand_score
+
         ari = adjusted_rand_score(y_true, y_pred)
 
-        return print('ARI:', ari)
-    
+        return print("ARI:", ari)
 
     def bic(self, X):
         """
@@ -1772,7 +1816,14 @@ class SkewTUniformMixture:
         # Implementation of the BIC method
         n = X.shape[0]
         LL = self.E_log_likelihood[-1]
-        k = self.mu.size + self.sig.size + self.nu.size + self.lamb.size + self.alpha.size - 1
+        k = (
+            self.mu.size
+            + self.sig.size
+            + self.nu.size
+            + self.lamb.size
+            + self.alpha.size
+            - 1
+        )
         bic = -2 * LL + k * np.log(n)
 
         return bic
@@ -1825,5 +1876,3 @@ class SkewTUniformMixture:
             self.lamb = f["lamb"][:]
             self.alpha = f["alpha"][:]
             self.E_log_likelihood = f["E_log_likelihood"][:]
-
-

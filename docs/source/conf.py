@@ -41,6 +41,9 @@ root_doc = 'index'
 
 html_theme = 'pydata_sphinx_theme'
 
+html_static_path = ['_static']
+html_css_files = ['custom.css']
+
 # -- Options for HTMLHelp output ---------------------------------------------
 html_theme_options = {
     "show_toc_level": 3,
@@ -60,3 +63,5 @@ html_theme_options = {
     "index": ["page-toc"],
   }
 }
+
+html_logo = "_static/Images/Cassiopy_logo.png"

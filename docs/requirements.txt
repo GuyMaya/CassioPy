@@ -65,6 +65,8 @@ six==1.16.0
     # via python-dateutil
 snowballstemmer==2.2.0
     # via sphinx
+seaborn==0.13.2
+    # via -r requirements.in
 sphinx
     # via -r requirements.in
 sphinx-design == 0.6.0

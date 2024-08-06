@@ -6,3 +6,4 @@ API
 
    cassiopy.mixture <API/MixtureModel> 
    cassiopy.stats <API/stats>
+   cassiopy.grid <API/grid>
