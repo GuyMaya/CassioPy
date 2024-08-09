@@ -19,16 +19,16 @@ class SkewTMixture:
 
     tol : float, default=1e-8
         The convergence threshold. Iterations will stop when the
-        improvement is below this threshold.
+        improvement of the log-likelihood is below this threshold.
 
-    init : {'random', 'kmeans', 'gmm', 'params'}, default='random'
+    init : {'random', 'kmeans', 'gmm', 'params'}, default='gmm'
         The method used to initialize the parameters.
         Must be one of:
 
         - 'random': Parameters are initialized randomly.
         - 'params': User-provided parameters are used for initialization.
         - 'kmeans': Parameters are initialized using K-means.
-        - 'gmm': Parameters are initialized using a Gaussian Mixture Model.
+        - 'gmm': Parameters are initialized using a Gaussian Mixture Model with a diagonal covariance matrix.
 
     n_init_gmm : int, default=8
         The number of initializations to perform when using the GMM initialization method.
@@ -39,6 +39,28 @@ class SkewTMixture:
     verbose : int, default=0
         The verbosity level. If 1, the model will print the iteration number.
 
+    n_init : int, default=1
+        The number of fit to perform. The best model will be kept.
+
+    Attributes
+    ==========
+    mu : array-like of shape (n_features, n_cluster)
+        The mean vectors for each cluster.
+
+    sig : array-like of shape (n_features, n_cluster)
+        The covariance matrices for each cluster.
+
+    nu : array-like of shape (n_features, n_cluster)
+        The degrees of freedom for each cluster.
+
+    lamb : array-like of shape (n_features, n_cluster)
+        The skewness parameters for each cluster. 
+
+    alpha : array-like of shape (n_cluster,)
+        The mixing proportions for each cluster.
+
+    E_log_likelihood : list
+        The log-likelihood values at each iteration.
 
     References
     ==========
@@ -72,13 +94,15 @@ class SkewTMixture:
     """
 
     def __init__(
-        self, n_cluster: int, n_iter=10, tol=1e-8, init="gmm", params=None, n_init_gmm=8, verbose=0
+        self, n_cluster: int, n_iter=100, tol=1e-8, init="gmm", params=None, n_init_gmm=8, verbose=0, n_init=1
     ):
         self.n_cluster = n_cluster
         self.n_iter = n_iter
         self.tol = tol
         self.init_method = init
         self.verbose = verbose
+        self.n_init = n_init
+
         if self.init_method == "params":
             self.params = params
 
@@ -91,127 +115,141 @@ class SkewTMixture:
 
         Parameters
         ==========
-        X : array-like
-            Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
+        X : array-like of shape (n_samples, n_features)
+            Input data matrix.
         """
 
-        # Implementation of the fit method
-        if self.init_method == "random":
-            best_params = self.initialisation_random(X)
-            self.initialisation_params(best_params, X)
+        self.E_log_likelihood = np.full((self.n_init, self.n_iter + 1), -np.inf)
 
-        elif self.init_method == "kmeans":
-            best_params = self.initialisation_kmeans(X)
-            self.initialisation_params(best_params, X)
-
-        elif self.init_method == "params":
-            self.initialisation_params(self.params, X)
-
-        elif self.init_method == "gmm":
-            best_params = None
-            best_LL = -np.inf
-
-            params_to_test = [
-                self.initialisation_gmm(X) for _ in range(self.n_init_gmm)
-            ]
-
-            # Test each set of parameters and keep the best one
-            for params in params_to_test:
-                self.initialisation_params(params, X)
-                self.p = self.phi(X)
-                LL = self.LL()
-                if LL > best_LL:
-                    best_LL = LL
-                    best_params = params
-
-            # Apply the best parameters found
-            self.initialisation_params(best_params, X)
-
-        elif self.init_method == "likelihood":
-            param_random = self.initialisation_random(X)
-            LLN_random = self.E_step(X)
-            param_gmm = self.initialisation_gmm(X)
-            LLN_gmm = self.E_step(X)
-
-            if LLN_random > LLN_gmm:
-                self.initialisation_params(param_random, X)
-                print("initialization random")
-            else:
-                self.initialisation_params(param_gmm, X)
-                print("initialization gmm")
-        else:
-            raise ValueError(
-                f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'"
-            )
-
-        if self.verbose==1:
-            print("initialization method :", self.init_method)
-
-        self.E_log_likelihood = [-np.inf]
-
-        self.save("track_0")
-
-        i = 0
-
-        while i < self.n_iter + 1:
+        for n in range(self.n_init):
             if self.verbose==1:
-                print(f"iteration: {i}/{self.n_iter}")
+                print(f"initialization: {n+1}/{self.n_init}")
 
-            self.E_step(X)
-            E_log_likelihood_new = self.LL()
+            # Implementation of the fit method
+            if self.init_method == "random":
+                best_params = self.initialisation_random(X)
+                self.initialisation_params(best_params, X)
 
-            if np.abs(E_log_likelihood_new - self.E_log_likelihood[i]) <= self.tol:
-                if i < 2:
-                    print("reinitialization not enough iteration")
-                    return self.fit(X)
+            elif self.init_method == "kmeans":
+                best_params = self.initialisation_kmeans(X)
+                self.initialisation_params(best_params, X)
+
+            elif self.init_method == "params":
+                self.initialisation_params(self.params, X)
+
+            elif self.init_method == "gmm":
+                best_params = None
+                best_LL = -np.inf
+
+                params_to_test = [
+                    self.initialisation_gmm(X) for _ in range(self.n_init_gmm)
+                ]
+
+                # Test each set of parameters and keep the best one
+                for params in params_to_test:
+                    self.initialisation_params(params, X)
+                    self.p = self.phi(X)
+                    LL = self.LL()
+                    if LL > best_LL:
+                        best_LL = LL
+                        best_params = params
+
+                # Apply the best parameters found
+                self.initialisation_params(best_params, X)
+
+            elif self.init_method == "likelihood":
+                param_random = self.initialisation_random(X)
+                LLN_random = self.E_step(X)
+                param_gmm = self.initialisation_gmm(X)
+                LLN_gmm = self.E_step(X)
+
+                if LLN_random > LLN_gmm:
+                    self.initialisation_params(param_random, X)
+                    print("initialization random")
                 else:
-                    break
+                    self.initialisation_params(param_gmm, X)
+                    print("initialization gmm")
+            else:
+                raise ValueError(
+                    f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'"
+                )
 
-            if E_log_likelihood_new < self.E_log_likelihood[i]:
-                if i < 2:
-                    print("reinitialization not enough iteration")
-                    return self.fit(X)
-                else:
-                    break
+            if self.verbose==1:
+                print("initialization method :", self.init_method)
 
-            self.M_step(X)
 
-            if np.any(np.isnan(self.sig)):
-                if i < 2:
-                    print("reinitialization : sig nan")
-                    return self.fit(X)
-                else:
-                    self.load(f"Models_folder/track_{i-1}.h5")
-                    self.n_iter = i - 1
-                    break
+            i = 0
 
-            if np.any(self.nu < 0):
-                if i < 2:
-                    print("reinitialization : nu <0")
-                    return self.fit(X)
-                else:
-                    self.load(f"Models_folder/track_{i-1}.h5")
-                    self.n_iter = i - 1
-                    break
+            self.save(f"iter_{n+1}_track_{i+1}")
 
-            if np.any(np.diagonal(self.sig, axis1=0, axis2=1) < 0):
-                if i < 2:
-                    np.diagonal(self.sig, axis1=0, axis2=1)
+            while i < self.n_iter:
+                if self.verbose==1:
+                    print(f"iteration: {i+1}/{self.n_iter}")
 
-                    print("sig", self.sig)
+                self.E_step(X)
+                E_log_likelihood_new = self.LL()
 
-                    print("eig:", np.diagonal(self.sig, axis1=0, axis2=1))
-                    print("reinitialization : negative equity")
-                    return self.fit(X)
-                else:
-                    model = self.load(f"Models_folder/track_{i-1}.h5")
-                    self.n_iter = i - 1
-                    break
+                if np.abs(E_log_likelihood_new - self.E_log_likelihood[n, i]) <= self.tol:
+                    if i < 2:
+                        print("reinitialization not enough iteration")
+                        return self.fit(X)
+                    else:
+                        break
 
-            self.E_log_likelihood.append(E_log_likelihood_new)
-            self.save(f"track_{i}")
+                if E_log_likelihood_new < self.E_log_likelihood[n, i]:
+                    if i < 2:
+                        print("reinitialization not enough iteration")
+                        return self.fit(X)
+                    else:
+                        break
 
-            i += 1
+                self.M_step(X)
+
+                if np.any(np.isnan(self.sig)):
+                    if i < 2:
+                        print("reinitialization : sig nan")
+                        return self.fit(X)
+                    else:
+                        self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
+                        self.n_iter = i - 1
+                        break
+
+                if np.any(self.nu < 0):
+                    if i < 2:
+                        print("reinitialization : nu <0")
+                        return self.fit(X)
+                    else:
+                        self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
+                        self.n_iter = i - 1
+                        break
+
+                if np.any(np.diagonal(self.sig, axis1=0, axis2=1) < 0):
+                    if i < 2:
+                        np.diagonal(self.sig, axis1=0, axis2=1)
+
+                        print("sig", self.sig)
+
+                        print("eig:", np.diagonal(self.sig, axis1=0, axis2=1))
+                        print("reinitialization : negative equity")
+                        return self.fit(X)
+                    else:
+                        model = self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
+                        self.n_iter = i - 1
+                        break
+
+                self.E_log_likelihood[n, i] = E_log_likelihood_new
+
+                self.save(f"iter_{n+1}_track_{i+1}")
+
+                i += 1
+
+        # Find the best model
+        idx = np.where(self.E_log_likelihood == np.max(self.E_log_likelihood))
+        self.load(f"Models_folder/iter_{idx[0][0]+1}_track_{idx[1][0]}.h5")
+        self.E_log_likelihood = self.E_log_likelihood[idx[0][0], :]
+
+        # Save the best model
+        self.n_iter = idx[1][0]
 
         return self
 
@@ -221,7 +259,7 @@ class SkewTMixture:
 
         Parameters
         ==========
-        X : array-like
+        X : array-like of shape (n_samples, n_features)
             Input data array.
 
         Returns
@@ -244,11 +282,8 @@ class SkewTMixture:
             - 'alpha': array-like
                 Array of cluster proportions.
         """
-        # Implementation of the random initialization method
-        max_x = np.max(X, axis=0)[:, np.newaxis] if X.ndim > 1 else np.max(X)
-
         # initialization of the average matrix
-        mu = np.random.rand(X.shape[1], self.n_cluster) * max_x
+        mu = np.random.default_rng().uniform(low=X.min(), high=X.max(), size=(X.shape[1], self.n_cluster))
 
         # initialization of the covariance matrix
         sig = np.ones((X.shape[1], self.n_cluster))
@@ -257,7 +292,7 @@ class SkewTMixture:
         nu = np.random.rand(X.shape[1], self.n_cluster)
 
         # initialization of the skewness parameter
-        lamb = np.random.uniform(low=1e-6, high=5.0, size=(X.shape[1], self.n_cluster))
+        lamb = np.random.uniform(low=-5, high=5.0, size=(X.shape[1], self.n_cluster))
 
         # initialization of the prior, proportion of data in cluster k
         alpha = np.random.rand(self.n_cluster)
@@ -288,8 +323,21 @@ class SkewTMixture:
             - 'alpha' : array-like
                 The mixing proportions for each cluster. Shape: (n_cluster,).
 
-        X : array-like
-            The input data. Shape: (n_samples, n_features).
+        X : array-like of shape (n_samples, n_features)
+            The input data.
+
+        Examples
+        ========
+        >>> from cassiopy.mixture import SkewTMixture
+        >>> params = {
+        ...     'mu': np.array([[20, 3], [5, 3]]),
+        ...     'sig': np.array([[1, 1], [1, 1]]),
+        ...     'nu': np.array([[1, 1], [1, 1]]),
+        ...     'lamb': np.array([[1, 1], [1, 1]]),
+        ...     'alpha': np.array([0.5, 0.5])
+        ... }
+        >>> model = SkewTMixture(n_cluster=2, n_iter=100, tol=1e-4, init='params', params=params)
+        
         """
         if params["mu"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
@@ -329,8 +377,8 @@ class SkewTMixture:
 
         Parameters
         ==========
-        X : array-like
-            The input data matrix of shape (n_samples, n_features).
+        X : array-like of shape (n_samples, n_features)
+            The input data matrix.
 
         default_n_init : int, default='auto'
             The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
@@ -389,8 +437,8 @@ class SkewTMixture:
 
         Parameters
         ==========
-        X : array-like
-            Input data matrix of shape (n_samples, n_features).
+        X : array-like of shape (n_samples, n_features)
+            Input data matrix.
 
         Returns
         =======
@@ -811,7 +859,7 @@ class SkewTMixture:
         Returns
         =======
         matrix : array-like
-            The confusion matrix. The last cluster correspond to the uniform cluster.
+            The confusion matrix.
         """
 
         if y_true is None:
@@ -845,7 +893,7 @@ class SkewTMixture:
 
     def ARI(self, y_true, y_pred):
         """
-        Compute the accuracy of the model.
+        Compute the adjusted rand index beetween a gold standard partition and the estimated partition.
 
         Parameters
         ==========
@@ -855,7 +903,12 @@ class SkewTMixture:
         Returns
         =======
         ari : float
-            The ARI.
+            The Adjusted Rand Index.
+
+        Notes
+        =====
+
+        For more information, refer to the documentation :ref:`doc.mixture.ARI`
         """
         from sklearn.metrics import adjusted_rand_score
 
@@ -863,17 +916,24 @@ class SkewTMixture:
 
         return print("ARI:", ari)
 
-    def bic(self, X):
+    def BIC(self, X):
         """
         Calculate the Bayesian Information Criterion (BIC) for the model.
 
         Parameters
         ==========
-        X (array-like): The input data.
+        X : array-like
+            The input data.
 
         Returns
         =======
-        bic (float): The BIC value.
+        bic : float
+            The BIC value.
+
+        Notes
+        =====
+
+        For more information, refer to the documentation :ref:`doc.mixture.BIC`
         """
         # Implementation of the BIC method
         n = X.shape[0]
@@ -954,16 +1014,16 @@ class SkewTUniformMixture:
 
     tol : float, default=1e-8
         The convergence threshold. Iterations will stop when the
-        improvement is below this threshold.
+        improvement of the log-likelihood is below this threshold.
 
-    init : {'random', 'kmeans', 'gmm', 'params'}, default='random'
+    init : {'random', 'kmeans', 'gmm', 'params'}, default='gmm'
         The method used to initialize the parameters.
         Must be one of:
 
         - 'random': Parameters are initialized randomly.
         - 'params': User-provided parameters are used for initialization.
         - 'kmeans': Parameters are initialized using K-means.
-        - 'gmm': Parameters are initialized using a Gaussian Mixture Model.
+        - 'gmm': Parameters are initialized using a Gaussian Mixture Model with a diagonal covariance matrix.
 
     n_init_gmm : int, default=8
         The number of initializations to perform when using the GMM initialization method.
@@ -975,6 +1035,31 @@ class SkewTUniformMixture:
         
     verbose : int, default=0
         The verbosity level. If 1, the model will print the iteration number.
+
+    n_init : int, default=1
+        The number of fit to perform. The best model will be kept.
+        
+    Attributes
+    ==========
+
+    mu : array-like of shape (n_features, n_cluster)
+        The mean vectors for each cluster.
+
+    sig : array-like of shape (n_features, n_cluster)
+        The covariance matrices for each cluster.
+
+    nu : array-like of shape (n_features, n_cluster)
+        The degrees of freedom for each cluster.
+
+    lamb : array-like of shape (n_features, n_cluster)
+        The skewness parameters for each cluster. 
+
+    alpha : array-like of shape (n_cluster,)
+        The mixing proportions for each cluster.
+
+    E_log_likelihood : list
+        The log-likelihood values at each iteration.
+
 
     References
     ==========
@@ -1009,13 +1094,14 @@ class SkewTUniformMixture:
     """
 
     def __init__(
-        self, n_cluster: int, n_iter=10, tol=1e-8, init="gmm", params=None, n_init_gmm=8, verbose=0
+        self, n_cluster: int, n_iter=100, tol=1e-8, init="gmm", params=None, n_init_gmm=8, verbose=0, n_init=1
     ):
         self.n_cluster = n_cluster
         self.n_iter = n_iter
         self.tol = tol
         self.init_method = init
         self.verbose = verbose
+        self.n_init = n_init
         if self.init_method == "params":
             self.params = params
 
@@ -1028,128 +1114,140 @@ class SkewTUniformMixture:
 
         Parameters
         ==========
-        X : array-like
-            Shape (n_samples, n_features). Each sample is represented by a feature vector Xi = [e_i, i_i, H_i, a_i].
+        X : array-like of shape (n_samples, n_features)
+            Input data matrix.
         """
+        self.E_log_likelihood = np.full((self.n_init, self.n_iter + 1), -np.inf)
 
-        # Implementation of the fit method
-        if self.init_method == "random":
-            best_params = self.initialisation_random(X)
-            self.initialisation_params(best_params, X)
-
-        elif self.init_method == "kmeans":
-            best_params = self.initialisation_kmeans(X)
-            self.initialisation_params(best_params, X)
-
-        elif self.init_method == "params":
-            self.initialisation_params(self.params, X)
-
-        elif self.init_method == "gmm":
-            best_params = None
-            best_LL = -np.inf
-
-            params_to_test = [
-                self.initialisation_gmm(X) for _ in range(self.n_init_gmm)
-            ]
-
-            # Test each set of parameters and keep the best one
-            for params in params_to_test:
-                self.initialisation_params(params, X)
-                self.p = self.phi(X)
-                LL = self.LL()
-                if LL > best_LL:
-                    best_LL = LL
-                    best_params = params
-
-            # Apply the best parameters found
-            self.initialisation_params(best_params, X)
-
-        elif self.init_method == "likelihood":
-            param_random = self.initialisation_random(X)
-            LLN_random = self.E_step(X)
-            param_gmm = self.initialisation_gmm(X)
-            LLN_gmm = self.E_step(X)
-
-            if LLN_random > LLN_gmm:
-                self.initialisation_params(param_random, X)
-                print("initialization random")
-            else:
-                self.initialisation_params(param_gmm, X)
-                print("initialization gmm")
-        else:
-            raise ValueError(
-                f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'"
-            )
-
-        if self.verbose==1:
-            print("initialization method :", self.init_method)
-
-        self.E_log_likelihood = [-np.inf]
-
-        self.save("track_0")
-
-        i = 0
-
-        while i < self.n_iter + 1:
+        for n in range(self.n_init):
             if self.verbose==1:
-                print(f"iteration: {i}/{self.n_iter}")
+                print(f"initialization: {n+1}/{self.n_init}")
 
-            self.E_step(X)
-            E_log_likelihood_new = self.LL()
+            # Implementation of the fit method
+            if self.init_method == "random":
+                best_params = self.initialisation_random(X)
+                self.initialisation_params(best_params, X)
 
-            if np.abs(E_log_likelihood_new - self.E_log_likelihood[i]) <= self.tol:
-                if i < 2:
-                    print("reinitialization not enough iteration")
-                    return self.fit(X)
+            elif self.init_method == "kmeans":
+                best_params = self.initialisation_kmeans(X)
+                self.initialisation_params(best_params, X)
+
+            elif self.init_method == "params":
+                self.initialisation_params(self.params, X)
+
+            elif self.init_method == "gmm":
+                best_params = None
+                best_LL = -np.inf
+
+                params_to_test = [
+                    self.initialisation_gmm(X) for _ in range(self.n_init_gmm)
+                ]
+
+                # Test each set of parameters and keep the best one
+                for params in params_to_test:
+                    self.initialisation_params(params, X)
+                    self.p = self.phi(X)
+                    LL = self.LL()
+                    if LL > best_LL:
+                        best_LL = LL
+                        best_params = params
+
+                # Apply the best parameters found
+                self.initialisation_params(best_params, X)
+
+            elif self.init_method == "likelihood":
+                param_random = self.initialisation_random(X)
+                LLN_random = self.E_step(X)
+                param_gmm = self.initialisation_gmm(X)
+                LLN_gmm = self.E_step(X)
+
+                if LLN_random > LLN_gmm:
+                    self.initialisation_params(param_random, X)
+                    print("initialization random")
                 else:
-                    break
+                    self.initialisation_params(param_gmm, X)
+                    print("initialization gmm")
+            else:
+                raise ValueError(
+                    f"Error: The initialization method {self.init_method} is not recognized, please choose from 'random', 'kmeans', 'params', 'gmm' ou 'likelihood'"
+                )
 
-            if E_log_likelihood_new < self.E_log_likelihood[i]:
-                if i < 2:
-                    print("reinitialization not enough iteration")
-                    return self.fit(X)
-                else:
-                    break
+            if self.verbose==1:
+                print("initialization method :", self.init_method)
 
-            self.M_step(X)
 
-            if np.any(np.isnan(self.sig)):
-                if i < 2:
-                    print("reinitialization : sig nan")
-                    return self.fit(X)
-                else:
-                    self.load(f"Models_folder/track_{i-1}.h5")
-                    self.n_iter = i - 1
-                    break
+            i = 0
 
-            if np.any(self.nu < 0):
-                if i < 2:
-                    print("reinitialization : nu <0")
-                    return self.fit(X)
-                else:
-                    self.load(f"Models_folder/track_{i-1}.h5")
-                    self.n_iter = i - 1
-                    break
+            self.save(f"iter_{n+1}_track_{i+1}")
 
-            if np.any(np.diagonal(self.sig, axis1=0, axis2=1) < 0):
-                if i < 2:
-                    np.diagonal(self.sig, axis1=0, axis2=1)
+            while i < self.n_iter:
+                if self.verbose==1:
+                    print(f"iteration: {i+1}/{self.n_iter}")
 
-                    print("sig", self.sig)
+                self.E_step(X)
+                E_log_likelihood_new = self.LL()
 
-                    print("eig:", np.diagonal(self.sig, axis1=0, axis2=1))
-                    print("reinitialization : negative equity")
-                    return self.fit(X)
-                else:
-                    model = self.load(f"Models_folder/track_{i-1}.h5")
-                    self.n_iter = i - 1
-                    break
+                if np.abs(E_log_likelihood_new - self.E_log_likelihood[n, i]) <= self.tol:
+                    if i < 2:
+                        print("reinitialization not enough iteration")
+                        return self.fit(X)
+                    else:
+                        break
 
-            self.E_log_likelihood.append(E_log_likelihood_new)
-            self.save(f"track_{i}")
+                if E_log_likelihood_new < self.E_log_likelihood[n, i]:
+                    if i < 2:
+                        print("reinitialization not enough iteration")
+                        return self.fit(X)
+                    else:
+                        break
 
-            i += 1
+                self.M_step(X)
 
+                if np.any(np.isnan(self.sig)):
+                    if i < 2:
+                        print("reinitialization : sig nan")
+                        return self.fit(X)
+                    else:
+                        self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
+                        self.n_iter = i - 1
+                        break
+
+                if np.any(self.nu < 0):
+                    if i < 2:
+                        print("reinitialization : nu <0")
+                        return self.fit(X)
+                    else:
+                        self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
+                        self.n_iter = i - 1
+                        break
+
+                if np.any(np.diagonal(self.sig, axis1=0, axis2=1) < 0):
+                    if i < 2:
+                        np.diagonal(self.sig, axis1=0, axis2=1)
+
+                        print("sig", self.sig)
+
+                        print("eig:", np.diagonal(self.sig, axis1=0, axis2=1))
+                        print("reinitialization : negative equity")
+                        return self.fit(X)
+                    else:
+                        model = self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
+                        self.n_iter = i - 1
+                        break
+
+                self.E_log_likelihood[n, i] = E_log_likelihood_new
+
+                self.save(f"iter_{n+1}_track_{i+1}")
+
+                i += 1
+
+        # Find the best model
+        idx = np.where(self.E_log_likelihood == np.max(self.E_log_likelihood))
+        self.load(f"Models_folder/iter_{idx[0][0]+1}_track_{idx[1][0]}.h5")
+        self.E_log_likelihood = self.E_log_likelihood[idx[0][0], :]
+
+        # Save the best model
+        self.n_iter = idx[1][0]
         return self
 
     def initialisation_random(self, X):
@@ -1158,7 +1256,7 @@ class SkewTUniformMixture:
 
         Parameters
         ==========
-        X : array-like
+        X : array-like of shape (n_samples, n_features)
             Input data array.
 
         Returns
@@ -1181,11 +1279,8 @@ class SkewTUniformMixture:
             - 'alpha': array-like
                 Array of cluster proportions.
         """
-        # Implementation of the random initialization method
-        max_x = np.max(X, axis=0)[:, np.newaxis] if X.ndim > 1 else np.max(X)
-
         # initialization of the average matrix
-        mu = np.random.rand(X.shape[1], self.n_cluster) * max_x
+        mu = np.random.default_rng().uniform(low=X.min(), high=X.max(), size=(X.shape[1], self.n_cluster))
 
         # initialization of the covariance matrix
         sig = np.ones((X.shape[1], self.n_cluster))
@@ -1194,7 +1289,7 @@ class SkewTUniformMixture:
         nu = np.random.rand(X.shape[1], self.n_cluster)
 
         # initialization of the skewness parameter
-        lamb = np.random.uniform(low=1e-6, high=5.0, size=(X.shape[1], self.n_cluster))
+        lamb = np.random.uniform(low=-5, high=5.0, size=(X.shape[1], self.n_cluster))
 
         # initialization of the prior, proportion of data in cluster k
         alpha = np.random.rand(self.n_cluster)
@@ -1225,8 +1320,21 @@ class SkewTUniformMixture:
             - 'alpha' : array-like
                 The mixing proportions for each cluster. Shape: (n_cluster,).
 
-        X : array-like
-            The input data. Shape: (n_samples, n_features).
+        X : array-like of shape (n_samples, n_features)
+            The input data.
+
+        Examples
+        ========
+        >>> from cassiopy.mixture import SkewTMixture
+        >>> params = {
+        ...     'mu': np.array([[20, 3], [5, 3]]),
+        ...     'sig': np.array([[1, 1], [1, 1]]),
+        ...     'nu': np.array([[1, 1], [1, 1]]),
+        ...     'lamb': np.array([[1, 1], [1, 1]]),
+        ...     'alpha': np.array([0.5, 0.5])
+        ... }
+        >>> model = SkewTMixture(n_cluster=2, n_iter=100, tol=1e-4, init='params', params=params)
+        
         """
         if params["mu"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
@@ -1270,8 +1378,8 @@ class SkewTUniformMixture:
 
         Parameters
         ==========
-        X : array-like
-            The input data matrix of shape (n_samples, n_features).
+        X : array-like of shape (n_samples, n_features)
+            The input data matrix.
 
         default_n_init : int, default='auto'
             The number of times the K-means algorithm will be run with different centroid seeds. Default is 'auto'.
@@ -1329,8 +1437,8 @@ class SkewTUniformMixture:
 
         Parameters
         ==========
-        X : array-like
-            Input data matrix of shape (n_samples, n_features).
+        X : array-like of shape (n_samples, n_features)
+            Input data matrix.
 
         Returns
         =======
@@ -1783,7 +1891,7 @@ class SkewTUniformMixture:
 
     def ARI(self, y_true, y_pred):
         """
-        Compute the accuracy of the model.
+        Compute the adjusted rand index beetween a gold standard partition and the estimated partition.
 
         Parameters
         ==========
@@ -1793,7 +1901,12 @@ class SkewTUniformMixture:
         Returns
         =======
         ari : float
-            The ARI.
+            The Adjusted Rand Index.
+
+        Notes
+        =====
+
+        For more information, refer to the documentation :ref:`doc.mixture.ARI`
         """
         from sklearn.metrics import adjusted_rand_score
 
@@ -1801,17 +1914,24 @@ class SkewTUniformMixture:
 
         return print("ARI:", ari)
 
-    def bic(self, X):
+    def BIC(self, X):
         """
         Calculate the Bayesian Information Criterion (BIC) for the model.
 
         Parameters
         ==========
-        X (array-like): The input data.
+        X : array-like
+            The input data.
 
         Returns
         =======
-        bic (float): The BIC value.
+        bic : float
+            The BIC value.
+
+        Notes
+        =====
+
+        For more information, refer to the documentation :ref:`doc.mixture.BIC`
         """
         # Implementation of the BIC method
         n = X.shape[0]

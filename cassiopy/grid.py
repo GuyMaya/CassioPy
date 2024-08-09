@@ -9,7 +9,7 @@ class Grid_skewt:
 
     Parameters
     ==========
-    n_cluster :int
+    n_cluster : array-like
         The number of clusters in the mixture model.
 
     n_fits : int
@@ -20,24 +20,43 @@ class Grid_skewt:
 
     mixture : str
         The type of mixture model to use. Choose between :
+        
         - 'SkewTUniformMixture'
         - 'SkewTMixture'
 
+    init : {'random', 'kmeans', 'gmm', 'params'}, default='gmm'
+        The method used to initialize the parameters.
+        Must be one of:
+
+        - 'random': Parameters are initialized randomly.
+        - 'params': User-provided parameters are used for initialization.
+        - 'kmeans': Parameters are initialized using K-means.
+        - 'gmm': Parameters are initialized using a Gaussian Mixture Model.
+
+    Attributes
+    ==========
+
+    bic : array-like
+        The BIC scores. Shape (n_cluster, n_fits).
+        
     Examples
     ========
     >>> from cassiopy.grid import Grid_skewt
-    >>> grid = Grid_skewt(n_cluster=range(5,7,1), n_fits=2, n_iter=10, mixture='SkewTMixture')
+    >>> grid = Grid_skewt(n_cluster=range(1,3,1), n_fits=2, n_iter=10, mixture='SkewTMixture')
     >>> grid.fit(x)
+    >>> grid.bic
+    array([[56.,  3.1],
+        [ 5.5,  16.2]])
     >>> BM =  grid.best_model()
     >>> BM.predict(x)
-
     """
 
-    def __init__(self, n_cluster=5, n_fits=2, n_iter=10, mixture=None, verbose=0):
+    def __init__(self, n_cluster=5, n_fits=2, n_iter=10, mixture=None, init='gmm', verbose=0):
         self.n_cluster = n_cluster
         self.n_fits = n_fits
         self.n_iter = n_iter
         self.verbose = verbose
+        self.init = init
 
         if mixture is None:
             raise ValueError(
@@ -71,7 +90,7 @@ class Grid_skewt:
         # loop through each number of Gaussians and compute the BIC, and save the model
         for i, j in zip(range(len(self.n_cluster)), self.n_cluster):
             # create mixture model with j components
-            model = self.mixture(n_cluster=j, n_iter=self.n_iter, verbose=self.verbose)
+            model = self.mixture(n_cluster=j, n_iter=self.n_iter, init=self.init, verbose=self.verbose)
             for k in range(self.n_fits):
                 model.fit(x)
                 self.bic[i, k] = model.bic(x)
@@ -88,6 +107,11 @@ class Grid_skewt:
         =======
         best_model : object
             The best fitted mixture model.
+
+        Notes
+        =====
+
+        For more information, refer to the documentation :ref:`doc.mixture.BIC`
         """
 
         f = np.where(self.bic == self.bic.min())[1][0]
@@ -112,7 +136,7 @@ class Grid_skewt:
 
     def plot_bic(self):
         """
-        Plots the BIC scores for different numbers of clusters.
+        Plots the BIC scores in function of the numbers of clusters.
         """
         sns.lineplot(
             x=self.n_cluster, y=self.bic[:, np.where(self.bic == self.bic.min())[1][0]]
@@ -121,3 +145,4 @@ class Grid_skewt:
         plt.xlabel("Nbre clusters")
         plt.ylabel("BIC")
         plt.show()
+

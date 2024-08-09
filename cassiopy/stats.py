@@ -198,7 +198,7 @@ class SkewT:
         =======
 
         proba : float
-            The probability of the data.
+            The probability density distribution of the data.
 
         References
         ==========

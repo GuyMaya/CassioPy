@@ -1,10 +1,11 @@
-.. _Grid_skewt:
+.. _api.grid:
 
 cassiopy.grid.Grid_skewt
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``SkewTMixture`` class models a mixture of skew-t distributions. It provides various methods for working with skew-t distributed data, including generating samples and calculating densities.
+The ``Grid_skewt`` class select the number of cluster maximizing the BIC criterion.
 
 .. autoclass:: cassiopy.grid.Grid_skewt
+   :members:
    :undoc-members:
    :show-inheritance:

@@ -23,6 +23,8 @@ author = 'Maya GUY'
 
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'numpydoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx_copybutton',
@@ -30,10 +32,20 @@ extensions = [
     'sphinx_design',
 ]
 
+autosummary_generate = True
+numpydoc_class_members_toctree = False
+
+
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 root_doc = 'index'
+
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+    'show-inheritance': True,
+}
 
 
 # -- Options for HTML output -------------------------------------------------
