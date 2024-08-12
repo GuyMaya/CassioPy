@@ -1,19 +1,17 @@
 .. _doc.stats.SkewT:
 
 
-Stats
-=====
+Statistic 
+==========
 
-Skew-t
-------
 
-Random cluster distribution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Skew-t distribution
+-------------------
 
 The Skew-t distribution can be described as a continuous probability distribution that incorporates skewness and heavy tails, making it more flexible in modeling asymmetric data with outliers compared to the normal distribution. 
 It extends the Student's t-distribution by including a skewness parameter.
 
-The random variate \( Y \) from a Skew-t distribution is given by:
+The random variate \( X \) from a Skew-t distribution is given by:
 
 
 .. math::
@@ -51,9 +49,9 @@ With
 
 .. code-block:: python
 
-    >>> from cassiopy.stats import SkewT
+    >>> from cassiopy.stats import Skew
     >>> sm = SkewT()
-    >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+    >>> data, labels = sm.random_cluster(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
     >>> data.shape
     (200, 2)
     >>> labels.shape
@@ -61,10 +59,10 @@ With
 
 **See also**
 
-:func:`Skew-t rvs <cassiopy.stats.SkewT.random_cluster>`
+:func:`Skew-t random cluster <cassiopy.stats.SkewT.random_cluster>`, :func:`Skew-t rvs <cassiopy.stats.SkewT.rvs>`
 
 Probability density function
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 The probability density function (pdf) of the skew-t distribution is given by:
 

@@ -3,6 +3,9 @@
 [![PyPI Downloads](https://img.shields.io/pypi/dm/cassiopy.svg?label=PyPI%20downloads)](
 https://pypi.org/project/cassiopy/)
 
+[![PyPI version](https://img.shields.io/pypi/v/cassiopy.svg)](
+https://pypi.org/project/cassiopy/)
+
 ## Skew-t Mixture Model for Clustering
 
 CassioPy is a powerful library for clustering using the Skew-t distribution. This model is designed to handle data with skewness, providing more accurate clustering results in many real-world scenarios where data may not follow a normal distribution.

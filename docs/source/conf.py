@@ -77,3 +77,5 @@ html_theme_options = {
 }
 
 html_logo = "_static/Images/Cassiopy_logo.png"
+
+html_favicon = "_static/Images/Cassiopy_logo.png"

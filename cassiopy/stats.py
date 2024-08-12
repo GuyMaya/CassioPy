@@ -9,23 +9,27 @@ class SkewT:
     """
 
     @staticmethod
-    def rvs(mu, sigma, nu, lamb, n_samples=100, n_dim=1):
+    def rvs(mu, sigma, nu, lamb, n_samples=100):
         """
         Generate skew-t distribution.
 
         Parameters
         ==========
+        mu : array-like
+            The mean of the distribution with shape (n_dim).
+
+        sigma : array-like
+            The standard deviation of the distribution with shape (n_dim).
+
+        nu : array-like
+            The degree of freedom of the distribution with shape (n_dim).
+
+        lamb : array-like
+            The skewness of the distribution with shape (n_dim).
+
         n_samples : int
             Number of samples to generate.
 
-        n_dim : int
-            Number of dimensions.
-
-        n_clusters : int
-            Number of clusters.
-
-        random_state : int
-            Random seed for reproducibility.
 
         Returns
         =======
@@ -40,27 +44,25 @@ class SkewT:
 
         For more information, refer to the documentation :ref:`doc.stats.SkewT`
 
-        Example
-        =======
+        Examples
+        ========
         >>> from cassiopy.stats import Skew
         >>> sm = SkewT()
-        >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+        >>> data = sm.rvs(mu=np.array([0, 0]), sigma=np.array([1, 1]), nu=np.array([10, 10]), lamb=np.array([0.5, 0.5]), n_samples=200)
         >>> data.shape
         (200, 2)
-        >>> labels.shape
-        (200,)
 
         """
 
-        # Listes pour stocker les résultats
+        n_dim = mu.shape[0]
+
         data = np.zeros((n_samples, n_dim))
 
-        # Boucle sur chaque dimension
-        data[:, :] = mu[:, :] + sigma[:, :] * scipy.stats.skewnorm.rvs(
-            a=lamb[:, :], loc=0, scale=1, size=(n_samples, n_dim)
+        data[:] = mu[:] + sigma[:] * scipy.stats.skewnorm.rvs(
+            a=lamb[:], loc=0, scale=1, size=(n_samples, n_dim)
         ) / np.sqrt(
             scipy.stats.gamma.rvs(
-                a=nu[:, :] / 2, scale=nu[:, :] / 2, size=(n_samples, n_dim)
+                a=nu[:] / 2, scale=nu[:] / 2, size=(n_samples, n_dim)
             )
         )
 
@@ -100,11 +102,11 @@ class SkewT:
 
         For more information, refer to the documentation :ref:`doc.stats.SkewT`
 
-        Example
-        =======
+        Examples
+        ========
         >>> from cassiopy.stats import Skew
         >>> sm = SkewT()
-        >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+        >>> data, labels = sm.random_cluster(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
         >>> data.shape
         (200, 2)
         >>> labels.shape
@@ -209,8 +211,8 @@ class SkewT:
 
         For more information, refer to the documentation :ref:`doc.stats.SkewT`
 
-        Example
-        =======
+        Examples
+        ========
 
         >>> from cassiopy.stats import Skew
         >>> sm = SkewT()
