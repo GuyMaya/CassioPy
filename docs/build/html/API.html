@@ -45,6 +45,7 @@
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'API';</script>
+    <link rel="icon" href="_static/Cassiopy_favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Mixture Model" href="API/MixtureModel.html" />
@@ -357,18 +358,20 @@ document.write(`
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="API/MixtureModel.html">cassiopy.mixture</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="API/MixtureModel.html">Mixture Model</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="API/SkewTMixture.html">cassiopy.mixture.SkewTMixture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/SkewTUniformMixture.html">cassiopy.mixture.SkewTUniformMixture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="API/stats.html">cassiopy.stats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="API/stats.html">stats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="API/stats.SkewT.rvs.html">SkewT.rvs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="API/stats.SkewT.random_cluster.html">SkewT.random_cluster</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/stats.SkewT.pdf.html">SkewT.pdf</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="API/grid.html">cassiopy.grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API/grid.html">cassiopy.grid.Grid_skewt</a></li>
 </ul>
 </div>
 </nav></div>
@@ -426,22 +429,35 @@ document.write(`
   <section id="api">
 <h1>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="API/MixtureModel.html">cassiopy.mixture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="API/SkewTMixture.html">cassiopy.mixture.SkewTMixture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="API/SkewTUniformMixture.html">cassiopy.mixture.SkewTUniformMixture</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="API/stats.html">cassiopy.stats</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="API/stats.SkewT.rvs.html">SkewT.rvs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="API/stats.SkewT.pdf.html">SkewT.pdf</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="API/grid.html">cassiopy.grid</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="API/grid.html#cassiopy.grid.Grid_skewt"><code class="docutils literal notranslate"><span class="pre">Grid_skewt</span></code></a></li>
-</ul>
-</li>
-</ul>
+</div>
+<p>This table provides a description of the main classes and modules available in the project.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Module</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><cite>MixtureModel</cite></p></td>
+<td><p>A mixture model for clustering. Includes tools for fitting and evaluating mixture models.</p></td>
+<td><p><a class="reference internal" href="API/MixtureModel.html#api-mixture"><span class="std std-ref">Mixture Model</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>Stats</cite></p></td>
+<td><p>Statistical functions for advanced analyses. Includes tools for computing various statistical measures.</p></td>
+<td><p><a class="reference internal" href="API/stats.html#api-stats"><span class="std std-ref">stats</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><cite>Grid</cite></p></td>
+<td><p>Tools for managing and evaluating parameter grids in statistical models. Useful for hyperparameter searches.</p></td>
+<td><p><a class="reference internal" href="API/grid.html#api-grid"><span class="std std-ref">cassiopy.grid.Grid_skewt</span></a></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 

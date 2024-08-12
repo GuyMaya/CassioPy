@@ -1,9 +1,9 @@
-.. _stats.SkewT.random_cluster:
+.. _stats.SkewT.rvs:
 
 
-cassiopy.stats.SkewT.random_cluster
+cassiopy.stats.SkewT.rvs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``generate`` method generates values from a skew-t distribution.
+The ``rvs`` method generates values from a skew-t distribution.
 
-.. autofunction:: cassiopy.stats.SkewT.random_cluster
+.. autofunction:: cassiopy.stats.SkewT.rvs

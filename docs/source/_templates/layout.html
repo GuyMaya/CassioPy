@@ -1,0 +1,6 @@
+{% extends "!layout.html" %}
+
+{% block meta %}
+{{ super() }}
+<link rel="canonical" href="{{ pathto('', '', 1) }}{{ current_page_name() }}"/>
+{% endblock %}

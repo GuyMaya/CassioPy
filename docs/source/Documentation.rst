@@ -7,4 +7,4 @@ Documentation
    :numbered:
 
    Mixture <Documentation/Mixture>
-   stats <Documentation/Stats>
+   Statistic <Documentation/Stats>

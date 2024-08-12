@@ -35,6 +35,8 @@ numpy==2.0.1
     #   pandas
     #   scikit-learn
     #   scipy
+numpydoc==1.7.0
+    # via -r requirements.in
 packaging==24.1
     # via
     #   matplotlib

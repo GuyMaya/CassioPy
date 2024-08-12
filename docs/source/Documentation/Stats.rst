@@ -1,36 +1,39 @@
 .. _doc.stats.SkewT:
 
 
-Stats
-=====
+Statistic 
+==========
 
-Skew-t
-------
 
-Random cluster distribution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Skew-t distribution
+-------------------
 
 The Skew-t distribution can be described as a continuous probability distribution that incorporates skewness and heavy tails, making it more flexible in modeling asymmetric data with outliers compared to the normal distribution. 
 It extends the Student's t-distribution by including a skewness parameter.
 
-The random variate \( Y \) from a Skew-t distribution is given by:
+The random variate \( X \) from a Skew-t distribution is given by:
 
 
 .. math::
-       Y = \mu + \sigma \frac{Z}{\sqrt{\tau}}, \qquad Z\sim\mathcal{SN}(\mu=0, \sigma=1, \lambda), \qquad \tau\sim\Gamma\left(\frac{\nu}{2}, \frac{\nu}{2}\right) 
+       X = \mu + \sigma \frac{U}{\sqrt{\tau}}, \qquad with \qquad U\sim\mathcal{SN}(\mu=0, \sigma=1, \lambda), \qquad \tau\sim\Gamma\left(\frac{\nu}{2}, \frac{\nu}{2}\right) 
 
 
 With 
 
-:math:`\mu` : location parameter
+:math:`\mu \in \mathbb{R}` : location parameter
 
-:math:`\sigma` : scale parameter
+:math:`\sigma \in \mathbb{R^*_+}` : scale parameter
 
-:math:`\nu` : degrees of freedom
+:math:`\nu \in \mathbb{R^*_+}` : degrees of freedom
 
-:math:`\lambda` : skewness parameter
+:math:`\lambda \in \mathbb{R}` : skewness parameter
 
-:math:`\Gamma` : gamma distribution
+:math:`\Gamma(\alpha, \beta)` : gamma distribution with shape parameter :math:`\alpha` and an inverse scale parameter :math:`\beta`
+
+:math:`\mathcal{SN}` : standard normal distribution with parameter :math:`\lambda`
+
+:math:`\mathcal{SN}(x) = 2\phi(x)\Phi(\lambda x)` with :math:`\phi` the standard normal density and :math:`\Phi` the standard normal cumulative distribution function
+
 
  **Special Cases:**
    - When :math:`\lambda=0` and :math:`\nu\to\infty`, the Skew-t distribution reduces to the normal distribution.
@@ -46,9 +49,9 @@ With
 
 .. code-block:: python
 
-    >>> from cassiopy.stats import SkewT
+    >>> from cassiopy.stats import Skew
     >>> sm = SkewT()
-    >>> data, labels = sm.rvs(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+    >>> data, labels = sm.random_cluster(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
     >>> data.shape
     (200, 2)
     >>> labels.shape
@@ -56,10 +59,10 @@ With
 
 **See also**
 
-:func:`Skew-t rvs <cassiopy.stats.SkewT.random_cluster>`
+:func:`Skew-t random cluster <cassiopy.stats.SkewT.random_cluster>`, :func:`Skew-t rvs <cassiopy.stats.SkewT.rvs>`
 
 Probability density function
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 The probability density function (pdf) of the skew-t distribution is given by:
 
@@ -71,9 +74,9 @@ Where :
 
 :math:`\mu` : location parameter, :math:`\sigma` : scale parameter, :math:`\lambda` : skewness parameter, :math:`\nu` : degrees of freedom
 
-:math:`t_{\nu}` : Student-t probability density with \nu degrees of freedom
+:math:`t_{\nu}` : Student-t probability density with :math:`\nu` degrees of freedom
 
-:math:`T_{\nu+1}` : Student-t cumulative distribution with \nu+1 degrees of freedom
+:math:`T_{\nu+1}` : Student-t cumulative distribution with :math:`\nu+1` degrees of freedom
 
 
 **Examples:**
