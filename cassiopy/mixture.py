@@ -909,6 +909,11 @@ class SkewTMixture:
         =====
 
         For more information, refer to the documentation :ref:`doc.mixture.ARI`
+
+        References
+        ==========
+
+        [1] `Hubert, L., & Arabie, P. (1985). Comparing partitions. Journal of classification, 2(1), 193-218. <https://link.springer.com/article/10.1007/BF01908075>`_
         """
         from sklearn.metrics import adjusted_rand_score
 
