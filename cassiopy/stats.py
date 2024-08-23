@@ -127,14 +127,20 @@ class SkewT:
             "alpha": np.full(n_clusters, 1.0 / n_clusters),
         }
 
+        # Generate the number of samples for each cluster
         n = np.array([], dtype=int)
-        for i in range(n_clusters - 1):
-            if i == 0:
-                n = np.append(n, np.random.randint(1, n_samples))
-            else:
-                n = np.append(n, np.random.randint(1, n_samples - np.sum(n)))
 
-        n = np.append(n, n_samples - np.sum(n))
+        cuts = sorted(np.random.choice(range(1, n_samples), size=n_clusters-1, replace=False))
+        
+        # Ajouter 0 au début et n_samples à la fin
+        cuts = [0] + cuts + [n_samples]
+        
+        # Calculer la différence entre chaque coupure pour obtenir les n entiers
+        for i in range(len(cuts)-1):
+            n = np.append(n, cuts[i+1] - cuts[i])
+        
+
+
 
         # Listes pour stocker les résultats
         data = np.zeros((np.sum(n), n_dim))
