@@ -11,7 +11,7 @@ Skew-t distribution
 The Skew-t distribution can be described as a continuous probability distribution that incorporates skewness and heavy tails, making it more flexible in modeling asymmetric data with outliers compared to the normal distribution. 
 It extends the Student's t-distribution by including a skewness parameter.
 
-The random variate \( X \) from a Skew-t distribution is given by:
+A random variable X follows a skew-t distribution if it can be represented by:
 
 
 .. math::
@@ -40,7 +40,7 @@ With
    - When :math:`\lambda=0`, the Skew-t distribution reduces to the Student's t-distribution.
 
 
-.. figure:: ../_static/Images/skewrvs_1D_3cluster.jpg
+.. figure:: ../_static/Images/skewrvs_1D_3cluster.png
    :alt: Description de l'image
    :width: 400px
    :align: center
@@ -88,6 +88,14 @@ Where :
     >>> x, mu, sigma, nu, lamb = 0.5, 0, 1, 10, 0.5
     >>> sm.pdf(x, mu, sigma, nu, lamb)
     0.3520653267642995   
+
+
+.. dropdown:: References
+
+
+   .. bibliography:: referencePDF.bib
+      :all:
+
 
 **See also**
 

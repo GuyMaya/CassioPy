@@ -121,18 +121,18 @@ class Grid_skewt:
 
         return best_model
 
-    def best_nbre_cluster(self):
+    def best_number_of_cluster(self):
         """
         Returns the number of clusters for the best model.
 
         Returns
         =======
-        nbre_cluster : int
+        nber_cluster : int
             The number of clusters for the best model.
         """
 
-        nbre_cluster = self.n_cluster[np.where(self.bic == self.bic.min())[0][0]]
-        return nbre_cluster
+        nber_cluster = self.n_cluster[np.where(self.bic == self.bic.min())[0][0]]
+        return nber_cluster
 
     def plot_bic(self):
         """

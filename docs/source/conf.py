@@ -30,6 +30,8 @@ extensions = [
     'sphinx_copybutton',
     'sphinx.ext.mathjax',
     'sphinx_design',
+    'sphinxcontrib.bibtex',  # Ajoutez cette ligne pour utiliser bibtex
+
 ]
 
 autosummary_generate = True
@@ -47,6 +49,14 @@ autodoc_default_options = {
     'show-inheritance': True,
 }
 
+bibtex_bibfiles = ['Documentation/referencemixturemodel.bib', 'Documentation/referenceARI.bib', 'Documentation/referencePDF.bib',  'Documentation/referenceBIC.bib']  # Spécifiez le fichier BibTeX
+
+
+# The html index document.
+master_doc = 'index'
+
+# The latex index document
+latex_doc = 'index_latex'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -55,6 +65,10 @@ html_theme = 'pydata_sphinx_theme'
 
 html_static_path = ['_static']
 html_css_files = ['custom.css']
+
+html_js_files = [
+    'custom.js',
+]
 
 # -- Options for HTMLHelp output ---------------------------------------------
 html_theme_options = {
@@ -79,3 +93,4 @@ html_theme_options = {
 html_logo = "_static/Images/Cassiopy_logo.png"
 
 html_favicon = "_static/Images/Cassiopy_favicon.ico"
+

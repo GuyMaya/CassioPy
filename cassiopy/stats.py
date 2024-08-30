@@ -9,13 +9,13 @@ class SkewT:
     """
 
     @staticmethod
-    def rvs(mu, sigma, nu, lamb, n_samples=100):
+    def rvs(mean, sigma, nu, lamb, n_samples=100):
         """
         Generate skew-t distribution.
 
         Parameters
         ==========
-        mu : array-like
+        mean : array-like
             The mean of the distribution with shape (n_dim).
 
         sigma : array-like
@@ -54,15 +54,30 @@ class SkewT:
 
         """
 
-        n_dim = mu.shape[0]
+        # Convert scalar inputs to arrays of the same shape if needed
+        mean = np.asarray(mean)
+        sigma = np.asarray(sigma)
+        lamb = np.asarray(lamb)
+        nu = np.asarray(nu)
+        
+        # Determine the dimensionality based on mean
+        n_dim = mean.shape[0] if mean.ndim > 0 else 1    
 
         data = np.zeros((n_samples, n_dim))
 
-        data[:] = mu[:] + sigma[:] * scipy.stats.skewnorm.rvs(
-            a=lamb[:], loc=0, scale=1, size=(n_samples, n_dim)
+        # data = mean + sigma * scipy.stats.skewnorm.rvs(
+        #     a=lamb, loc=0, scale=1, size=(n_samples, n_dim)
+        # ) / np.sqrt(
+        #     scipy.stats.gamma.rvs(
+        #         a=nu / 2, scale = 2 /nu, loc = (nu**2) / 4, size=(n_samples, n_dim)
+        #     )
+        # )
+
+        data = mean + sigma * scipy.stats.skewnorm.rvs(
+            a=lamb, loc=0, scale=1, size=(n_samples, n_dim)
         ) / np.sqrt(
             scipy.stats.gamma.rvs(
-                a=nu[:] / 2, scale=nu[:] / 2, size=(n_samples, n_dim)
+                a=(nu/2), scale = (nu/2), size=(n_samples, n_dim)
             )
         )
 
@@ -73,7 +88,7 @@ class SkewT:
         n_samples=100, n_dim=1, n_clusters=4, random_state=None, labels=None
     ):
         """
-        Generate skew-t distribution.
+        Generates random clusters based on the SkewT distribution.
 
         Parameters
         ==========
@@ -120,10 +135,10 @@ class SkewT:
         np.random.seed(random_state)
 
         parametre = {
-            "mu": np.random.uniform(-50, 50, size=(n_dim, n_clusters)),
+            "mu": np.random.uniform(-40, 40, size=(n_dim, n_clusters)),
             "sig": np.random.uniform(0.5, 10.0, size=(n_dim, n_clusters)),
             "nu": np.random.uniform(1.0, 10.0, size=(n_dim, n_clusters)),
-            "lamb": np.random.uniform(-5.0, 5.0, size=(n_dim, n_clusters)),
+            "lamb": np.random.uniform(-5, 5, size=(n_dim, n_clusters)),
             "alpha": np.full(n_clusters, 1.0 / n_clusters),
         }
 
@@ -160,7 +175,8 @@ class SkewT:
             ) / np.sqrt(
                 scipy.stats.gamma.rvs(
                     a=parametre["nu"][:, i] / 2,
-                    scale=parametre["nu"][:, i] / 2,
+                    scale=2 / parametre["nu"][:, i],
+                    loc = (parametre["nu"][:, i]**2) / 4,
                     size=(n[i], n_dim),
                     random_state=random_state,
                 )
@@ -181,7 +197,7 @@ class SkewT:
             return data
 
     @staticmethod
-    def pdf(x, mu, sigma, nu, lamb):
+    def pdf(x, mean, sigma, nu, lamb):
         """
         Probability density fonction
 
@@ -190,7 +206,7 @@ class SkewT:
         x : float
             The input data.
 
-        mu : float
+        mean : float
             The mean.
 
         sigma : float
@@ -226,9 +242,9 @@ class SkewT:
         >>> sm.pdf(x, mu, sigma, nu, lamb)
         0.3520653267642995
         """
-        eta = (x - mu) / sigma
-        A = lamb * eta * np.sqrt((nu + 1) / (nu + eta**2))
-        B = scipy.stats.t.cdf(A, nu + 1)
-        C = scipy.stats.t.pdf(eta, nu)
+        eta = (x - mean) / sigma
+        A = lamb * eta * np.sqrt((nu + 1) / (nu + np.power(eta, 2)))
+        B = scipy.stats.t.cdf(x = A, df = (nu + 1))
+        C = scipy.stats.t.pdf(x = eta, df = nu)
 
-        return 2 / sigma * C * B
+        return (2 / sigma) * C * B

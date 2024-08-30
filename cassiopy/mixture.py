@@ -14,8 +14,8 @@ class SkewTMixture:
     n_cluster : int
         The number of mixture components (clusters).
 
-    n_iter : int, default=10
-        The number of iterations to perform during the parameter estimation.
+    n_iter : int, default=100
+        The maximum number of iterations to perform during the parameter estimation.
 
     tol : float, default=1e-8
         The convergence threshold. Iterations will stop when the
@@ -44,10 +44,10 @@ class SkewTMixture:
 
     Attributes
     ==========
-    mu : array-like of shape (n_features, n_cluster)
+    mean : array-like of shape (n_features, n_cluster)
         The mean vectors for each cluster.
 
-    sig : array-like of shape (n_features, n_cluster)
+    sigma : array-like of shape (n_features, n_cluster)
         The covariance matrices for each cluster.
 
     nu : array-like of shape (n_features, n_cluster)
@@ -81,7 +81,7 @@ class SkewTMixture:
     >>> X = np.array([[5, 3], [5, 7], [5, 1], [20, 3], [20, 7], [20, 1]])
     >>> model = SkewTMixture(n_cluster=2, n_iter=100, tol=1e-4, init='random')
     >>> model.fit(X)
-    >>> model.mu
+    >>> model.mean
     array([[20.,  3.],
         [ 5.,  3.]])
     >>> model.predict_proba([[0, 0], [22, 5]])
@@ -111,7 +111,7 @@ class SkewTMixture:
 
     def fit(self, X):
         """
-        Fits the SkewMM model to the input data.
+        Fits the SkewTMixture model to the input data.
 
         Parameters
         ==========
@@ -180,6 +180,15 @@ class SkewTMixture:
 
             i = 0
 
+
+            files = os.listdir("Models_folder")
+            for file in files:
+                if file.startswith("iter"):
+                    file_path = os.path.join("Models_folder", file)
+                    os.remove(file_path)
+
+
+
             self.save(f"iter_{n+1}_track_{i+1}")
 
             while i < self.n_iter:
@@ -205,9 +214,9 @@ class SkewTMixture:
 
                 self.M_step(X)
 
-                if np.any(np.isnan(self.sig)):
+                if np.any(np.isnan(self.sigma)):
                     if i < 2:
-                        print("reinitialization : sig nan")
+                        print("reinitialization : sigma nan")
                         return self.fit(X)
                     else:
                         self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
@@ -223,13 +232,13 @@ class SkewTMixture:
                         self.n_iter = i - 1
                         break
 
-                if np.any(np.diagonal(self.sig, axis1=0, axis2=1) < 0):
+                if np.any(np.diagonal(self.sigma, axis1=0, axis2=1) < 0):
                     if i < 2:
-                        np.diagonal(self.sig, axis1=0, axis2=1)
+                        np.diagonal(self.sigma, axis1=0, axis2=1)
 
-                        print("sig", self.sig)
+                        print("sigma", self.sigma)
 
-                        print("eig:", np.diagonal(self.sig, axis1=0, axis2=1))
+                        print("eig:", np.diagonal(self.sigma, axis1=0, axis2=1))
                         print("reinitialization : negative equity")
                         return self.fit(X)
                     else:
@@ -267,10 +276,10 @@ class SkewTMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': array-like
+            - 'mean': array-like
                 Matrix of means.
 
-            - 'sig': array-like
+            - 'sigma': array-like
                 Matrix of covariances.
 
             - 'nu': array-like
@@ -283,10 +292,10 @@ class SkewTMixture:
                 Array of cluster proportions.
         """
         # initialization of the average matrix
-        mu = np.random.default_rng().uniform(low=X.min(), high=X.max(), size=(X.shape[1], self.n_cluster))
+        mean = np.random.default_rng().uniform(low=X.min(), high=X.max(), size=(X.shape[1], self.n_cluster))
 
         # initialization of the covariance matrix
-        sig = np.ones((X.shape[1], self.n_cluster))
+        sigma = np.ones((X.shape[1], self.n_cluster))
 
         # initialization of the degree of freedom
         nu = np.random.rand(X.shape[1], self.n_cluster)
@@ -297,7 +306,7 @@ class SkewTMixture:
         # initialization of the prior, proportion of data in cluster k
         alpha = np.random.rand(self.n_cluster)
 
-        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
+        return {"mean": mean, "sigma": sigma, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def initialisation_params(self, params, X):
         """
@@ -308,10 +317,10 @@ class SkewTMixture:
         params : dict
             A dictionary containing the initial values for the model parameters.
 
-            - 'mu' : array-like
+            - 'mean' : array-like
                 The mean vectors for each cluster. Shape: (n_features, n_cluster).
 
-            - 'sig' : array-like
+            - 'sigma' : array-like
                 The covariance matrices for each cluster. Shape: (n_features, n_cluster).
 
             - 'nu' : array-like
@@ -330,8 +339,8 @@ class SkewTMixture:
         ========
         >>> from cassiopy.mixture import SkewTMixture
         >>> params = {
-        ...     'mu': np.array([[20, 3], [5, 3]]),
-        ...     'sig': np.array([[1, 1], [1, 1]]),
+        ...     'mean': np.array([[20, 3], [5, 3]]),
+        ...     'sigma': np.array([[1, 1], [1, 1]]),
         ...     'nu': np.array([[1, 1], [1, 1]]),
         ...     'lamb': np.array([[1, 1], [1, 1]]),
         ...     'alpha': np.array([0.5, 0.5])
@@ -339,17 +348,17 @@ class SkewTMixture:
         >>> model = SkewTMixture(n_cluster=2, n_iter=100, tol=1e-4, init='params', params=params)
         
         """
-        if params["mu"].shape != (X.shape[1], self.n_cluster):
+        if params["mean"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
-                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['mu'].shape}"
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['mean'].shape}"
             )
-        self.mu = np.array(params["mu"], dtype=float)
+        self.mean = np.array(params["mean"], dtype=float)
 
-        if params["sig"].shape != (X.shape[1], self.n_cluster):
+        if params["sigma"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
-                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['sig'].shape}"
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['sigma'].shape}"
             )
-        self.sig = np.array(params["sig"], dtype=float)
+        self.sigma = np.array(params["sigma"], dtype=float)
 
         if params["nu"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
@@ -388,10 +397,10 @@ class SkewTMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': numpy array
+            - 'mean': numpy array
                 Matrix of means.
 
-            - 'sig': numpy array
+            - 'sigma': numpy array
                 Matrix of covariances.
 
             - 'nu': numpy array
@@ -414,10 +423,10 @@ class SkewTMixture:
         cluster_centers = kmeans.cluster_centers_
 
         # Initializations of the mean matrix
-        mu = cluster_centers.T
+        mean = cluster_centers.T
 
         # Initializations of the covariance matrix
-        sig = np.ones((X.shape[1], self.n_cluster))
+        sigma = np.ones((X.shape[1], self.n_cluster))
 
         # Initializations of the degree of freedom
         nu = np.random.rand(X.shape[1], self.n_cluster)
@@ -429,7 +438,7 @@ class SkewTMixture:
         alpha = np.random.rand(self.n_cluster)
         self.alpha = self.alpha / np.sum(self.alpha)
 
-        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
+        return {"mean": mean, "sigma": sigma, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def initialisation_gmm(self, X):
         """
@@ -445,10 +454,10 @@ class SkewTMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': numpy array
+            - 'mean': numpy array
                 Matrix of means.
 
-            - 'sig': numpy array
+            - 'sigma': numpy array
                 Matrix of covariances.
 
             - 'nu': numpy array
@@ -470,10 +479,10 @@ class SkewTMixture:
         gmm.fit(X)
 
         # Initializations of the mean matrix with the means of the GMM
-        mu = gmm.means_.T
+        mean = gmm.means_.T
 
         # Initializations of the covariance matrix with the covariances of the GMM
-        sig = gmm.covariances_.T
+        sigma = gmm.covariances_.T
 
         # Initialisations of the degree of freedom
         nu = np.random.uniform(0, 10, size=(X.shape[1], self.n_cluster))
@@ -484,7 +493,7 @@ class SkewTMixture:
         # Initializations of the prior, proportion of data in cluster k
         alpha = gmm.weights_
 
-        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
+        return {"mean": mean, "sigma": sigma, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def g_of_nu(self, x, nu):
         """
@@ -526,8 +535,8 @@ class SkewTMixture:
         for dim in range(X.shape[1]):
             pdf_values = SkewT.pdf(
                 x=X[:, dim][:, np.newaxis],  # Shape (n_samples, 1)
-                mu=self.mu[dim, :],          # Shape (n_cluster,)
-                sigma=self.sig[dim, :],      # Shape (n_cluster,)
+                mean=self.mean[dim, :],          # Shape (n_cluster,)
+                sigma=self.sigma[dim, :],      # Shape (n_cluster,)
                 nu=self.nu[dim, :],          # Shape (n_cluster,)
                 lamb=self.lamb[dim, :]       # Shape (n_cluster,)
             )
@@ -550,7 +559,7 @@ class SkewTMixture:
         # Calculation of s1
         nu_expended = self.nu[np.newaxis, :, :]
 
-        self.eta = (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) / self.sig[
+        self.eta = (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :]) / self.sigma[
             np.newaxis, :, :
         ]
 
@@ -574,7 +583,7 @@ class SkewTMixture:
         self.delta = self.lamb / np.sqrt(1 + self.lamb**2)
         term1 = (
             self.delta[np.newaxis, :, :]
-            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :])
+            * (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :])
             * self.s1
         )
 
@@ -583,8 +592,8 @@ class SkewTMixture:
         for dim in range(X.shape[1]):
             f[:, dim, :] = SkewT.pdf(
                 X[:, dim][:, np.newaxis],
-                self.mu[dim, :],
-                self.sig[dim, :],
+                self.mean[dim, :],
+                self.sigma[dim, :],
                 self.nu[dim, :],
                 self.lamb[dim, :],
             )
@@ -600,17 +609,17 @@ class SkewTMixture:
         # Calculation of s3
         partie1 = (
             self.delta[np.newaxis, :, :] ** 2
-            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) ** 2
+            * (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :]) ** 2
             * self.s1
         )
 
         partie2 = (1 - self.delta[np.newaxis, :, :] ** 2) * (
-            self.sig[np.newaxis, :, :] ** 2
+            self.sigma[np.newaxis, :, :] ** 2
         )
 
         partie3 = (
             self.delta[np.newaxis, :, :]
-            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :])
+            * (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :])
             * np.sqrt(1 - self.delta[np.newaxis, :, :] ** 2)
         ) / (np.pi * f)
 
@@ -678,15 +687,15 @@ class SkewTMixture:
 
         term1 = delta * (1 - delta**2) * np.sum(self.tik[:, k], axis=0)
 
-        diff_X_mu = X[:, j] - self.mu[j, k]
+        diff_X_mu = X[:, j] - self.mean[j, k]
         term2_part1 = np.sum(
-            (self.s1[:, j, k] * diff_X_mu**2) / self.sig[j, k] ** 2, axis=0
+            (self.s1[:, j, k] * diff_X_mu**2) / self.sigma[j, k] ** 2, axis=0
         )
-        term2_part2 = np.sum(self.s3[:, j, k] / self.sig[j, k] ** 2, axis=0)
+        term2_part2 = np.sum(self.s3[:, j, k] / self.sigma[j, k] ** 2, axis=0)
         term2 = delta * (term2_part1 + term2_part2)
 
         term3 = (1 + delta**2) * np.sum(
-            (self.s2[:, j, k] * diff_X_mu) / self.sig[j, k] ** 2, axis=0
+            (self.s2[:, j, k] * diff_X_mu) / self.sigma[j, k] ** 2, axis=0
         )
 
         return term1 - term2 + term3
@@ -740,18 +749,18 @@ class SkewTMixture:
         # Update of alpha PX_CM-step-1
         self.alpha[:] = np.sum(self.tik[:, :], axis=0) / X.shape[0]
 
-        self.mu = (
+        self.mean = (
             np.sum(self.s1 * X[:, :, np.newaxis], axis=0)
             - self.delta * np.sum(self.s2, axis=0)
         ) / np.sum(self.s1, axis=0)
 
         # Update of sigma PX_CM-step-3
-        self.sig[:, :] = np.sqrt(
+        self.sigma[:, :] = np.sqrt(
             (
-                np.sum(self.s1 * (X[:, :, np.newaxis] - self.mu[:, :]) ** 2, axis=0)
+                np.sum(self.s1 * (X[:, :, np.newaxis] - self.mean[:, :]) ** 2, axis=0)
                 - 2
                 * self.delta
-                * np.sum(self.s2 * (X[:, :, np.newaxis] - self.mu[:, :]), axis=0)
+                * np.sum(self.s2 * (X[:, :, np.newaxis] - self.mean[:, :]), axis=0)
                 + np.sum(self.s3, axis=0)
             )
             / (2 * (1 - self.delta**2) * np.sum(self.s1, axis=0))
@@ -893,7 +902,7 @@ class SkewTMixture:
 
     def ARI(self, y_true, y_pred):
         """
-        Compute the adjusted rand index beetween a gold standard partition and the estimated partition.
+        Compute the Adjusted Rand Index (ARI) beetwen the true partition and the estimated partition.
 
         Parameters
         ==========
@@ -919,7 +928,7 @@ class SkewTMixture:
 
         ari = adjusted_rand_score(y_true, y_pred)
 
-        return print("ARI:", ari)
+        return ari
 
     def BIC(self, X):
         """
@@ -939,13 +948,19 @@ class SkewTMixture:
         =====
 
         For more information, refer to the documentation :ref:`doc.mixture.BIC`
+
+
+        References
+        ==========
+
+        [1] Schwarz, G. (1978). Estimating the dimension of a model. *The Annals of Statistics*, 6(2), 461-464. <https://doi.org/10.1214/aos/1176344136>
         """
         # Implementation of the BIC method
         n = X.shape[0]
         LL = self.E_log_likelihood[-1]
         k = (
-            self.mu.size
-            + self.sig.size
+            self.mean.size
+            + self.sigma.size
             + self.nu.size
             + self.lamb.size
             + self.alpha.size
@@ -978,8 +993,8 @@ class SkewTMixture:
             os.makedirs("Models_folder")
 
         with h5py.File(f"Models_folder/{filename}", "w") as f:
-            f.create_dataset("mu", data=self.mu)
-            f.create_dataset("sig", data=self.sig)
+            f.create_dataset("mean", data=self.mean)
+            f.create_dataset("sigma", data=self.sigma)
             f.create_dataset("nu", data=self.nu)
             f.create_dataset("lamb", data=self.lamb)
             f.create_dataset("alpha", data=self.alpha)
@@ -997,8 +1012,8 @@ class SkewTMixture:
         import h5py
 
         with h5py.File(filename, "r") as f:
-            self.mu = f["mu"][:]
-            self.sig = f["sig"][:]
+            self.mean = f["mean"][:]
+            self.sigma = f["sigma"][:]
             self.nu = f["nu"][:]
             self.lamb = f["lamb"][:]
             self.alpha = f["alpha"][:]
@@ -1014,8 +1029,8 @@ class SkewTUniformMixture:
     n_cluster : int
         The number of mixture components (clusters). The cluster uniform is not included in this number.
 
-    n_iter : int, default=10
-        The number of iterations to perform during the parameter estimation.
+    n_iter : int, default=100
+        The maximum number of iterations to perform during the parameter estimation.
 
     tol : float, default=1e-8
         The convergence threshold. Iterations will stop when the
@@ -1047,10 +1062,10 @@ class SkewTUniformMixture:
     Attributes
     ==========
 
-    mu : array-like of shape (n_features, n_cluster)
+    mean : array-like of shape (n_features, n_cluster)
         The mean vectors for each cluster.
 
-    sig : array-like of shape (n_features, n_cluster)
+    sigma : array-like of shape (n_features, n_cluster)
         The covariance matrices for each cluster.
 
     nu : array-like of shape (n_features, n_cluster)
@@ -1086,7 +1101,7 @@ class SkewTUniformMixture:
     >>> X = np.array([[3, 5], [3, 8], [3, 2], [15, 5], [15, 8], [15, 2]])
     >>> model = SkewTUniformMixture(n_cluster=2, n_iter=100, tol=1e-4, init='random')
     >>> model.fit(X)
-    >>> model.mu
+    >>> model.mean
     array([[15.,  5.],
         [ 3.,  5.]])
     >>> model.predict_proba([[0, 0], [17, 6]])
@@ -1115,7 +1130,7 @@ class SkewTUniformMixture:
 
     def fit(self, X):
         """
-        Fits the SkewMM model to the input data.
+        Fits the SkewTUniformMixture model to the input data.
 
         Parameters
         ==========
@@ -1183,6 +1198,12 @@ class SkewTUniformMixture:
 
             i = 0
 
+            files = os.listdir("Models_folder")
+            for file in files:
+                if file.startswith("iter"):
+                    file_path = os.path.join("Models_folder", file)
+                    os.remove(file_path)
+
             self.save(f"iter_{n+1}_track_{i+1}")
 
             while i < self.n_iter:
@@ -1208,9 +1229,9 @@ class SkewTUniformMixture:
 
                 self.M_step(X)
 
-                if np.any(np.isnan(self.sig)):
+                if np.any(np.isnan(self.sigma)):
                     if i < 2:
-                        print("reinitialization : sig nan")
+                        print("reinitialization : sigma nan")
                         return self.fit(X)
                     else:
                         self.load(f"Models_folder/iter_{n+1}_track_{i}.h5") 
@@ -1226,13 +1247,13 @@ class SkewTUniformMixture:
                         self.n_iter = i - 1
                         break
 
-                if np.any(np.diagonal(self.sig, axis1=0, axis2=1) < 0):
+                if np.any(np.diagonal(self.sigma, axis1=0, axis2=1) < 0):
                     if i < 2:
-                        np.diagonal(self.sig, axis1=0, axis2=1)
+                        np.diagonal(self.sigma, axis1=0, axis2=1)
 
-                        print("sig", self.sig)
+                        print("sigma", self.sigma)
 
-                        print("eig:", np.diagonal(self.sig, axis1=0, axis2=1))
+                        print("eig:", np.diagonal(self.sigma, axis1=0, axis2=1))
                         print("reinitialization : negative equity")
                         return self.fit(X)
                     else:
@@ -1269,10 +1290,10 @@ class SkewTUniformMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': array-like
+            - 'mean': array-like
                 Matrix of means.
 
-            - 'sig': array-like
+            - 'sigma': array-like
                 Matrix of covariances.
 
             - 'nu': array-like
@@ -1285,10 +1306,10 @@ class SkewTUniformMixture:
                 Array of cluster proportions.
         """
         # initialization of the average matrix
-        mu = np.random.default_rng().uniform(low=X.min(), high=X.max(), size=(X.shape[1], self.n_cluster))
+        mean = np.random.default_rng().uniform(low=X.min(), high=X.max(), size=(X.shape[1], self.n_cluster))
 
         # initialization of the covariance matrix
-        sig = np.ones((X.shape[1], self.n_cluster))
+        sigma = np.ones((X.shape[1], self.n_cluster))
 
         # initialization of the degree of freedom
         nu = np.random.rand(X.shape[1], self.n_cluster)
@@ -1299,7 +1320,7 @@ class SkewTUniformMixture:
         # initialization of the prior, proportion of data in cluster k
         alpha = np.random.rand(self.n_cluster)
 
-        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
+        return {"mean": mean, "sigma": sigma, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def initialisation_params(self, params, X):
         """
@@ -1310,10 +1331,10 @@ class SkewTUniformMixture:
         params : dict
             A dictionary containing the initial values for the model parameters.
 
-            - 'mu' : array-like
+            - 'mean' : array-like
                 The mean vectors for each cluster. Shape: (n_features, n_cluster).
 
-            - 'sig' : array-like
+            - 'sigma' : array-like
                 The covariance matrices for each cluster. Shape: (n_features, n_cluster).
 
             - 'nu' : array-like
@@ -1332,8 +1353,8 @@ class SkewTUniformMixture:
         ========
         >>> from cassiopy.mixture import SkewTMixture
         >>> params = {
-        ...     'mu': np.array([[20, 3], [5, 3]]),
-        ...     'sig': np.array([[1, 1], [1, 1]]),
+        ...     'mean': np.array([[20, 3], [5, 3]]),
+        ...     'sigma': np.array([[1, 1], [1, 1]]),
         ...     'nu': np.array([[1, 1], [1, 1]]),
         ...     'lamb': np.array([[1, 1], [1, 1]]),
         ...     'alpha': np.array([0.5, 0.5])
@@ -1341,17 +1362,17 @@ class SkewTUniformMixture:
         >>> model = SkewTMixture(n_cluster=2, n_iter=100, tol=1e-4, init='params', params=params)
         
         """
-        if params["mu"].shape != (X.shape[1], self.n_cluster):
+        if params["mean"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
-                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['mu'].shape}"
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['mean'].shape}"
             )
-        self.mu = np.array(params["mu"], dtype=float)
+        self.mean = np.array(params["mean"], dtype=float)
 
-        if params["sig"].shape != (X.shape[1], self.n_cluster):
+        if params["sigma"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
-                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['sig'].shape}"
+                f"Error: The size of the matrix must be {(X.shape[1], self.n_cluster)}, but it is {params['sigma'].shape}"
             )
-        self.sig = np.array(params["sig"], dtype=float)
+        self.sigma = np.array(params["sigma"], dtype=float)
 
         if params["nu"].shape != (X.shape[1], self.n_cluster):
             raise ValueError(
@@ -1394,10 +1415,10 @@ class SkewTUniformMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': numpy array
+            - 'mean': numpy array
                 Matrix of means.
 
-            - 'sig': numpy array
+            - 'sigma': numpy array
                 Matrix of covariances.
 
             - 'nu': numpy array
@@ -1420,10 +1441,10 @@ class SkewTUniformMixture:
         cluster_centers = kmeans.cluster_centers_
 
         # Initializations of the mean matrix
-        mu = cluster_centers.T
+        mean = cluster_centers.T
 
         # Initializations of the covariance matrix
-        sig = np.ones((X.shape[1], self.n_cluster))
+        sigma = np.ones((X.shape[1], self.n_cluster))
 
         # Initializations of the degree of freedom
         nu = np.random.rand(X.shape[1], self.n_cluster)
@@ -1434,7 +1455,7 @@ class SkewTUniformMixture:
         # Initializations of the prior, proportion of data in cluster k
         alpha = np.random.rand(self.n_cluster)
 
-        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
+        return {"mean": mean, "sigma": sigma, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def initialisation_gmm(self, X):
         """
@@ -1450,10 +1471,10 @@ class SkewTUniformMixture:
         dict : dict
             A dictionary containing the initialized parameters:
 
-            - 'mu': numpy array
+            - 'mean': numpy array
                 Matrix of means.
 
-            - 'sig': numpy array
+            - 'sigma': numpy array
                 Matrix of covariances.
 
             - 'nu': numpy array
@@ -1475,10 +1496,10 @@ class SkewTUniformMixture:
         gmm.fit(X)
 
         # Initializations of the mean matrix with the means of the GMM
-        mu = gmm.means_.T
+        mean = gmm.means_.T
 
         # Initializations of the covariance matrix with the covariances of the GMM
-        sig = gmm.covariances_.T
+        sigma = gmm.covariances_.T
 
         # Initialisations of the degree of freedom
         nu = np.random.uniform(0.0, 10.0, size=(X.shape[1], self.n_cluster))
@@ -1489,7 +1510,7 @@ class SkewTUniformMixture:
         # Initializations of the prior, proportion of data in cluster k
         alpha = gmm.weights_
 
-        return {"mu": mu, "sig": sig, "nu": nu, "lamb": lamb, "alpha": alpha}
+        return {"mean": mean, "sigma": sigma, "nu": nu, "lamb": lamb, "alpha": alpha}
 
     def g_of_nu(self, x, nu):
         """
@@ -1534,8 +1555,8 @@ class SkewTUniformMixture:
             for dim in range(X.shape[1]):
                 p[index, :-1] *= SkewT.pdf(
                     x=value[dim],
-                    mu=self.mu[dim, :],
-                    sigma=self.sig[dim, :],
+                    mean=self.mean[dim, :],
+                    sigma=self.sigma[dim, :],
                     nu=self.nu[dim, :],
                     lamb=self.lamb[dim, :],
                 )
@@ -1559,7 +1580,7 @@ class SkewTUniformMixture:
         # Calculation of s1
         nu_expended = self.nu[np.newaxis, :, :]
 
-        self.eta = (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) / self.sig[
+        self.eta = (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :]) / self.sigma[
             np.newaxis, :, :
         ]
 
@@ -1583,7 +1604,7 @@ class SkewTUniformMixture:
         self.delta = self.lamb / np.sqrt(1 + self.lamb**2)
         term1 = (
             self.delta[np.newaxis, :, :]
-            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :])
+            * (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :])
             * self.s1
         )
 
@@ -1592,8 +1613,8 @@ class SkewTUniformMixture:
         for dim in range(X.shape[1]):
             f[:, dim, :] = SkewT.pdf(
                 X[:, dim][:, np.newaxis],
-                self.mu[dim, :],
-                self.sig[dim, :],
+                self.mean[dim, :],
+                self.sigma[dim, :],
                 self.nu[dim, :],
                 self.lamb[dim, :],
             )
@@ -1609,17 +1630,17 @@ class SkewTUniformMixture:
         # Calculation of s3
         partie1 = (
             self.delta[np.newaxis, :, :] ** 2
-            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :]) ** 2
+            * (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :]) ** 2
             * self.s1
         )
 
         partie2 = (1 - self.delta[np.newaxis, :, :] ** 2) * (
-            self.sig[np.newaxis, :, :] ** 2
+            self.sigma[np.newaxis, :, :] ** 2
         )
 
         partie3 = (
             self.delta[np.newaxis, :, :]
-            * (X[:, :, np.newaxis] - self.mu[np.newaxis, :, :])
+            * (X[:, :, np.newaxis] - self.mean[np.newaxis, :, :])
             * np.sqrt(1 - self.delta[np.newaxis, :, :] ** 2)
         ) / (np.pi * f)
 
@@ -1692,15 +1713,15 @@ class SkewTUniformMixture:
 
         term1 = delta * (1 - delta**2) * np.sum(self.tik[:, k], axis=0)
 
-        diff_X_mu = X[:, j] - self.mu[j, k]
+        diff_X_mu = X[:, j] - self.mean[j, k]
         term2_part1 = np.sum(
-            (self.s1[:, j, k] * diff_X_mu**2) / self.sig[j, k] ** 2, axis=0
+            (self.s1[:, j, k] * diff_X_mu**2) / self.sigma[j, k] ** 2, axis=0
         )
-        term2_part2 = np.sum(self.s3[:, j, k] / self.sig[j, k] ** 2, axis=0)
+        term2_part2 = np.sum(self.s3[:, j, k] / self.sigma[j, k] ** 2, axis=0)
         term2 = delta * (term2_part1 + term2_part2)
 
         term3 = (1 + delta**2) * np.sum(
-            (self.s2[:, j, k] * diff_X_mu) / self.sig[j, k] ** 2, axis=0
+            (self.s2[:, j, k] * diff_X_mu) / self.sigma[j, k] ** 2, axis=0
         )
 
         return term1 - term2 + term3
@@ -1754,18 +1775,18 @@ class SkewTUniformMixture:
         # Update of alpha PX_CM-step-1
         self.alpha[:] = np.sum(self.tik[:, :], axis=0) / X.shape[0]
 
-        self.mu = (
+        self.mean = (
             np.sum(self.s1 * X[:, :, np.newaxis], axis=0)
             - self.delta * np.sum(self.s2, axis=0)
         ) / np.sum(self.s1, axis=0)
 
         # Update of sigma PX_CM-step-3
-        self.sig[:, :] = np.sqrt(
+        self.sigma[:, :] = np.sqrt(
             (
-                np.sum(self.s1 * (X[:, :, np.newaxis] - self.mu[:, :]) ** 2, axis=0)
+                np.sum(self.s1 * (X[:, :, np.newaxis] - self.mean[:, :]) ** 2, axis=0)
                 - 2
                 * self.delta
-                * np.sum(self.s2 * (X[:, :, np.newaxis] - self.mu[:, :]), axis=0)
+                * np.sum(self.s2 * (X[:, :, np.newaxis] - self.mean[:, :]), axis=0)
                 + np.sum(self.s3, axis=0)
             )
             / (2 * (1 - self.delta**2) * np.sum(self.s1, axis=0))
@@ -1896,7 +1917,7 @@ class SkewTUniformMixture:
 
     def ARI(self, y_true, y_pred):
         """
-        Compute the adjusted rand index beetween a gold standard partition and the estimated partition.
+        Compute the Adjusted Rand Index (ARI) beetwen the true partition and the estimated partition.
 
         Parameters
         ==========
@@ -1912,12 +1933,17 @@ class SkewTUniformMixture:
         =====
 
         For more information, refer to the documentation :ref:`doc.mixture.ARI`
+
+        References
+        ==========
+
+        [1] `Hubert, L., & Arabie, P. (1985). Comparing partitions. Journal of classification, 2(1), 193-218. <https://link.springer.com/article/10.1007/BF01908075>`_
         """
         from sklearn.metrics import adjusted_rand_score
 
         ari = adjusted_rand_score(y_true, y_pred)
 
-        return print("ARI:", ari)
+        return ari
 
     def BIC(self, X):
         """
@@ -1937,13 +1963,18 @@ class SkewTUniformMixture:
         =====
 
         For more information, refer to the documentation :ref:`doc.mixture.BIC`
+
+        References
+        ==========
+
+        [1] Schwarz, G. (1978). Estimating the dimension of a model. *The Annals of Statistics*, 6(2), 461-464. <https://doi.org/10.1214/aos/1176344136>
         """
         # Implementation of the BIC method
         n = X.shape[0]
         LL = self.E_log_likelihood[-1]
         k = (
-            self.mu.size
-            + self.sig.size
+            self.mean.size
+            + self.sigma.size
             + self.nu.size
             + self.lamb.size
             + self.alpha.size
@@ -1976,8 +2007,8 @@ class SkewTUniformMixture:
             os.makedirs("Models_folder")
 
         with h5py.File(f"Models_folder/{filename}", "w") as f:
-            f.create_dataset("mu", data=self.mu)
-            f.create_dataset("sig", data=self.sig)
+            f.create_dataset("mean", data=self.mean)
+            f.create_dataset("sigma", data=self.sigma)
             f.create_dataset("nu", data=self.nu)
             f.create_dataset("lamb", data=self.lamb)
             f.create_dataset("alpha", data=self.alpha)
@@ -1995,8 +2026,8 @@ class SkewTUniformMixture:
         import h5py
 
         with h5py.File(filename, "r") as f:
-            self.mu = f["mu"][:]
-            self.sig = f["sig"][:]
+            self.mean = f["mean"][:]
+            self.sigma = f["sigma"][:]
             self.nu = f["nu"][:]
             self.lamb = f["lamb"][:]
             self.alpha = f["alpha"][:]

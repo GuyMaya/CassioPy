@@ -11,7 +11,7 @@ API
    API/grid
 
 
-This table provides a description of the main classes and modules available in the project.
+This table provides a description of the main classes and modules available in Cassiopy.
 
 .. list-table::
    :widths: 20 40 40
