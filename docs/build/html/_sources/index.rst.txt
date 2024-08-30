@@ -6,15 +6,20 @@
 .. meta::
    :google-site-verification: LZCgiiUg9cqmaXmxHJJy-ncf16rkUeI6mjCtMZ_QPAs
 
+.. meta::
+   :description lang=en: Cassiopy is a python library for clustering using skew-t mixture models. 
+   :description lang=fr: Cassiopy est une bibliothèque python pour le clustering utilisant des modèles de mélange de skew-t.
+   :keywords: skew-t, clustering, mixture models, python, library, machine learning, package
+
 cassiopy
 ========
 
-**Cassiopy** is a library dedicated to clustering using skew-t mixture models. It offers powerful tools for working with skew-t distributions, including sample generation, density calculation, and more.
+**Cassiopy** is a python library dedicated to clustering using `skew-t <https://arxiv.org/abs/0911.2342>`_ mixture models. It offers powerful tools for working with skew-t distributions, including sample generation, density calculation, and more.
 
 Main Features
 -------------
 
-- **Skew-t Clustering**: Utilize skew-t mixture models to perform complex clustering tasks.
+- **Skew-t Clustering**: Utilize skew-t mixture models to perform complex clustering tasks for asymetric data.
 - **Uniform Background**: Use skew-t uniform mixture models to cluster data with a uniform background.
 - **Sampling and Density**: Generate samples and calculate densities for skew-t distributions.
 
@@ -26,6 +31,7 @@ Main Features
    Getting Started <getting_started>
    API <API>
    Documentation <Documentation>
+   Glossary <Glossary>
    Contact <Contact>
 
 

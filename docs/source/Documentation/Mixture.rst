@@ -1,5 +1,8 @@
 .. _doc.mixture:
 
+.. meta::
+   :description: Documentation of Skew-t Mixture Models in CassioPy
+   :keywords: skew-t, clustering, mixture models, machine learning
 
 Mixture Model
 =============
@@ -7,12 +10,12 @@ Mixture Model
 
 .. _doc.mixture.SkewTMixture:
 
-Skew-t Mixture models
+Skew-t Mixture Models
 ----------------------
 
 Skew-t mixture models are an unsupervised machine learning method used for clustering data. These models extend Gaussian Mixture Models (GMM) to accommodate non-symmetric distributions by employing skew-t distributions.
 
-The random variable X follows a skew-t distribution if its probability density function is given by:
+A random variable X follows a skew-t distribution if it can be represented by:
 
 .. math::
        X = \mu + \sigma \frac{U}{\sqrt{\tau}}, \qquad with  \qquad U\sim\mathcal{SN}(\lambda), \qquad \tau\sim\Gamma\left(\frac{\nu}{2}, \frac{\nu}{2}\right) 
@@ -56,6 +59,12 @@ Where
 :math:`\mathcal{ST}` : skew-t probabibility density function
 
 
+
+.. figure:: ../_static/Images/Skewt_clustering.png
+   :alt: Clustering using SkewT Mixture Model
+   :width: 500px
+   :align: center
+
 **Examples:**
 
 .. code-block:: python
@@ -75,17 +84,27 @@ Where
            [0.10      , 0.90      ]])
     >>> model.save('model.h5')
 
+
+
+.. dropdown:: References
+
+
+   .. bibliography:: referencemixturemodel.bib
+      :all:
+
+
 **See also**
 
 :func:`Skew-t Mixture <cassiopy.mixture.SkewTMixture>`
 
 
+
 .. _doc.mixture.SkewTUniformMixture:
 
-Skew-t Uniform Mixture models
+Skew-t Uniform Mixture Models
 ------------------------------
 
-Skew-t uniform mixture models are an unsupervised machine learning method used for clustering data with an uniform background. These models extend Gaussian Mixture Models (GMM) to accommodate non-symmetric distributions by employing skew-t distributions with a uniform background.
+The Skew-t uniform mixture models is an unsupervised machine learning method used for clustering data into groups following skewed distributions (see :numref:`doc.mixture.SkewTMixture` above) together with an uniform background. These models extend Gaussian Mixture Models (GMM) to accommodate non-symmetric distributions by employing skew-t distributions with a uniform background.
 
 .. math::
    p(\vec{x_i};\vec{\theta})  = \sum_{k=1}^{K} \alpha_k  \; p(\vec{x_i}|\vec{\theta_{k}}) + \alpha_{K+1} \frac{1}{V}
@@ -114,6 +133,8 @@ Where :math:`V` is the volume of the uniform background.
            [0.        , 0.90      , 0.10      ]])
     >>> model.save('model.h5')
 
+
+
 **See also**
 
 :func:`Skew-t Mixture <cassiopy.mixture.SkewTUniformMixture>`
@@ -139,6 +160,10 @@ Where
 :math:`n` : number of samples
 
 
+.. dropdown:: References
+
+   .. bibliography:: referenceBIC.bib
+      :all:
 
 
 
@@ -148,7 +173,8 @@ Where
 Adjusted Rand Index (ARI)
 --------------------------
 
-Rand Index :
+The Adjusted Rand Index (ARI) is a measure of the similarity between two data clusterings. It ensure that random clusterings receive a score close to zero, with a maximum score of 1 indicating perfect agreement between the clusterings.
+The Rand Index is defined as:
 
 .. math::
    RI = \frac{a + b}{\binom{N}{2}}
@@ -181,5 +207,11 @@ With :math:`max(RI) = \frac{1}{2} \left(\sum_i\binom{n_i}{2} + \sum_j\binom{n_j}
    - When :math:`ARI=1` , the two clusterings are identical, perfect agreement
    - When :math:`ARI=0` , the two clusterings are random, no agreement
    - When :math:`ARI=-1` , the two clusterings are different, perfect disagreement
+
+.. dropdown:: References
+
+
+   .. bibliography:: referenceARI.bib
+      :all:
 
 
