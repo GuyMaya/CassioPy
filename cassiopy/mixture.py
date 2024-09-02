@@ -1268,6 +1268,8 @@ class SkewTUniformMixture:
                 i += 1
 
         # Find the best model
+        print(idx[0][0]+1)
+        print(idx[1][0])
         idx = np.where(self.E_log_likelihood == np.max(self.E_log_likelihood))
         self.load(f"Models_folder/iter_{idx[0][0]+1}_track_{idx[1][0]}.h5")
         self.E_log_likelihood = self.E_log_likelihood[idx[0][0], :]

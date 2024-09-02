@@ -77,9 +77,17 @@ class SkewT:
             a=lamb, loc=0, scale=1, size=(n_samples, n_dim)
         ) / np.sqrt(
             scipy.stats.gamma.rvs(
-                a=(nu/2), scale = (nu/2), size=(n_samples, n_dim)
+                a=nu / 2, scale = 2 /nu, loc = 0, size=(n_samples, n_dim)
             )
         )
+
+        # data = mean + sigma * scipy.stats.skewnorm.rvs(
+        #     a=lamb, loc=0, scale=1, size=(n_samples, n_dim)
+        # ) / np.sqrt(
+        #     scipy.stats.gamma.rvs(
+        #         a=(nu/2), scale = (nu/2), loc = (nu**2) / 4, size=(n_samples, n_dim)
+        #     )
+        # )
 
         return data
 
@@ -176,7 +184,7 @@ class SkewT:
                 scipy.stats.gamma.rvs(
                     a=parametre["nu"][:, i] / 2,
                     scale=2 / parametre["nu"][:, i],
-                    loc = (parametre["nu"][:, i]**2) / 4,
+                    loc = 0,
                     size=(n[i], n_dim),
                     random_state=random_state,
                 )
