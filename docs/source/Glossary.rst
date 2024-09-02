@@ -9,8 +9,8 @@ Glossary
    CDF
         Cumulative Density Function.
     
-    ARI
+   ARI
         Adjusted Rand Index. A measure of the similarity between two clusterings.
 
-    BIC
+   BIC
         Bayesian Information Criterion. A criterion for model selection among a finite set of models.

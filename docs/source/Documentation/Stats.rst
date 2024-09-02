@@ -79,6 +79,12 @@ Where :
 :math:`T_{\nu+1}` : Student-t cumulative distribution with :math:`\nu+1` degrees of freedom
 
 
+.. figure:: ../_static/Images/skewpdf_1D.png
+   :alt: Description de l'image
+   :width: 400px
+   :align: center
+
+
 **Examples:**
 
 .. code-block:: python
