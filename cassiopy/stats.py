@@ -77,9 +77,17 @@ class SkewT:
             a=lamb, loc=0, scale=1, size=(n_samples, n_dim)
         ) / np.sqrt(
             scipy.stats.gamma.rvs(
-                a=(nu/2), scale = (nu/2), size=(n_samples, n_dim)
+                a=nu / 2, scale = 2 /nu, loc = 0, size=(n_samples, n_dim)
             )
         )
+
+        # data = mean + sigma * scipy.stats.skewnorm.rvs(
+        #     a=lamb, loc=0, scale=1, size=(n_samples, n_dim)
+        # ) / np.sqrt(
+        #     scipy.stats.gamma.rvs(
+        #         a=(nu/2), scale = (nu/2), loc = (nu**2) / 4, size=(n_samples, n_dim)
+        #     )
+        # )
 
         return data
 
@@ -136,7 +144,7 @@ class SkewT:
 
         parametre = {
             "mu": np.random.uniform(-40, 40, size=(n_dim, n_clusters)),
-            "sig": np.random.uniform(0.5, 10.0, size=(n_dim, n_clusters)),
+            "sig": np.random.uniform(0.5, 5.0, size=(n_dim, n_clusters)),
             "nu": np.random.uniform(1.0, 10.0, size=(n_dim, n_clusters)),
             "lamb": np.random.uniform(-5, 5, size=(n_dim, n_clusters)),
             "alpha": np.full(n_clusters, 1.0 / n_clusters),
@@ -176,7 +184,7 @@ class SkewT:
                 scipy.stats.gamma.rvs(
                     a=parametre["nu"][:, i] / 2,
                     scale=2 / parametre["nu"][:, i],
-                    loc = (parametre["nu"][:, i]**2) / 4,
+                    loc = 0,
                     size=(n[i], n_dim),
                     random_state=random_state,
                 )
@@ -243,8 +251,8 @@ class SkewT:
         0.3520653267642995
         """
         eta = (x - mean) / sigma
-        A = lamb * eta * np.sqrt((nu + 1) / (nu + np.power(eta, 2)))
+        A = lamb * eta * np.sqrt((nu + 1) / (nu + eta ** 2))
         B = scipy.stats.t.cdf(x = A, df = (nu + 1))
         C = scipy.stats.t.pdf(x = eta, df = nu)
 
-        return (2 / sigma) * C * B
+        return 2 / sigma * C * B
