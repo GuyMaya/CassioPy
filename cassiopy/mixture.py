@@ -121,6 +121,13 @@ class SkewTMixture:
 
         self.E_log_likelihood = np.full((self.n_init, self.n_iter + 1), -np.inf)
 
+
+        files = os.listdir("Models_folder")
+        for file in files:
+            if file.startswith("iter"):
+                file_path = os.path.join("Models_folder", file)
+                os.remove(file_path)
+
         for n in range(self.n_init):
             if self.verbose==1:
                 print(f"initialization: {n+1}/{self.n_init}")
@@ -181,14 +188,6 @@ class SkewTMixture:
             i = 0
 
 
-            files = os.listdir("Models_folder")
-            for file in files:
-                if file.startswith("iter"):
-                    file_path = os.path.join("Models_folder", file)
-                    os.remove(file_path)
-
-
-
             self.save(f"iter_{n+1}_track_{i+1}")
 
             while i < self.n_iter:
@@ -211,6 +210,8 @@ class SkewTMixture:
                         return self.fit(X)
                     else:
                         break
+
+                self.E_log_likelihood[n, i] = E_log_likelihood_new
 
                 self.M_step(X)
 
@@ -246,15 +247,14 @@ class SkewTMixture:
                         self.n_iter = i - 1
                         break
 
-                self.E_log_likelihood[n, i] = E_log_likelihood_new
-
+                
                 self.save(f"iter_{n+1}_track_{i+1}")
 
                 i += 1
 
         # Find the best model
         idx = np.where(self.E_log_likelihood == np.max(self.E_log_likelihood))
-        self.load(f"Models_folder/iter_{idx[0][0]+1}_track_{idx[1][0]}.h5")
+        self.load(f"Models_folder/iter_{idx[0][0]+1}_track_{idx[1][0]+1}.h5")
         self.E_log_likelihood = self.E_log_likelihood[idx[0][0], :]
 
         # Save the best model
@@ -529,6 +529,7 @@ class SkewTMixture:
         """
         if isinstance(X, pd.DataFrame):
             X = X.values
+
             
         p = np.ones((X.shape[0], self.n_cluster)) * self.alpha[np.newaxis, :]
 
@@ -1139,6 +1140,12 @@ class SkewTUniformMixture:
         """
         self.E_log_likelihood = np.full((self.n_init, self.n_iter + 1), -np.inf)
 
+        files = os.listdir("Models_folder")
+        for file in files:
+            if file.startswith("iter"):
+                file_path = os.path.join("Models_folder", file)
+                os.remove(file_path)
+
         for n in range(self.n_init):
             if self.verbose==1:
                 print(f"initialization: {n+1}/{self.n_init}")
@@ -1198,11 +1205,6 @@ class SkewTUniformMixture:
 
             i = 0
 
-            files = os.listdir("Models_folder")
-            for file in files:
-                if file.startswith("iter"):
-                    file_path = os.path.join("Models_folder", file)
-                    os.remove(file_path)
 
             self.save(f"iter_{n+1}_track_{i+1}")
 
@@ -1226,6 +1228,8 @@ class SkewTUniformMixture:
                         return self.fit(X)
                     else:
                         break
+
+                self.E_log_likelihood[n, i] = E_log_likelihood_new
 
                 self.M_step(X)
 
@@ -1261,21 +1265,20 @@ class SkewTUniformMixture:
                         self.n_iter = i - 1
                         break
 
-                self.E_log_likelihood[n, i] = E_log_likelihood_new
 
                 self.save(f"iter_{n+1}_track_{i+1}")
 
                 i += 1
 
         # Find the best model
-        print(idx[0][0]+1)
-        print(idx[1][0])
         idx = np.where(self.E_log_likelihood == np.max(self.E_log_likelihood))
-        self.load(f"Models_folder/iter_{idx[0][0]+1}_track_{idx[1][0]}.h5")
+
+
+        self.load(f"Models_folder/iter_{idx[0][0]+1}_track_{idx[1][0]+1}.h5")
         self.E_log_likelihood = self.E_log_likelihood[idx[0][0], :]
 
         # Save the best model
-        self.n_iter = idx[1][0]
+        self.n_iter = idx[1][0]+1
         return self
 
     def initialisation_random(self, X):
@@ -1549,6 +1552,7 @@ class SkewTUniformMixture:
         if isinstance(X, pd.DataFrame):
             X = X.to_numpy()
 
+
         p = np.zeros((X.shape[0], self.n_cluster + 1))
 
         for index, value in enumerate(X):
@@ -1660,11 +1664,20 @@ class SkewTUniformMixture:
 
         R = scipy.special.digamma((nu_expended + 1) / 2)
 
+        try:
+            # Votre opération potentiellement problématique
+            result = (nu_expended + 1) * (nu_expended + (self.eta) ** 2) ** 3
+        except FloatingPointError:
+            # Affichage des valeurs uniquement en cas d'erreur
+            print(f"Overflow encountered with nu_expended: {nu_expended}, eta: {self.eta}")
+
+
+            
         S = (self.lamb[np.newaxis, :, :] * self.eta * (self.eta**2 - 1)) / np.sqrt(
             (nu_expended + 1) * (nu_expended + (self.eta) ** 2) ** 3
         )
 
-        T1_pdf = scipy.stats.t.pdf(M, nu_expended + 1)
+        T1_pdf = scipy.stats.t.pdf(x=M, df=(nu_expended + 1))
 
         self.s4 = self.tik[:, np.newaxis, :-1] * (
             self.s1 - P - Q + R + S * (T1_pdf / T1_cdf)

@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "cassiopy"
-version = "0.0.25"
+version = "0.0.26"
 description = "A python library for clustering using skew-t mixture models."
 authors = ["Maya GUY <Maya.guy@msomg.fr>"]
 license = "MIT"
