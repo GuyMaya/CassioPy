@@ -59,31 +59,35 @@ Where
 :math:`\mathcal{ST}` : skew-t probabibility density function
 
 
-
-.. figure:: ../_static/Images/Skewt_clustering.png
-   :alt: Clustering using SkewT Mixture Model
-   :width: 500px
-   :align: center
-
 **Examples:**
 
 .. code-block:: python
 
     >>> import numpy as np
     >>> from cassiopy.mixture import SkewTMixture
-    >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
-    >>> model = SkewTMixture(n_cluster=2, n_iter=100, tol=1e-4, init='random')
-    >>> model.fit(X)
-    >>> model.mu
-    array([[10.,  2.],
-           [ 1.,  2.]])
-    >>> model.predict([[0, 0], [12, 3]])
-    array([0, 1])
-    >>> model.predict_proba([[0, 0], [12, 3]])
-    array([[0.99999999, 0.        ],
-           [0.10      , 0.90      ]])
+    >>> from cassiopy.mixture import SkewT
+    >>> data, y_true = SkewT().random_cluster(n_samples=10000, n_dim=2, n_clusters=10, labels=True, random_state=4)
+
+    >>> model = SkewTMixture(n_cluster=10, init='gmm', n_iter=100, n_init=4, verbose=0).fit(data)
+    >>> y_pred = model.predict(data)
+    >>> model.ARI(y_true, y_pred)
+   0.9828358328555337
     >>> model.save('model.h5')
 
+    >>> # Plotting
+    >>> plt.scatter(data[:, 0], data[:, 1], c=y_pred, cmap='viridis', s=3)
+    >>> plt.xlabel('dim 1')
+    >>> plt.ylabel('dim 2')
+
+    >>> plt.text(max(data[:, 0]), max(data[:, 1]), s = f'ARI: {MM.ARI(y_true, y_pred):.3f}', fontsize=12, color='black', ha='right', va='top')
+    >>> plt.title('Clustering using SkewT Mixture Model')
+
+
+
+.. figure:: ../_static/Images/Skewt_clustering.png
+   :alt: Clustering using SkewT Mixture Model
+   :width: 500px
+   :align: center
 
 
 .. dropdown:: References

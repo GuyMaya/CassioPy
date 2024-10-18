@@ -40,22 +40,31 @@ With
    - When :math:`\lambda=0`, the Skew-t distribution reduces to the Student's t-distribution.
 
 
-.. figure:: ../_static/Images/skewrvs_1D_3cluster.png
-   :alt: Description de l'image
-   :width: 400px
-   :align: center
-
 **Examples:**
 
 .. code-block:: python
 
     >>> from cassiopy.stats import Skew
     >>> sm = SkewT()
-    >>> data, labels = sm.random_cluster(n_samples=200, n_dim=2, n_clusters=3, random_state=123)
+    >>> data, labels = sm.random_cluster(n_samples=3000, n_dim=1, n_clusters=3,random_state=10, labels=True)
     >>> data.shape
-    (200, 2)
+    (3000, 1)
     >>> labels.shape
-    (200,)
+    (3000,)
+
+   >>> # Plot a graph of the distribution
+   >>> fig, ax = plt.subplots()
+   >>> ax.hist(data[labels==0], bins=20, alpha=0.4, label='Cluster 0')
+   >>> ax.hist(data[labels==1], bins=20, alpha=0.4, label='Cluster 1')
+   >>> ax.hist(data[labels==2], bins=20, alpha=0.4, label='Cluster 2')
+
+   >>> ax.legend()
+   >>> plt.title('Distribution of 3 skew-t clusters')
+   >>> plt.show()
+.. figure:: ../_static/Images/skewrvs_1D_3cluster.png
+   :alt: Description de l'image
+   :width: 400px
+   :align: center
 
 **See also**
 
@@ -79,22 +88,30 @@ Where :
 :math:`T_{\nu+1}` : Student-t cumulative distribution with :math:`\nu+1` degrees of freedom
 
 
-.. figure:: ../_static/Images/skewpdf_1D.png
-   :alt: Description de l'image
-   :width: 400px
-   :align: center
+
 
 
 **Examples:**
 
 .. code-block:: python
 
-    >>> from cassiopy.stats import SkewT
-    >>> sm = SkewT()
-    >>> x, mu, sigma, nu, lamb = 0.5, 0, 1, 10, 0.5
-    >>> sm.pdf(x, mu, sigma, nu, lamb)
-    0.3520653267642995   
+    >>> from cassiopy.stats import SkewT 
+    >>> data = SkewT().rvs(mean=0, sigma=1, nu=1, lamb=5, n_samples=10000)
+    >>> data=data[(data[:, 0]>-20) & (data[:, 0]<20)]
+    >>> pdf_data = SkewT().pdf(data, mean=0, sigma=1, nu=1, lamb=5)
 
+    >>> # Plot a graph of the distribution and the pdf
+    >>> sorted_data = data[data[:, 0].argsort()]
+    >>> sorted_pdf_data = pdf_data[data[:, 0].argsort()]
+
+    >>> plt.hist(sorted_data, bins=300, density=True, label='distribution')
+    >>> plt.plot(sorted_data, sorted_pdf_data, color='red', label='SkewT pdf')
+    >>> plt.legend()
+
+.. figure:: ../_static/Images/skewpdf_1D.png
+   :alt: Description de l'image
+   :width: 400px
+   :align: center
 
 .. dropdown:: References
 
